@@ -17,16 +17,9 @@ public class FilmController {
         return films;
     }
 
-    @PostMapping()
+    @RequestMapping(method={RequestMethod.POST,RequestMethod.PUT})
     @ResponseBody
-    public Film create(@Valid @RequestBody Film film) {
-        films.add(film);
-        return film;
-    }
-
-    @PutMapping()
-    @ResponseBody
-    public Film update(@Valid @RequestBody Film film) {
+    public Film merge(@Valid @RequestBody Film film) {
         films.add(film);
         return film;
     }
