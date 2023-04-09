@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -9,9 +10,10 @@ import javax.validation.constraints.NotBlank;
 import java.time.Duration;
 import java.time.LocalDate;
 
-@Getter
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
+    private static int filmId = 0;
     @EqualsAndHashCode.Include
     @NonNull
     final int id;
@@ -21,6 +23,6 @@ public class Film {
     Duration duration;
 
     public Film() {
-        this.id = FilmController.getFilmId();
+        this.id = ++filmId;
     }
 }

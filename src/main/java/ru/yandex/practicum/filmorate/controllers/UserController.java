@@ -11,16 +11,6 @@ import java.util.*;
 public class UserController {
     private final Set<User> users = new LinkedHashSet<>();
 
-    private static int userId;
-
-    static {
-        userId = 0;
-    }
-
-    public static int getUserId() {
-        return ++userId;
-    }
-
     @GetMapping()
     public Set<User> findAll() {
         return users;

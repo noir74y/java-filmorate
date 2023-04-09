@@ -11,15 +11,6 @@ import java.util.Set;
 @RequestMapping("/films")
 public class FilmController {
     private final Set<Film> films = new LinkedHashSet<>();
-    private static int filmId;
-
-    static {
-        filmId = 0;
-    }
-
-    public static int getFilmId() {
-        return ++filmId;
-    }
 
     @GetMapping()
     public Set<Film> findAll() {
