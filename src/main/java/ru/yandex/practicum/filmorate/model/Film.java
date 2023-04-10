@@ -2,11 +2,10 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NonNull;
-import ru.yandex.practicum.filmorate.controllers.FilmController;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -16,11 +15,11 @@ public class Film {
     private static int filmId = 0;
     @EqualsAndHashCode.Include
     @NonNull
-    final int id;
-    @NonNull @NotBlank String name;
-    String description;
-    LocalDate releaseDate;
-    Duration duration;
+    private final int id;
+    @NonNull @NotBlank @Size(max=200) private String name;
+    private String description;
+    private LocalDate releaseDate;
+    private Duration duration;
 
     public Film() {
         this.id = ++filmId;

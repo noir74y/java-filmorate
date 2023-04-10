@@ -2,12 +2,10 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import ru.yandex.practicum.filmorate.controllers.UserController;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
@@ -16,12 +14,16 @@ import java.time.LocalDate;
 public class User {
     private static int userId = 0;
     @EqualsAndHashCode.Include
-    @NonNull
-    final int id;
-    @Email @NonNull @NotBlank String email;
-    @NonNull @NotBlank String login;
-    String name;
-    @Past LocalDate birthday;
+    private final int id;
+    @Email(message = "email is not correct")
+    @NotNull(message = "email can not be null")
+    @NotBlank(message = "email can not be blank or empty")
+    private String email;
+    @NotNull(message = "login can not be null")
+    @NotBlank(message = "login can not be blank or empty")
+    private String login;
+    private String name;
+    @Past private LocalDate birthday;
 
     public User() {
         this.id = ++userId;
