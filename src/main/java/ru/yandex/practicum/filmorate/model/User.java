@@ -25,7 +25,7 @@ public class User {
 
     @NotNull(message = "login can not be null")
     @NotBlank(message = "login can not be blank or empty")
-    @NoSpacesInUserLoginConstraint()
+    @NoSpacesInUserLoginConstraint
     private String login;
 
     private String name;
