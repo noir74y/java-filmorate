@@ -18,10 +18,11 @@ public class Film {
 
     @EqualsAndHashCode.Include
     @NonNull
-    private final int id;
+    private int id;
 
-    @NonNull @NotBlank @Size(max=200) private String name;
-    private String description;
+    @NonNull @NotBlank private String name;
+
+    @Size(max=200) private String description;
 
     @FilmReleaseDateConstraint
     private LocalDate releaseDate;
@@ -29,7 +30,7 @@ public class Film {
     @FilmDurationConstraint
     private Duration duration;
 
-    public Film() {
+    public void setId() {
         this.id = ++filmId;
     }
 }

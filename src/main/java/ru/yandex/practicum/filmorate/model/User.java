@@ -36,8 +36,4 @@ public class User {
     public User() {
         this.id = ++userId;
     }
-
-    public void setName(String name) {
-        this.name = name.isBlank() ? login : name;
-    }
 }
