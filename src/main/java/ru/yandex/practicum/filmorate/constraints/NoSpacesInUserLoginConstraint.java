@@ -8,10 +8,12 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint (validatedBy = NoSpacesInUserLoginValidator.class)
-@Target({ElementType.METHOD, ElementType.FIELD })
+@Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface  NoSpacesInUserLoginConstraint {
+public @interface NoSpacesInUserLoginConstraint {
     String message() default "login can not contain whitespaces";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
