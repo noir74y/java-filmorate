@@ -14,11 +14,10 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
-    private static int filmId = 0;
+    private static Integer filmId = 0;
 
     @EqualsAndHashCode.Include
-    @NonNull
-    private int id;
+    private Integer id;
 
     @NonNull @NotBlank private String name;
 

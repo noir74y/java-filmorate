@@ -11,27 +11,28 @@ import java.util.*;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final Set<User> users = new LinkedHashSet<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     @GetMapping()
-    public Set<User> findAll() {
-        return users;
+    public Collection<User> findAll() {
+        return users.values();
     }
 
     @PostMapping
     @ResponseBody
     public User create(@Valid @RequestBody User user) {
+        user.setId();
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
-        users.add(user);
+        users.put(user.getId(), user);
         return user;
     }
 
     @PutMapping
     @ResponseBody
     public User update(@Valid @RequestBody User user) {
-        if (users.contains(user)) {
-            users.remove(user);
-            create(user);
+        if (users.containsKey(user.getId())) {
+            user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
+            users.replace(user.getId(), user);
             return user;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user");

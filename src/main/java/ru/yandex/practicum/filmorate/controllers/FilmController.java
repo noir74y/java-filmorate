@@ -4,37 +4,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final Set<Film> films = new LinkedHashSet<>();
+    private final Map<Integer, Film> films = new HashMap<>();
 
     @GetMapping()
-    public Set<Film> findAll() {
-        return films;
+    public Collection<Film> findAll() {
+        return films.values();
     }
 
     @PostMapping
     @ResponseBody
     public Film create(@Valid @RequestBody Film film) {
         film.setId();
-        films.add(film);
+        films.put(film.getId(),film);
         return film;
     }
 
     @PutMapping
     @ResponseBody
     public Film update(@Valid @RequestBody Film film) {
-        if (films.contains(film)) {
-            films.remove(film);
-            create(film);
+        if (films.containsKey(film.getId())) {
+            films.replace(film.getId(),film);
             return film;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such film");
     }
 }

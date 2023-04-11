@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 
 import javax.validation.constraints.Email;
@@ -13,10 +14,10 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
-    private static int userId = 0;
+    private static Integer userId = 0;
 
     @EqualsAndHashCode.Include
-    private final int id;
+    private Integer id;
 
     @Email(message = "email is not correct")
     @NotNull(message = "email can not be null")
@@ -33,7 +34,7 @@ public class User {
     @Past
     private LocalDate birthday;
 
-    public User() {
+    public void setId() {
         this.id = ++userId;
     }
 }
