@@ -12,11 +12,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
     private static Integer filmId = 0;
 
-    @EqualsAndHashCode.Include
     private Integer id;
 
     @NonNull @NotBlank private String name;
