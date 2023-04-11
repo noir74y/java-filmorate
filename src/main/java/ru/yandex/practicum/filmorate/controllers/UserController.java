@@ -16,7 +16,7 @@ public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
 
     @GetMapping()
-    public Collection<User> findAll() {
+    public Collection<User> get() {
         log.info("get users response {}", users);
         return users.values();
     }

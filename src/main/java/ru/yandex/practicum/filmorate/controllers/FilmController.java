@@ -16,7 +16,7 @@ public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
 
     @GetMapping()
-    public Collection<Film> findAll() {
+    public Collection<Film> get() {
         log.info("get films response {}", films);
         return films.values();
     }
