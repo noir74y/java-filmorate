@@ -22,7 +22,7 @@ public class Film {
     @NotBlank(message = "name can not be blank or empty")
     private String name;
 
-    @Size(max=200, message="description is too long")
+    @Size(max = 200, message = "description is too long")
     private String description;
 
     @FilmReleaseDateConstraint
