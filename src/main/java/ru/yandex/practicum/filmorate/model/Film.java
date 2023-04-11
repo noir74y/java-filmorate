@@ -1,12 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import ru.yandex.practicum.filmorate.constraints.FilmDurationConstraint;
 import ru.yandex.practicum.filmorate.constraints.FilmReleaseDateConstraint;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -17,9 +16,12 @@ public class Film {
 
     private Integer id;
 
-    @NonNull @NotBlank private String name;
+    @NotNull(message = "name can not be null")
+    @NotBlank(message = "name can not be blank or empty")
+    private String name;
 
-    @Size(max=200) private String description;
+    @Size(max=200, message="description is too long")
+    private String description;
 
     @FilmReleaseDateConstraint
     private LocalDate releaseDate;
