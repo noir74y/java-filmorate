@@ -12,11 +12,9 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
     private static Integer userId = 0;
 
-    @EqualsAndHashCode.Include
     private Integer id;
 
     @Email(message = "email is not correct")
