@@ -23,7 +23,7 @@ public class UserService {
     public User create(User user) {
         log.info("user create request {}", user);
         user.setId();
-        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
+        setUserName(user);
         users.put(user.getId(), user);
         log.info("user create response {}", user);
         return user;
@@ -32,12 +32,16 @@ public class UserService {
     public User update(User user) {
         log.info("user update request {}", user);
         if (users.containsKey(user.getId())) {
-            user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
+            setUserName(user);
             users.replace(user.getId(), user);
             log.info("user update response {}", user);
             return user;
         }
         log.error("no such user {}",user);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user");
+    }
+
+    private void setUserName(User user) {
+        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 }
