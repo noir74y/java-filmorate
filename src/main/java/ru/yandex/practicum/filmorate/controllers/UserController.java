@@ -42,6 +42,7 @@ public class UserController {
             log.info("user update response {}", user);
             return user;
         }
+        log.error("no such user {}",user);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user");
     }
 }

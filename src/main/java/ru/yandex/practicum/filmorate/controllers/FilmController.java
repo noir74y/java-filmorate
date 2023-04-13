@@ -40,6 +40,7 @@ public class FilmController {
             log.info("film update response {}", film);
             return film;
         }
+        log.error("no such film {}",film);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such film");
     }
 }
