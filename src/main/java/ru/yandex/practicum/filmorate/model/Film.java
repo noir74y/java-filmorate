@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class Film {
     private static Integer filmId = 0;
 

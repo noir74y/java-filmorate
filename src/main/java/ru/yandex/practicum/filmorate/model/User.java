@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class User {
     private static Integer userId = 0;
 

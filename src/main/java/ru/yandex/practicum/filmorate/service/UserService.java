@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@Builder
 public class UserService {
     private final Map<Integer, User> users = new HashMap<>();
 
