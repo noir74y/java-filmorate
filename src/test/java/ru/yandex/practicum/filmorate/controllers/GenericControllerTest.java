@@ -21,7 +21,7 @@ public class GenericControllerTest {
 
     protected boolean isConstraintTriggered(Set<ConstraintViolation<GenericModel>> violations, String messageToSearch) {
         for (ConstraintViolation<GenericModel> constraintViolation : violations)
-            if (constraintViolation.getMessage().equals(messageToSearch))
+            if (constraintViolation.getMessageTemplate().equals(messageToSearch))
                 return true;
         return false;
     }
