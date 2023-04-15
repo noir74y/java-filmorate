@@ -38,7 +38,7 @@ class UserControllerTest extends GenericControllerTest {
 
         assertEquals(3, violations.size());
         assertTrue(isConstraintTriggered(violations, "логин не может содержать пробелы"));
-        //assertTrue(isConstraintTriggered(violations, "должно иметь формат адреса электронной почты"));
+        assertTrue(isConstraintTriggered(violations, "должно иметь формат адреса электронной почты"));
         assertTrue(isConstraintTriggered(violations, "дата рождения не может быть в будущем"));
     }
 }
