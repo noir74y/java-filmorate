@@ -1,10 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
@@ -38,6 +36,5 @@ public class FilmService {
             return film;
         }
         log.error("no such film {}",film);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such film");
-    }
+        throw new NotFoundException("no such user");    }
 }

@@ -2,9 +2,8 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -40,7 +39,7 @@ public class UserService {
             return user;
         }
         log.error("no such user {}",user);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user");
+        throw new NotFoundException("no such user");
     }
 
     private void setUserName(User user) {
