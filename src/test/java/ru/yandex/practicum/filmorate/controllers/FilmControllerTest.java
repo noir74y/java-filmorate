@@ -17,12 +17,12 @@ class FilmControllerTest extends GenericControllerTest {
 
     @Test
     void checkValidFilm() throws Exception {
-        film = Film.builder().
-                name("Nick Name").
-                description("mail@mail.ru").
-                releaseDate(LocalDate.now()).
-                duration(Duration.of(120, ChronoUnit.MINUTES)).
-                build();
+        film = Film.builder()
+                .name("Nick Name")
+                .description("mail@mail.ru")
+                .releaseDate(LocalDate.now())
+                .duration(Duration.of(120, ChronoUnit.MINUTES))
+                .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(0, violations.size());
@@ -30,11 +30,11 @@ class FilmControllerTest extends GenericControllerTest {
 
     @Test
     void checkInValidFilm() throws Exception {
-        film = Film.builder().
-                description("Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.").
-                releaseDate(LocalDate.of(1895, 12, 27)).
-                duration(Duration.of(-1, ChronoUnit.SECONDS)).
-                build();
+        film = Film.builder()
+                .description("Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.")
+                .releaseDate(LocalDate.of(1895, 12, 27))
+                .duration(Duration.of(-1, ChronoUnit.SECONDS))
+                .build();
 
         violations = validator.validate(film);
 
