@@ -6,24 +6,19 @@ import ru.yandex.practicum.filmorate.constraints.FilmDurationConstraint;
 import ru.yandex.practicum.filmorate.constraints.FilmReleaseDateConstraint;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
 @Builder
-public class Film {
+public class Film extends GenericModel {
     private static Integer filmId = 0;
 
-    private Integer id;
-
-    @NotNull(message = "name can not be null")
-    @NotBlank(message = "name can not be blank or empty")
+    @NotBlank(message = "название не может быть пустым")
     private String name;
 
-    @Size(max = 200, message = "description is too long")
+    @Size(max = 200, message = "максимальная длина описания — 200 символов")
     private String description;
 
     @FilmReleaseDateConstraint

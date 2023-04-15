@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NoSpacesInUserLoginConstraint {
-    String message() default "login can not contain whitespaces";
+    String message() default "в логине не может быть пробелов";
 
     Class<?>[] groups() default {};
 

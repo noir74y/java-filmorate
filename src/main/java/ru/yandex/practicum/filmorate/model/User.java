@@ -1,36 +1,28 @@
 package ru.yandex.practicum.filmorate.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
 @Builder
-public class User {
+public class User extends GenericModel {
     private static Integer userId = 0;
 
-    private Integer id;
-
-    @Email(message = "email is not correct")
-    @NotNull(message = "email can not be null")
-    @NotBlank(message = "email can not be blank or empty")
+    @Email
+    @NotBlank(message = "электронная почта не может быть пустой")
     private String email;
 
-    @NotNull(message = "login can not be null")
-    @NotBlank(message = "login can not be blank or empty")
-    @NoSpacesInUserLoginConstraint
+    @NotBlank(message = "логин не может быть пустым")
+    @NoSpacesInUserLoginConstraint(message = "логин не может содержать пробелы")
     private String login;
 
     private String name;
 
-    @Past
+    @PastOrPresent(message = "дата рождения не может быть в будущем")
     private LocalDate birthday;
 
     public void setId() {

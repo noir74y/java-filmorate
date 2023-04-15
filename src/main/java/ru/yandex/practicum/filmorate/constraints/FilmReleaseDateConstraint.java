@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FilmReleaseDateConstraint {
-    String message() default "film has wrong release date";
+    String message() default "дата релиза — не раньше 28 декабря 1895 года";
 
     Class<?>[] groups() default {};
 

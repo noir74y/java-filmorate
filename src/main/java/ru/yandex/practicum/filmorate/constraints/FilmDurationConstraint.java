@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FilmDurationConstraint {
-    String message() default "film's duration has to be positive";
+    String message() default "продолжительность фильма должна быть положительной";
 
     Class<?>[] groups() default {};
 
