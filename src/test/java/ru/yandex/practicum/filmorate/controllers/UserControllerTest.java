@@ -16,11 +16,11 @@ class UserControllerTest extends GenericControllerTest {
 
     @Test
     void checkValidUser() throws Exception {
-        user = User.builder().
-                login("dolore").
-                email("mail@mail.ru").
-                birthday(LocalDate.now()).
-                build();
+        user = User.builder()
+                .login("dolore")
+                .email("mail@mail.ru")
+                .birthday(LocalDate.now())
+                .build();
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(0, violations.size());
@@ -28,11 +28,11 @@ class UserControllerTest extends GenericControllerTest {
 
     @Test
     void checkInValidUser() throws Exception {
-        user = User.builder().
-                login("dol ore").
-                email("mailmail.ru").
-                birthday(LocalDate.now().plus(1, ChronoUnit.DAYS)).
-                build();
+        user = User.builder()
+                .login("dol ore")
+                .email("mailmail.ru")
+                .birthday(LocalDate.now().plus(1, ChronoUnit.DAYS))
+                .build();
 
         violations = validator.validate(user);
 
