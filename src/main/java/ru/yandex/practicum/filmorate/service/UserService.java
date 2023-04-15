@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 @Service
 @Slf4j
-@Builder
 public class UserService {
     private final Map<Integer, User> users = new HashMap<>();
 

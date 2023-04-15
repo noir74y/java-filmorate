@@ -6,22 +6,23 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.model.ErrorMessage;
 
 @RestControllerAdvice
 public class ExceptionController {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Error> notFoundException(NotFoundException exception) {
+    public ResponseEntity<ErrorMessage> notFoundException(NotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new Error(exception.getMessage()));
+                .body(new ErrorMessage(exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Error> badRequestException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorMessage> badRequestException(MethodArgumentNotValidException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new Error(exception.getMessage()));
+                .body(new ErrorMessage(exception.getMessage()));
     }
 
 }
