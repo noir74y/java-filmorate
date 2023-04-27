@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
 
