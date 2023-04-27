@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.inmemory;
+package ru.yandex.practicum.filmorate.storage.inmemory;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.interfaces.UserStorage;
+import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
