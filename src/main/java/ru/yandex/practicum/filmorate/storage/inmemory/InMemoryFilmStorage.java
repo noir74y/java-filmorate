@@ -10,11 +10,13 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Set<Integer>> likes = new HashMap<>();
 
     @Override
     public Collection<Film> get() {

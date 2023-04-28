@@ -10,12 +10,13 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
-
     private final Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, Set<Integer>> friends = new HashMap<>();
 
     @Override
     public Collection<User> get() {
