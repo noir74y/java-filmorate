@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.inmemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -13,7 +13,7 @@ import java.util.*;
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
-    private final Map<Integer, Like> likes = new HashMap<>();
+    private final Map<Integer, Rate> rates = new HashMap<>();
 
     @Override
     public Collection<Film> list() {
@@ -50,18 +50,18 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void addLike(Integer filmId, Integer userId) {
-        Like filmLike = likes.getOrDefault(filmId, new Like(filmId, new HashSet<>()));
-        filmLike.getUserIdSet().add(userId);
-        likes.putIfAbsent(filmId, filmLike);
+        Rate rate = rates.getOrDefault(filmId, new Rate(filmId, new HashSet<>()));
+        rate.getLikedUsersId().add(userId);
+        rates.putIfAbsent(filmId, rate);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
-        likes.get(filmId).getUserIdSet().remove(userId);
+        rates.get(filmId).getLikedUsersId().remove(userId);
     }
 
     @Override
-    public Collection<Like> getLikes() {
-        return likes.values();
+    public Collection<Rate> getRates() {
+        return rates.values();
     }
 }

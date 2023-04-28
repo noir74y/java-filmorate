@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
 import java.util.*;
@@ -25,6 +25,12 @@ public class FilmService {
     }
 
     Collection<Film> getPopular() {
-        return new TreeSet<>(filmStorage.getLikes()).stream().limit(10).map(Like::getFilmId).map(filmStorage::get).collect(Collectors.toList());
+        return new TreeSet<>(filmStorage
+                .getRates())
+                .stream()
+                .limit(10)
+                .map(Rate::getFilmId)
+                .map(filmStorage::get)
+                .collect(Collectors.toList());
     }
 }
