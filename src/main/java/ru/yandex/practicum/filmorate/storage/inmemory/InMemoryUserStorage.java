@@ -54,19 +54,18 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void addFriend(Integer userHost, Integer userGuest) {
-        Set<Integer> friendsList;
-        friendsList = friends.getOrDefault(userHost, new HashSet<>());
-        friendsList.add(userGuest);
-        friends.put(userHost, friendsList);
+    public void addFriend(Integer userHostId, Integer userGuestId) {
+        Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>());
+        friendsList.add(userGuestId);
+        friends.putIfAbsent(userHostId, friendsList);
     }
 
     @Override
-    public void deleteFriend(Integer userHost, Integer userGuest) {
-        Set<Integer> friendsList;
-        friendsList = friends.getOrDefault(userHost, new HashSet<>());
-        friendsList.remove(userGuest);
-        friends.put(userHost, friendsList);
+    public void deleteFriend(Integer userHostId, Integer userGuestId) {
+        friends.get(userHostId).remove(userGuestId);
+//        Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>()).;
+//        friendsList.remove(userGuestId);
+//        friends.put(userHostId, friendsList);
     }
 
     @Override
