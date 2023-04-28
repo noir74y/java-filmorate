@@ -15,19 +15,23 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserStorage userStorage;
 
-    public void addFriendship(Integer user1, Integer user2) {
-        userStorage.addFriend(user1, user2);
-        userStorage.addFriend(user2, user1);
+    public void addFriendship(Integer userHost, Integer userGuest) {
+        userStorage.addFriend(userHost, userGuest);
+        userStorage.addFriend(userGuest, userHost);
     }
 
-    public void deleteFriendship(Integer user1, Integer user2) {
-        userStorage.deleteFriend(user1, user2);
-        userStorage.deleteFriend(user2, user1);
+    public void deleteFriendship(Integer userHost, Integer userGuest) {
+        userStorage.deleteFriend(userHost, userGuest);
+        userStorage.deleteFriend(userGuest, userHost);
     }
-    
-    public Collection<User> getCommonFriends(Integer user1, Integer user2) {
-        Set<Integer> commonFriends = new HashSet<>(userStorage.getFriends(user1));
-        commonFriends.retainAll(userStorage.getFriends(user2));
+
+    public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {
+        Set<Integer> commonFriends = new HashSet<>(userStorage.getFriends(userId1));
+        commonFriends.retainAll(userStorage.getFriends(userId2));
         return commonFriends.stream().map(userStorage::get).collect(Collectors.toList());
+    }
+
+    public Collection<User> getFriends(Integer userId) {
+        return userStorage.getFriends(userId).stream().map(userStorage::get).collect(Collectors.toList());
     }
 }
