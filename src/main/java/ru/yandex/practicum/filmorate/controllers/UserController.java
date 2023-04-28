@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import javax.validation.Valid;
@@ -15,21 +16,46 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserStorage userStorage;
+    private final UserService userService;
 
     @GetMapping()
-    public Collection<User> get() {
+    public Collection<User> list() {
         return userStorage.list();
     }
 
+    @GetMapping("/{userId}")
+    public User get(@PathVariable Integer userId) {
+        return userStorage.get(userId);
+    }
+
     @PostMapping
-    @ResponseBody
     public User create(@Valid @RequestBody User user) {
         return userStorage.create(user);
     }
 
     @PutMapping
-    @ResponseBody
     public User update(@Valid @RequestBody User user) {
         return userStorage.update(user);
     }
+
+    @PutMapping("/{userHost}/friends/{userGuest}")
+    public void addFriendship(@PathVariable Integer userHost, @PathVariable Integer userGuest) {
+        userService.addFriendship(userHost, userGuest);
+    }
+
+    @DeleteMapping("/{userHost}/friends/{userGuest}")
+    public void deleteFriendship(@PathVariable Integer userHost, @PathVariable Integer userGuest) {
+        userService.deleteFriendship(userHost, userGuest);
+    }
+
+    @GetMapping("/{userHost}/friends")
+    public Collection<User> getFriends(@PathVariable Integer userHost) {
+        return userService.getFriends(userHost);
+    }
+
+    @GetMapping("/{userId1}/friends/common/{userId2}")
+    public Collection<User> getCommonFriends(@PathVariable Integer userId1, @PathVariable Integer userId2) {
+        return userService.getCommonFriends(userId1, userId2);
+    }
+
 }
