@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping()
     public Collection<User> get() {
-        return userStorage.get();
+        return userStorage.list();
     }
 
     @PostMapping
