@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 public class FilmService {
     private final FilmStorage filmStorage;
 
-    void addLike(Integer filmId, Integer userId) {
+    public void addLike(Integer filmId, Integer userId) {
         filmStorage.addLike(filmId, userId);
     }
 
-    void deleteLike(Integer filmId, Integer userId) {
+    public void deleteLike(Integer filmId, Integer userId) {
         filmStorage.deleteLike(filmId, userId);
     }
 
-    Collection<Film> getPopular(int count) {
+    public Collection<Film> getPopular(int count) {
         return new TreeSet<>(filmStorage
                 .getRates())
                 .stream()
