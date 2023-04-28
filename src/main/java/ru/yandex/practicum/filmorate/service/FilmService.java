@@ -24,11 +24,11 @@ public class FilmService {
         filmStorage.deleteLike(filmId, userId);
     }
 
-    Collection<Film> getPopular() {
+    Collection<Film> getPopular(int count) {
         return new TreeSet<>(filmStorage
                 .getRates())
                 .stream()
-                .limit(10)
+                .limit(count)
                 .map(Rate::getFilmId)
                 .map(filmStorage::get)
                 .collect(Collectors.toList());
