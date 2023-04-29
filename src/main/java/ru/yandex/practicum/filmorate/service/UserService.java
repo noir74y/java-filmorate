@@ -3,9 +3,11 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,6 +16,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
+
+    public Collection<User> list() {
+        return userStorage.list();
+    }
+
+    public User get(@PathVariable Integer userId) {
+        return userStorage.get(userId);
+    }
+
+    public User create(@Valid @RequestBody User user) {
+        return userStorage.create(user);
+    }
+
+    public User update(@Valid @RequestBody User user) {
+        return userStorage.update(user);
+    }
 
     public void addFriendship(Integer userHost, Integer userGuest) {
         userStorage.addFriend(userHost, userGuest);

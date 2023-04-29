@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
+
+    public Collection<Film> list() {
+        return filmStorage.list();
+    }
+
+    public Film create(@Valid @RequestBody Film film) {
+        return filmStorage.create(film);
+    }
+
+    public Film update(@Valid @RequestBody Film film) {
+        return filmStorage.update(film);
+    }
 
     public void addLike(Integer filmId, Integer userId) {
         filmStorage.addLike(filmId, userId);
@@ -25,14 +39,16 @@ public class FilmService {
     }
 
     public Collection<Film> getPopular(Integer count) {
-        List<Film> set = new TreeSet<>(filmStorage
-                .getRates())
-                .stream()
-                .limit(count)
-                .map(Rate::getFilmId)
-                .map(filmStorage::get)
-                .collect(Collectors.toCollection(LinkedList::new));
 
-        return set;
+        if (count == null)
+            return filmStorage.list().stream().limit(10).collect(Collectors.toList());
+        else
+            return new TreeSet<>(filmStorage
+                    .getRates())
+                    .stream()
+                    .limit(count)
+                    .map(Rate::getFilmId)
+                    .map(filmStorage::get)
+                    .collect(Collectors.toCollection(LinkedList::new));
     }
 }
