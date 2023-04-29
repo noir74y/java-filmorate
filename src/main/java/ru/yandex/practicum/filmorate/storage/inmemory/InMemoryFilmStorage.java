@@ -40,6 +40,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         log.info("film create request {}", film);
         film.setId();
         films.put(film.getId(), film);
+        rates.put(film.getId(), new Rate(film.getId(), new HashSet<>()));
         log.info("film create response {}", film);
         return film;
     }
@@ -64,9 +65,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void addLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userStorage.isUserExists(userId)) {
-            Rate rate = rates.getOrDefault(filmId, new Rate(filmId, new HashSet<>()));
-            rate.getLikedUsersId().add(userId);
-            rates.putIfAbsent(filmId, rate);
+            rates.get(filmId).getLikedUsersId().add(userId);
         } else processNotFoundException(filmId, userId);
     }
 
