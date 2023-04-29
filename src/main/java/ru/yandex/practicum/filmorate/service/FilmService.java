@@ -3,12 +3,10 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
-import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,11 +20,15 @@ public class FilmService {
         return filmStorage.list();
     }
 
-    public Film create(@Valid @RequestBody Film film) {
+    public Film get(Integer filmId) {
+        return filmStorage.get(filmId);
+    }
+
+    public Film create(Film film) {
         return filmStorage.create(film);
     }
 
-    public Film update(@Valid @RequestBody Film film) {
+    public Film update(Film film) {
         return filmStorage.update(film);
     }
 
