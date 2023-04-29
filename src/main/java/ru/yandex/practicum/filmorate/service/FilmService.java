@@ -41,16 +41,12 @@ public class FilmService {
     }
 
     public Collection<Film> getPopular(Integer count) {
-
-        if (count == null)
-            return filmStorage.list().stream().limit(10).collect(Collectors.toList());
-        else
-            return new TreeSet<>(filmStorage
-                    .getRates())
-                    .stream()
-                    .limit(count)
-                    .map(Rate::getFilmId)
-                    .map(filmStorage::get)
-                    .collect(Collectors.toCollection(LinkedList::new));
+        return new TreeSet<>(filmStorage
+                .getRates())
+                .stream()
+                .limit(count)
+                .map(Rate::getFilmId)
+                .map(filmStorage::get)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 }

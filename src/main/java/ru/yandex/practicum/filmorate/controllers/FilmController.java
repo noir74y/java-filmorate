@@ -46,13 +46,8 @@ public class FilmController {
         filmService.deleteLike(filmId, userId);
     }
 
-    @GetMapping("/popular?count={count}")
+    @GetMapping("/popular")
     public Collection<Film> getPopular(@RequestParam(required = false, defaultValue = "10") Integer count) {
         return filmService.getPopular(count);
-    }
-
-    @GetMapping("/popular")
-    public Collection<Film> getFirstTen() {
-        return filmService.getPopular(null);
     }
 }
