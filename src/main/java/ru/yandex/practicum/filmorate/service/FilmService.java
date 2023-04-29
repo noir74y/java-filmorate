@@ -41,9 +41,9 @@ public class FilmService {
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return new TreeSet<>(filmStorage
-                .getRates())
+        return filmStorage.getRates()
                 .stream()
+                .sorted()
                 .limit(count)
                 .map(Rate::getFilmId)
                 .map(filmStorage::get)
