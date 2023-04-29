@@ -35,6 +35,7 @@ public class InMemoryUserStorage implements UserStorage {
         user.setId();
         setUserName(user);
         users.put(user.getId(), user);
+        friends.put(user.getId(), new HashSet<>());
         log.info("user create response {}", user);
         return user;
     }
@@ -62,28 +63,26 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void addFriend(Integer userHostId, Integer userGuestId) {
-        if (isUserExists(userHostId) && isUserExists(userGuestId)) {
-            Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>());
-            friendsList.add(userGuestId);
-            friends.putIfAbsent(userHostId, friendsList);
-        } else processNotFoundException(userHostId, userGuestId);
+    public void addFriend(Integer userHostId, Integer userFriendId) {
+        if (isUserExists(userHostId) && isUserExists(userFriendId)) {
+            friends.get(userHostId).add(userFriendId);
+        } else processNotFoundException(userHostId, userFriendId);
     }
 
     @Override
-    public void deleteFriend(Integer userHostId, Integer userGuestId) {
-        if (isUserExists(userHostId) && isUserExists(userGuestId))
-            friends.get(userHostId).remove(userGuestId);
-        else processNotFoundException(userHostId, userGuestId);
+    public void deleteFriend(Integer userHostId, Integer userFriendId) {
+        if (isUserExists(userHostId) && isUserExists(userFriendId))
+            friends.get(userHostId).remove(userFriendId);
+        else processNotFoundException(userHostId, userFriendId);
     }
 
-    private void processNotFoundException(Integer userHostId, Integer userGuestId) {
+    private void processNotFoundException(Integer userHostId, Integer userFriendId) {
         if (!isUserExists(userHostId)) {
             log.error("no such userHostId {}", userHostId);
-            throw new NotFoundException("no such filmId");
-        } else if (!isUserExists(userGuestId)) {
-            log.error("no such userGuestId {}", userGuestId);
-            throw new NotFoundException("no such userGuestId");
+            throw new NotFoundException("no such userHostId");
+        } else if (!isUserExists(userFriendId)) {
+            log.error("no such userFriendId {}", userFriendId);
+            throw new NotFoundException("no such userFriendId");
         }
     }
 

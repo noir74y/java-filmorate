@@ -31,14 +31,14 @@ public class UserService {
         return userStorage.update(user);
     }
 
-    public void addFriendship(Integer userHost, Integer userGuest) {
-        userStorage.addFriend(userHost, userGuest);
-        userStorage.addFriend(userGuest, userHost);
+    public void addFriendship(Integer userId1, Integer userId2) {
+        userStorage.addFriend(userId1, userId2);
+        userStorage.addFriend(userId2, userId1);
     }
 
-    public void deleteFriendship(Integer userHost, Integer userGuest) {
-        userStorage.deleteFriend(userHost, userGuest);
-        userStorage.deleteFriend(userGuest, userHost);
+    public void deleteFriendship(Integer userId1, Integer userId2) {
+        userStorage.deleteFriend(userId1, userId2);
+        userStorage.deleteFriend(userId2, userId1);
     }
 
     public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {

@@ -36,19 +36,19 @@ public class UserController {
         return userService.update(user);
     }
 
-    @PutMapping("/{userHost}/friends/{userGuest}")
-    public void addFriendship(@PathVariable Integer userHost, @PathVariable Integer userGuest) {
-        userService.addFriendship(userHost, userGuest);
+    @PutMapping("/{userId}/friends/{friendId}")
+    public void addFriendship(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        userService.addFriendship(userId, friendId);
     }
 
-    @DeleteMapping("/{userHost}/friends/{userGuest}")
-    public void deleteFriendship(@PathVariable Integer userHost, @PathVariable Integer userGuest) {
-        userService.deleteFriendship(userHost, userGuest);
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public void deleteFriendship(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        userService.deleteFriendship(userId, friendId);
     }
 
-    @GetMapping("/{userHost}/friends")
-    public Collection<User> getFriends(@PathVariable Integer userHost) {
-        return userService.getFriends(userHost);
+    @GetMapping("/{userId}/friends")
+    public Collection<User> getFriends(@PathVariable Integer userId) {
+        return userService.getFriends(userId);
     }
 
     @GetMapping("/{userId1}/friends/common/{userId2}")
