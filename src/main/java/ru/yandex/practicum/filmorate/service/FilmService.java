@@ -24,13 +24,15 @@ public class FilmService {
         filmStorage.deleteLike(filmId, userId);
     }
 
-    public Collection<Film> getPopular(int count) {
-        return new TreeSet<>(filmStorage
+    public Collection<Film> getPopular(Integer count) {
+        List<Film> set = new TreeSet<>(filmStorage
                 .getRates())
                 .stream()
                 .limit(count)
                 .map(Rate::getFilmId)
                 .map(filmStorage::get)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        return set;
     }
 }
