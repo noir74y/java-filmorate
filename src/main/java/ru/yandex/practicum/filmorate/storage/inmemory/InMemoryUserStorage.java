@@ -7,13 +7,12 @@ import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
-    private final HashMap<Object, Set<Integer>> friends = new HashMap<>();
+    private final HashMap<Integer, Set<Integer>> friends = new HashMap<>();
 
     @Override
     public Collection<User> list() {
@@ -49,24 +48,32 @@ public class InMemoryUserStorage implements UserStorage {
         throw new NotFoundException("no such user");
     }
 
+    @Override
+    public boolean isUserExists(Integer userId) {
+        return users.containsKey(userId);
+    }
+
     private void setUserName(User user) {
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 
     @Override
     public void addFriend(Integer userHostId, Integer userGuestId) {
-        Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>());
-        friendsList.add(userGuestId);
-        friends.putIfAbsent(userHostId, friendsList);
+        if (isUserExists(userHostId) && isUserExists(userGuestId)) {
+            Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>());
+            friendsList.add(userGuestId);
+            friends.putIfAbsent(userHostId, friendsList);
+        }
     }
 
     @Override
     public void deleteFriend(Integer userHostId, Integer userGuestId) {
-        friends.get(userHostId).remove(userGuestId);
+        if (isUserExists(userHostId) && isUserExists(userGuestId))
+            friends.get(userHostId).remove(userGuestId);
     }
 
     @Override
     public Set<Integer> getFriends(Integer userId) {
-        return friends.get(userId);
+        return Optional.ofNullable(friends.get(userId)).orElse(new HashSet<>());
     }
 }

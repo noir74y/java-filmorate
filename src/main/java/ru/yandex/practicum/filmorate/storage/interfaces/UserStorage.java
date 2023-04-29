@@ -14,6 +14,8 @@ public interface UserStorage {
 
     User update(User user);
 
+    boolean isUserExists(Integer userId);
+
     void addFriend(Integer userHost, Integer userGuest);
 
     void deleteFriend(Integer userHost, Integer userGuest);
