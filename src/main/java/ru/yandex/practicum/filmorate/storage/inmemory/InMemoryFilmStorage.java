@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.storage.inmemory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
@@ -18,6 +17,7 @@ import java.util.*;
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, Rate> rates = new HashMap<>();
+
     private final UserStorage userStorage;
 
     @Override
@@ -28,7 +28,11 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film get(Integer filmId) {
-        return films.get(filmId);
+        if (isFilmExists(filmId))
+            return films.get(filmId);
+
+        log.error("no such filmId {}", filmId);
+        throw new NotFoundException("no such filmId");
     }
 
     @Override
@@ -43,7 +47,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film update(Film film) {
         log.info("film update request {}", film);
-        if (films.containsKey(film.getId())) {
+        if (isFilmExists(film.getId())) {
             films.replace(film.getId(), film);
             log.info("film update response {}", film);
             return film;
@@ -57,20 +61,30 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films.containsKey(filmId);
     }
 
-
     @Override
     public void addLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userStorage.isUserExists(userId)) {
             Rate rate = rates.getOrDefault(filmId, new Rate(filmId, new HashSet<>()));
             rate.getLikedUsersId().add(userId);
             rates.putIfAbsent(filmId, rate);
-        }
+        } else processNotFoundException(filmId, userId);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userStorage.isUserExists(userId))
             rates.get(filmId).getLikedUsersId().remove(userId);
+        else processNotFoundException(filmId, userId);
+    }
+
+    private void processNotFoundException(Integer filmId, Integer userId) {
+        if (!isFilmExists(filmId)) {
+            log.error("no such filmId {}", filmId);
+            throw new NotFoundException("no such filmId");
+        } else if (!userStorage.isUserExists(userId)) {
+            log.error("no such userId {}", userId);
+            throw new NotFoundException("no such userId");
+        }
     }
 
     @Override

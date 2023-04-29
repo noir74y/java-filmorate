@@ -22,7 +22,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User get(Integer userId) {
-        return users.get(userId);
+        if (isUserExists(userId))
+            return users.get(userId);
+
+        log.error("no such userId {}", userId);
+        throw new NotFoundException("no such userId");
     }
 
     @Override
@@ -38,7 +42,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User user) {
         log.info("user update request {}", user);
-        if (users.containsKey(user.getId())) {
+        if (isUserExists(user.getId())) {
             setUserName(user);
             users.replace(user.getId(), user);
             log.info("user update response {}", user);
@@ -63,13 +67,24 @@ public class InMemoryUserStorage implements UserStorage {
             Set<Integer> friendsList = friends.getOrDefault(userHostId, new HashSet<>());
             friendsList.add(userGuestId);
             friends.putIfAbsent(userHostId, friendsList);
-        }
+        } else processNotFoundException(userHostId, userGuestId);
     }
 
     @Override
     public void deleteFriend(Integer userHostId, Integer userGuestId) {
         if (isUserExists(userHostId) && isUserExists(userGuestId))
             friends.get(userHostId).remove(userGuestId);
+        else processNotFoundException(userHostId, userGuestId);
+    }
+
+    private void processNotFoundException(Integer userHostId, Integer userGuestId) {
+        if (!isUserExists(userHostId)) {
+            log.error("no such userHostId {}", userHostId);
+            throw new NotFoundException("no such filmId");
+        } else if (!isUserExists(userGuestId)) {
+            log.error("no such userGuestId {}", userGuestId);
+            throw new NotFoundException("no such userGuestId");
+        }
     }
 
     @Override
