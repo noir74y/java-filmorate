@@ -31,7 +31,7 @@ public class ExceptionController {
         return ResponseEntity
                 .status(appException.getHttpErrorStatus())
                 .body(appException.prepareErrorMessage());
-
+    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
