@@ -32,7 +32,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return films.get(filmId);
 
         log.error("no such filmId {}", filmId);
-        throw new NotFoundException("no such filmId");
+        throw new NotFoundException("no such filmId", String.valueOf(filmId.toString()));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return film;
         }
         log.error("no such film {}", film);
-        throw new NotFoundException("no such user");
+        throw new NotFoundException("no such film", String.valueOf(film.getId()));
     }
 
     @Override
@@ -79,10 +79,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     private void processNotFoundException(Integer filmId, Integer userId) {
         if (!isFilmExists(filmId)) {
             log.error("no such filmId {}", filmId);
-            throw new NotFoundException("no such filmId");
+            throw new NotFoundException("no such filmId", String.valueOf(filmId));
         } else if (!userStorage.isUserExists(userId)) {
             log.error("no such userId {}", userId);
-            throw new NotFoundException("no such userId");
+            throw new NotFoundException("no such userId", String.valueOf(userId));
         }
     }
 

@@ -26,7 +26,7 @@ public class InMemoryUserStorage implements UserStorage {
             return users.get(userId);
 
         log.error("no such userId {}", userId);
-        throw new NotFoundException("no such userId");
+        throw new NotFoundException("no such userId",String.valueOf(userId));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class InMemoryUserStorage implements UserStorage {
             return user;
         }
         log.error("no such user {}", user);
-        throw new NotFoundException("no such user");
+        throw new NotFoundException("no such user",String.valueOf(user.getId()));
     }
 
     @Override
@@ -79,10 +79,10 @@ public class InMemoryUserStorage implements UserStorage {
     private void processNotFoundException(Integer userHostId, Integer userFriendId) {
         if (!isUserExists(userHostId)) {
             log.error("no such userHostId {}", userHostId);
-            throw new NotFoundException("no such userHostId");
+            throw new NotFoundException("no such userHostId",String.valueOf(userHostId));
         } else if (!isUserExists(userFriendId)) {
             log.error("no such userFriendId {}", userFriendId);
-            throw new NotFoundException("no such userFriendId");
+            throw new NotFoundException("no such userFriendId",String.valueOf(userFriendId));
         }
     }
 
