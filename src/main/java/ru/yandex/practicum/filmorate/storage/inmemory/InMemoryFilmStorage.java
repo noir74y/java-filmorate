@@ -54,7 +54,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return film;
         }
         log.error("no such film {}", film);
-        throw new NotFoundException("no such film", String.valueOf(film.getId()));
+        throw new NotFoundException("no such filmId", String.valueOf(film.getId()));
     }
 
     @Override
