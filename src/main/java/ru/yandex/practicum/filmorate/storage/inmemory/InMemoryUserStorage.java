@@ -58,10 +58,6 @@ public class InMemoryUserStorage implements UserStorage {
         return users.containsKey(userId);
     }
 
-    private void setUserName(User user) {
-        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
-    }
-
     @Override
     public void addFriend(Integer userHostId, Integer userFriendId) {
         if (isUserExists(userHostId) && isUserExists(userFriendId)) {
@@ -76,6 +72,15 @@ public class InMemoryUserStorage implements UserStorage {
         else processNotFoundException(userHostId, userFriendId);
     }
 
+    @Override
+    public Set<Integer> getFriends(Integer userId) {
+        return Optional.ofNullable(friends.get(userId)).orElse(new HashSet<>());
+    }
+
+    private void setUserName(User user) {
+        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
+    }
+
     private void processNotFoundException(Integer userHostId, Integer userFriendId) {
         if (!isUserExists(userHostId)) {
             log.error("no such userHostId {}", userHostId);
@@ -84,10 +89,5 @@ public class InMemoryUserStorage implements UserStorage {
             log.error("no such userFriendId {}", userFriendId);
             throw new NotFoundException("no such userFriendId", String.valueOf(userFriendId));
         }
-    }
-
-    @Override
-    public Set<Integer> getFriends(Integer userId) {
-        return Optional.ofNullable(friends.get(userId)).orElse(new HashSet<>());
     }
 }

@@ -76,6 +76,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         else processNotFoundException(filmId, userId);
     }
 
+    @Override
+    public Collection<Rate> getRates() {
+        return rates.values();
+    }
+
     private void processNotFoundException(Integer filmId, Integer userId) {
         if (!isFilmExists(filmId)) {
             log.error("no such filmId {}", filmId);
@@ -84,10 +89,5 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.error("no such userId {}", userId);
             throw new NotFoundException("no such userId", String.valueOf(userId));
         }
-    }
-
-    @Override
-    public Collection<Rate> getRates() {
-        return rates.values();
     }
 }

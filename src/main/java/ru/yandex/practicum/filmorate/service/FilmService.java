@@ -47,6 +47,6 @@ public class FilmService {
                 .limit(count)
                 .map(Rate::getFilmId)
                 .map(filmStorage::get)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toList());
     }
 }
