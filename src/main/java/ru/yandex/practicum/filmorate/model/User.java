@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
@@ -23,6 +24,7 @@ public class User extends GenericModel {
     private String name;
 
     @PastOrPresent(message = "дата рождения не может быть в будущем")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     public void setId() {

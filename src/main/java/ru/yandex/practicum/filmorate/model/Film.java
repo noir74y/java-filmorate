@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.constraints.FilmDurationConstraint;
@@ -22,6 +23,7 @@ public class Film extends GenericModel {
     private String description;
 
     @FilmReleaseDateConstraint
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
     @FilmDurationConstraint
