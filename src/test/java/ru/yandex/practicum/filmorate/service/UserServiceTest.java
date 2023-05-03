@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,8 +38,10 @@ class UserServiceTest {
     private MockMvc mockMvc;
     private static ObjectMapper objectMapper;
     InMemoryUserStorage inMemoryUserStorage;
-    private UserService userService;
     private User user1;
+    private User user2;
+    private User user3;
+    String responseBody;
 
     @BeforeAll
     static void init() {
@@ -53,7 +52,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         inMemoryUserStorage = applicationContext.getBean(InMemoryUserStorage.class);
-        userService = applicationContext.getBean(UserService.class);
+        UserService userService = applicationContext.getBean(UserService.class);
 
         user1 = User.builder().
                 login("dolore").
@@ -62,7 +61,23 @@ class UserServiceTest {
                 birthday(LocalDate.of(1946, 8, 20)).
                 build();
 
+        user2 = User.builder().
+                login("friend").
+                name("friend adipisicing").
+                email("friend@mail.ru").
+                birthday(LocalDate.of(1976, 8, 20)).
+                build();
+
+        user3 = User.builder().
+                login("common").
+                name("").
+                email("friend@common.ru").
+                birthday(LocalDate.of(2000, 8, 20)).
+                build();
+
         userService.create(user1);
+        userService.create(user2);
+        userService.create(user3);
     }
 
     @AfterEach
@@ -75,7 +90,7 @@ class UserServiceTest {
     @Test
     void getUser() throws Exception {
 
-        String responseBody = mockMvc.perform(get("/users/1").
+        responseBody = mockMvc.perform(get("/users/" + user1.getId()).
                         contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
@@ -90,7 +105,7 @@ class UserServiceTest {
 
     @Test
     void getUnknownUser() throws Exception {
-        String responseBody = mockMvc.perform(get("/users/9999").
+        responseBody = mockMvc.perform(get("/users/9999").
                         contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is(HttpStatus.NOT_FOUND.value())).
                 andReturn().getResponse().getContentAsString();
@@ -102,25 +117,9 @@ class UserServiceTest {
 
     @Test
     void addFriendship() throws Exception {
-        User friend = User.builder().
-                login("friend").
-                name("friend adipisicing").
-                email("friend@mail.ru").
-                birthday(LocalDate.of(1976, 8, 20)).
-                build();
+        mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
 
-        userService.create(friend);
-
-        User commonFriend = User.builder().
-                login("common").
-                name("").
-                email("friend@common.ru").
-                birthday(LocalDate.of(2000, 8, 20)).
-                build();
-
-        userService.create(commonFriend);
-
-        String responseBody = mockMvc.perform(get("/users/1/friends/common/2").
+        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends").
                         contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
@@ -128,55 +127,19 @@ class UserServiceTest {
         List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(0, friendsList.size());
-
-        mockMvc.perform(put("/users/1/friends/2"));
-
-        responseBody = mockMvc.perform(get("/users/1/friends").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
-
-        friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
-
         assertEquals(1, friendsList.size());
-
     }
 
     @Test
     void deleteFriendship() throws Exception {
-        User user = User.builder().
-                login("dolore").
-                name("Nick Name").
-                email("mail@mail.ru").
-                birthday(LocalDate.of(1946, 8, 20)).
-                build();
-        userService.create(user);
-        System.out.println(userService.list().size());
     }
 
     @Test
     void getCommonFriends() throws Exception {
-        User user = User.builder().
-                login("dolore").
-                name("Nick Name").
-                email("mail@mail.ru").
-                birthday(LocalDate.of(1946, 8, 20)).
-                build();
-        userService.create(user);
-        System.out.println(userService.list().size());
     }
 
     @Test
     void getFriends() throws Exception {
-        User user = User.builder().
-                login("dolore").
-                name("Nick Name").
-                email("mail@mail.ru").
-                birthday(LocalDate.of(1946, 8, 20)).
-                build();
-        userService.create(user);
-        System.out.println(userService.list().size());
     }
+
 }
