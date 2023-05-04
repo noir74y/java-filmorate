@@ -21,8 +21,8 @@ class UserServiceTest extends GenericServiceTest {
     void setUp() throws Exception {
         inMemoryUserStorage.clear();
 
-        user1 = getUserFromMock(User.builder().
-                login("dolore")
+        user1 = getUserFromMock(User.builder()
+                .login("dolore")
                 .name("Nick Name")
                 .email("mail@mail.ru")
                 .birthday(LocalDate.of(1946, 8, 20))
