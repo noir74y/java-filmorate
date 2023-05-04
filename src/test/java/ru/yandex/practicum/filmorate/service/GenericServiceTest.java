@@ -48,16 +48,16 @@ public class GenericServiceTest {
     protected User getUserFromMock(User user) throws Exception {
         responseBody = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk()).
-                andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
         return objectMapper.readValue(responseBody, User.class);
     }
 
     protected Film getFilmFromMock(Film film) throws Exception {
         responseBody = mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(film)))
-                .andExpect(status().isOk()).
-                andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
         return objectMapper.readValue(responseBody, Film.class);
     }
 }
