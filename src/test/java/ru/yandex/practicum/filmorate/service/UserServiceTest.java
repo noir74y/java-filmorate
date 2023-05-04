@@ -22,40 +22,40 @@ class UserServiceTest extends GenericServiceTest {
         inMemoryUserStorage.clear();
 
         user1 = getUserFromMock(User.builder().
-                login("dolore").
-                name("Nick Name").
-                email("mail@mail.ru").
-                birthday(LocalDate.of(1946, 8, 20)).
-                build());
+                login("dolore")
+                .name("Nick Name")
+                .email("mail@mail.ru")
+                .birthday(LocalDate.of(1946, 8, 20))
+                .build());
 
-        user2 = getUserFromMock(User.builder().
-                login("friend").
-                name("friend adipisicing").
-                email("friend@mail.ru").
-                birthday(LocalDate.of(1976, 8, 20)).
-                build());
+        user2 = getUserFromMock(User.builder()
+                .login("friend")
+                .name("friend adipisicing")
+                .email("friend@mail.ru")
+                .birthday(LocalDate.of(1976, 8, 20))
+                .build());
 
-        user3 = getUserFromMock(User.builder().
-                login("common").
-                name("").
-                email("friend@common.ru").
-                birthday(LocalDate.of(2000, 8, 20)).
-                build());
+        user3 = getUserFromMock(User.builder()
+                .login("common")
+                .name("")
+                .email("friend@common.ru")
+                .birthday(LocalDate.of(2000, 8, 20))
+                .build());
     }
 
     @Test
     void getList() throws Exception {
-        responseBody = mockMvc.perform(get("/users").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        responseBody = mockMvc.perform(get("/users").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
         list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
@@ -65,10 +65,10 @@ class UserServiceTest extends GenericServiceTest {
     @Test
     void getUser() throws Exception {
 
-        responseBody = mockMvc.perform(get("/users/" + user1.getId()).
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/" + user1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
 
         User user = objectMapper.readValue(responseBody, User.class);
         assertEquals(user, user1);
@@ -76,10 +76,10 @@ class UserServiceTest extends GenericServiceTest {
 
     @Test
     void getUnknownUser() throws Exception {
-        responseBody = mockMvc.perform(get("/users/9999").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.NOT_FOUND.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/9999")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+                .andReturn().getResponse().getContentAsString();
 
         ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such userId");
@@ -90,10 +90,10 @@ class UserServiceTest extends GenericServiceTest {
     void addFriendship() throws Exception {
         mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
 
-        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -101,10 +101,10 @@ class UserServiceTest extends GenericServiceTest {
         assertEquals(1, list.size());
         assertEquals(user2, list.get(0));
 
-        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
 
         list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -118,10 +118,10 @@ class UserServiceTest extends GenericServiceTest {
         addFriendship();
         mockMvc.perform(delete("/users/" + user1.getId() + " /friends/" + user2.getId()));
 
-        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends").
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -134,10 +134,10 @@ class UserServiceTest extends GenericServiceTest {
         mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
         mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user3.getId()));
 
-        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends/common/" + user3.getId()).
-                        contentType(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andReturn().getResponse().getContentAsString();
+        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends/common/" + user3.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString();
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
