@@ -21,7 +21,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryUserStorage;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,40 +49,42 @@ class UserServiceTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         inMemoryUserStorage = applicationContext.getBean(InMemoryUserStorage.class);
-        UserService userService = applicationContext.getBean(UserService.class);
 
-        user1 = User.builder().
+        user1 = getUserFromMock(User.builder().
                 login("dolore").
                 name("Nick Name").
                 email("mail@mail.ru").
                 birthday(LocalDate.of(1946, 8, 20)).
-                build();
+                build());
 
-        user2 = User.builder().
+        user2 = getUserFromMock(User.builder().
                 login("friend").
                 name("friend adipisicing").
                 email("friend@mail.ru").
                 birthday(LocalDate.of(1976, 8, 20)).
-                build();
+                build());
 
-        user3 = User.builder().
+        user3 = getUserFromMock(User.builder().
                 login("common").
                 name("").
                 email("friend@common.ru").
                 birthday(LocalDate.of(2000, 8, 20)).
-                build();
+                build());
+    }
 
-        userService.create(user1);
-        userService.create(user2);
-        userService.create(user3);
+    User getUserFromMock(User user) throws Exception {
+        responseBody = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk()).
+                andReturn().getResponse().getContentAsString();
+        return objectMapper.readValue(responseBody, User.class);
     }
 
     @AfterEach
     void tearDown() {
         DefaultSingletonBeanRegistry registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
-        registry.destroySingleton("UserService");
         registry.destroySingleton("InMemoryUserStorage");
     }
 
@@ -96,11 +97,7 @@ class UserServiceTest {
                 andReturn().getResponse().getContentAsString();
 
         User userFromJson = objectMapper.readValue(responseBody, User.class);
-
-        assertEquals(userFromJson.getId(), user1.getId());
-        assertEquals(userFromJson.getEmail(), user1.getEmail());
-        assertEquals(userFromJson.getName(), user1.getName());
-        assertEquals(userFromJson.getBirthday(), user1.getBirthday());
+        assertEquals(userFromJson, user1);
     }
 
     @Test
@@ -128,18 +125,50 @@ class UserServiceTest {
         });
 
         assertEquals(1, friendsList.size());
+        assertEquals(user2, friendsList.get(0));
+
+        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends").
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
+
+        friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        assertEquals(1, friendsList.size());
+        assertEquals(user1, friendsList.get(0));
     }
 
     @Test
     void deleteFriendship() throws Exception {
+        addFriendship();
+        mockMvc.perform(delete("/users/" + user1.getId() + " /friends/" + user2.getId()));
+
+        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends").
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
+
+        List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        assertEquals(0, friendsList.size());
     }
 
     @Test
     void getCommonFriends() throws Exception {
-    }
+        mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
+        mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user3.getId()));
 
-    @Test
-    void getFriends() throws Exception {
-    }
+        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends/common/" + user3.getId()).
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
 
+        List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        assertEquals(1, friendsList.size());
+        assertEquals(friendsList.get(0), user1);
+    }
 }

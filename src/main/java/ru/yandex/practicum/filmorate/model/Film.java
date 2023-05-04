@@ -29,6 +29,9 @@ public class Film extends GenericModel {
     @FilmDurationConstraint
     private Duration duration;
 
+    public Film() {
+    }
+
     public void setId() {
         this.id = ++filmId;
     }
