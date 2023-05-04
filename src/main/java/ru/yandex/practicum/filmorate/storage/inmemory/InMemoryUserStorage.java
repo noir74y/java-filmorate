@@ -77,6 +77,12 @@ public class InMemoryUserStorage implements UserStorage {
         return Optional.ofNullable(friends.get(userId)).orElse(new HashSet<>());
     }
 
+    @Override
+    public void clear() {
+        users.clear();
+        friends.clear();
+    }
+
     private void setUserName(User user) {
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }

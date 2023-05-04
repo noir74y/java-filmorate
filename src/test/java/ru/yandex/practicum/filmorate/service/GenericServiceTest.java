@@ -2,12 +2,10 @@ package ru.yandex.practicum.filmorate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -25,13 +23,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 public class GenericServiceTest {
+    @Autowired
     protected ApplicationContext applicationContext;
     @Autowired
     protected MockMvc mockMvc;
-    protected DefaultSingletonBeanRegistry registry;
-    protected static ObjectMapper objectMapper;
+    @Autowired
     protected InMemoryUserStorage inMemoryUserStorage;
+    @Autowired
     protected InMemoryFilmStorage inMemoryFilmStorage;
+    protected static ObjectMapper objectMapper;
     protected User user1;
     protected User user2;
     protected User user3;
@@ -43,11 +43,6 @@ public class GenericServiceTest {
     static void init() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-    }
-
-    public GenericServiceTest(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-        registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
     }
 
     protected User getUserFromMock(User user) throws Exception {

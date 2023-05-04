@@ -1,18 +1,13 @@
 package ru.yandex.practicum.filmorate.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,16 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class UserServiceTest extends GenericServiceTest {
-    public UserServiceTest(ApplicationContext applicationContext) {
-        super(applicationContext);
-    }
-
     @BeforeEach
     void setUp() throws Exception {
-        inMemoryUserStorage = applicationContext.getBean(InMemoryUserStorage.class);
+        inMemoryUserStorage.clear();
 
         user1 = getUserFromMock(User.builder().
                 login("dolore").
@@ -54,29 +43,24 @@ class UserServiceTest extends GenericServiceTest {
                 build());
     }
 
-    @AfterEach
-    void tearDown() {
-        registry.destroySingleton("InMemoryUserStorage");
-    }
+    @Test
+    void getList() throws Exception {
+        responseBody = mockMvc.perform(get("/users").
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
+        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
 
-//    @Test
-//    void getList() throws Exception {
-//        responseBody = mockMvc.perform(get("/users").
-//                        contentType(MediaType.APPLICATION_JSON)).
-//                andExpect(status().is(HttpStatus.OK.value())).
-//                andReturn().getResponse().getContentAsString();
-//        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
-//        });
-//
-//        responseBody = mockMvc.perform(get("/users").
-//                        contentType(MediaType.APPLICATION_JSON)).
-//                andExpect(status().is(HttpStatus.OK.value())).
-//                andReturn().getResponse().getContentAsString();
-//        list = objectMapper.readValue(responseBody, new TypeReference<>() {
-//        });
-//
-//        assertEquals(3, list.size());
-//    }
+        responseBody = mockMvc.perform(get("/users").
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
+        list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        assertEquals(3, list.size());
+    }
 
     @Test
     void getUser() throws Exception {

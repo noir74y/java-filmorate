@@ -1,21 +1,14 @@
 package ru.yandex.practicum.filmorate.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryUserStorage;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,16 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class FilmServiceTest extends GenericServiceTest {
-    public FilmServiceTest(ApplicationContext applicationContext) throws Exception {
-        super(applicationContext);
-    }
-
     @BeforeEach
     void setUp() throws Exception {
-        inMemoryFilmStorage = applicationContext.getBean(InMemoryFilmStorage.class);
+        inMemoryFilmStorage.clear();
 
         film1 = getFilmFromMock(Film.builder().
                 name("Nick Name").
@@ -56,11 +43,6 @@ class FilmServiceTest extends GenericServiceTest {
                 email("mail@mail.ru").
                 birthday(LocalDate.of(1946, 8, 20)).
                 build());
-    }
-
-    @AfterEach
-    void tearDown() {
-        registry.destroySingleton("InMemoryFilmStorage");
     }
 
     @Test
@@ -118,6 +100,19 @@ class FilmServiceTest extends GenericServiceTest {
     }
 
     @Test
-    void getPopular() {
+    void getPopular() throws Exception {
+        mockMvc.perform(put("/films/" + film2.getId() + "/like/" + user1.getId()).
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value()));
+
+        responseBody = mockMvc.perform(get("/films/popular?count=1").
+                        contentType(MediaType.APPLICATION_JSON)).
+                andExpect(status().is(HttpStatus.OK.value())).
+                andReturn().getResponse().getContentAsString();
+
+        List<Film> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        assertEquals(film2, list.get(0));
     }
 }

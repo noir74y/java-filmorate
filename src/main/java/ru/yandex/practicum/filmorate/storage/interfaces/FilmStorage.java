@@ -21,4 +21,6 @@ public interface FilmStorage {
     void deleteLike(Integer filmId, Integer userId);
 
     Collection<Rate> getRates();
+
+    void clear();
 }
