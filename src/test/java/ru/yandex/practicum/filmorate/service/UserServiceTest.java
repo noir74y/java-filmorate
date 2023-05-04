@@ -1,21 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.inmemory.InMemoryUserStorage;
@@ -27,27 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@RequiredArgsConstructor
-class UserServiceTest {
-    @Autowired
-    private final ApplicationContext applicationContext;
-    @Autowired
-    private MockMvc mockMvc;
-    private static ObjectMapper objectMapper;
-    InMemoryUserStorage inMemoryUserStorage;
-    private User user1;
-    private User user2;
-    private User user3;
-    String responseBody;
-
-    @BeforeAll
-    static void init() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-    }
-
+class UserServiceTest extends GenericServiceTest {
     @BeforeEach
     void setUp() throws Exception {
         inMemoryUserStorage = applicationContext.getBean(InMemoryUserStorage.class);
@@ -74,17 +45,9 @@ class UserServiceTest {
                 build());
     }
 
-    User getUserFromMock(User user) throws Exception {
-        responseBody = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk()).
-                andReturn().getResponse().getContentAsString();
-        return objectMapper.readValue(responseBody, User.class);
-    }
-
     @AfterEach
     void tearDown() {
-        DefaultSingletonBeanRegistry registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
+        registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
         registry.destroySingleton("InMemoryUserStorage");
     }
 

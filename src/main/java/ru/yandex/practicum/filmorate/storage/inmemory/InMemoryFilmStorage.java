@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import java.util.*;
 
-@Component
+@Component("InMemoryFilmStorage")
 @Slf4j
 @RequiredArgsConstructor
 public class InMemoryFilmStorage implements FilmStorage {
