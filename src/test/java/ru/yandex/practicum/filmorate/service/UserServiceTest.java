@@ -5,6 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
@@ -18,7 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserServiceTest extends GenericServiceTest {
+    public UserServiceTest(ApplicationContext applicationContext) {
+        super(applicationContext);
+    }
+
     @BeforeEach
     void setUp() throws Exception {
         inMemoryUserStorage = applicationContext.getBean(InMemoryUserStorage.class);
@@ -47,9 +56,27 @@ class UserServiceTest extends GenericServiceTest {
 
     @AfterEach
     void tearDown() {
-        registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
         registry.destroySingleton("InMemoryUserStorage");
     }
+
+//    @Test
+//    void getList() throws Exception {
+//        responseBody = mockMvc.perform(get("/users").
+//                        contentType(MediaType.APPLICATION_JSON)).
+//                andExpect(status().is(HttpStatus.OK.value())).
+//                andReturn().getResponse().getContentAsString();
+//        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+//        });
+//
+//        responseBody = mockMvc.perform(get("/users").
+//                        contentType(MediaType.APPLICATION_JSON)).
+//                andExpect(status().is(HttpStatus.OK.value())).
+//                andReturn().getResponse().getContentAsString();
+//        list = objectMapper.readValue(responseBody, new TypeReference<>() {
+//        });
+//
+//        assertEquals(3, list.size());
+//    }
 
     @Test
     void getUser() throws Exception {
@@ -59,8 +86,8 @@ class UserServiceTest extends GenericServiceTest {
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
 
-        User userFromJson = objectMapper.readValue(responseBody, User.class);
-        assertEquals(userFromJson, user1);
+        User user = objectMapper.readValue(responseBody, User.class);
+        assertEquals(user, user1);
     }
 
     @Test
@@ -70,9 +97,9 @@ class UserServiceTest extends GenericServiceTest {
                 andExpect(status().is(HttpStatus.NOT_FOUND.value())).
                 andReturn().getResponse().getContentAsString();
 
-        ErrorMessage errorMessageFromJson = objectMapper.readValue(responseBody, ErrorMessage.class);
-        assertEquals(errorMessageFromJson.getCause(), "no such userId");
-        assertEquals(errorMessageFromJson.getMessage(), "9999");
+        ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
+        assertEquals(errorMessage.getCause(), "no such userId");
+        assertEquals(errorMessage.getMessage(), "9999");
     }
 
     @Test
@@ -84,22 +111,22 @@ class UserServiceTest extends GenericServiceTest {
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
 
-        List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(1, friendsList.size());
-        assertEquals(user2, friendsList.get(0));
+        assertEquals(1, list.size());
+        assertEquals(user2, list.get(0));
 
         responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends").
                         contentType(MediaType.APPLICATION_JSON)).
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
 
-        friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(1, friendsList.size());
-        assertEquals(user1, friendsList.get(0));
+        assertEquals(1, list.size());
+        assertEquals(user1, list.get(0));
     }
 
     @Test
@@ -112,10 +139,10 @@ class UserServiceTest extends GenericServiceTest {
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
 
-        List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(0, friendsList.size());
+        assertEquals(0, list.size());
     }
 
     @Test
@@ -128,10 +155,10 @@ class UserServiceTest extends GenericServiceTest {
                 andExpect(status().is(HttpStatus.OK.value())).
                 andReturn().getResponse().getContentAsString();
 
-        List<User> friendsList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(1, friendsList.size());
-        assertEquals(friendsList.get(0), user1);
+        assertEquals(1, list.size());
+        assertEquals(list.get(0), user1);
     }
 }

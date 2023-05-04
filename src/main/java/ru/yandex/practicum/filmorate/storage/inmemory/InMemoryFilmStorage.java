@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.inmemory;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -79,6 +80,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Collection<Rate> getRates() {
         return rates.values();
+    }
+
+    public Rate getRate(Integer filmId) {
+        return rates.get(filmId);
     }
 
     private void processNotFoundException(Integer filmId, Integer userId) {

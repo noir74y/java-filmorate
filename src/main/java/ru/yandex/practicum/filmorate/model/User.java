@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 
 import javax.validation.constraints.*;

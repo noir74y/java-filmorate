@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@RequiredArgsConstructor
 public class GenericServiceTest {
-    @Autowired
     protected ApplicationContext applicationContext;
     @Autowired
     protected MockMvc mockMvc;
@@ -43,6 +43,11 @@ public class GenericServiceTest {
     static void init() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    public GenericServiceTest(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
     }
 
     protected User getUserFromMock(User user) throws Exception {
