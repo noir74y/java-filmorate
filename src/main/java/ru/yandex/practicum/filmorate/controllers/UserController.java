@@ -17,19 +17,43 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public Collection<User> get() {
-        return userService.get();
+    public Collection<User> list() {
+        return userService.list();
+    }
+
+    @GetMapping("/{userId}")
+    public User get(@PathVariable Integer userId) {
+        return userService.get(userId);
     }
 
     @PostMapping
-    @ResponseBody
     public User create(@Valid @RequestBody User user) {
         return userService.create(user);
     }
 
     @PutMapping
-    @ResponseBody
     public User update(@Valid @RequestBody User user) {
         return userService.update(user);
     }
+
+    @PutMapping("/{userId}/friends/{friendId}")
+    public void addFriendship(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        userService.addFriendship(userId, friendId);
+    }
+
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public void deleteFriendship(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        userService.deleteFriendship(userId, friendId);
+    }
+
+    @GetMapping("/{userId}/friends")
+    public Collection<User> getFriends(@PathVariable Integer userId) {
+        return userService.getFriends(userId);
+    }
+
+    @GetMapping("/{userId1}/friends/common/{userId2}")
+    public Collection<User> getCommonFriends(@PathVariable Integer userId1, @PathVariable Integer userId2) {
+        return userService.getCommonFriends(userId1, userId2);
+    }
+
 }

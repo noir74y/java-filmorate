@@ -1,46 +1,53 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Service
+@Service("UserService")
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
-    private final Map<Integer, User> users = new HashMap<>();
+    private final UserStorage userStorage;
 
-    public Collection<User> get() {
-        log.info("get users response {}", users);
-        return users.values();
+    public Collection<User> list() {
+        return userStorage.list();
+    }
+
+    public User get(Integer userId) {
+        return userStorage.get(userId);
     }
 
     public User create(User user) {
-        log.info("user create request {}", user);
-        user.setId();
-        setUserName(user);
-        users.put(user.getId(), user);
-        log.info("user create response {}", user);
-        return user;
+        return userStorage.create(user);
     }
 
     public User update(User user) {
-        log.info("user update request {}", user);
-        if (users.containsKey(user.getId())) {
-            setUserName(user);
-            users.replace(user.getId(), user);
-            log.info("user update response {}", user);
-            return user;
-        }
-        log.error("no such user {}",user);
-        throw new NotFoundException("no such user");
+        return userStorage.update(user);
     }
 
-    private void setUserName(User user) {
-        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
+    public void addFriendship(Integer userId1, Integer userId2) {
+        userStorage.addFriend(userId1, userId2);
+        userStorage.addFriend(userId2, userId1);
+    }
+
+    public void deleteFriendship(Integer userId1, Integer userId2) {
+        userStorage.deleteFriend(userId1, userId2);
+        userStorage.deleteFriend(userId2, userId1);
+    }
+
+    public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {
+        Set<Integer> commonFriends = new HashSet<>(userStorage.getFriends(userId1));
+        commonFriends.retainAll(userStorage.getFriends(userId2));
+        return commonFriends.stream().map(userStorage::get).collect(Collectors.toList());
+    }
+
+    public Collection<User> getFriends(Integer userId) {
+        return userStorage.getFriends(userId).stream().map(userStorage::get).collect(Collectors.toList());
     }
 }

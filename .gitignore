@@ -44,3 +44,11 @@ build/
 
 *.db
 db/*
+
+### mine ###
+.mvn/
+HELP.md
+mvnw
+mvnw.cmd
+maven-wrapper.jar
+mavan-wrapper.properties
