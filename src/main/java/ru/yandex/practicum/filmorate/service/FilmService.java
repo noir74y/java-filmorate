@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Rate;
+import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
 import java.util.*;
@@ -41,11 +41,11 @@ public class FilmService {
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return filmStorage.getRates()
+        return filmStorage.getLikes()
                 .stream()
                 .sorted()
                 .limit(count)
-                .map(Rate::getFilmId)
+                .map(Like::getFilmId)
                 .map(filmStorage::get)
                 .collect(Collectors.toList());
     }

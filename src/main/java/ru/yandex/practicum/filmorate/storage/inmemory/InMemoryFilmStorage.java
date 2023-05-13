@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.Rate;
+import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
@@ -16,7 +16,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
-    private final Map<Integer, Rate> rates = new HashMap<>();
+    private final Map<Integer, Like> likes = new HashMap<>();
 
     private final UserStorage userStorage;
 
@@ -40,7 +40,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         log.info("film create request {}", film);
         film.setId();
         films.put(film.getId(), film);
-        rates.put(film.getId(), new Rate(film.getId(), new HashSet<>()));
+        likes.put(film.getId(), new Like(film.getId(), new HashSet<>()));
         log.info("film create response {}", film);
         return film;
     }
@@ -65,30 +65,29 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void addLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userStorage.isUserExists(userId)) {
-            rates.get(filmId).getLikedUsersId().add(userId);
+            likes.get(filmId).getLikedUsersId().add(userId);
         } else processNotFoundException(filmId, userId);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userStorage.isUserExists(userId))
-            rates.get(filmId).getLikedUsersId().remove(userId);
+            likes.get(filmId).getLikedUsersId().remove(userId);
         else processNotFoundException(filmId, userId);
     }
 
-    @Override
-    public Collection<Rate> getRates() {
-        return rates.values();
+    public Collection<Like> getLikes() {
+        return likes.values();
     }
 
-    public Rate getRate(Integer filmId) {
-        return rates.get(filmId);
+    public Like getRate(Integer filmId) {
+        return likes.get(filmId);
     }
 
     @Override
     public void clear() {
         films.clear();
-        rates.clear();
+        likes.clear();
         userStorage.clear();
     }
 

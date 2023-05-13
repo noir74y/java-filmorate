@@ -7,15 +7,15 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class Rate implements Comparable<Rate> {
+public class Like implements Comparable<Like> {
     int filmId;
     Set<Integer> likedUsersId;
 
-    public Rate() {
+    public Like() {
     }
 
     @Override
-    public int compareTo(Rate o) {
+    public int compareTo(Like o) {
         return o.likedUsersId.size() - likedUsersId.size();
     }
 }
