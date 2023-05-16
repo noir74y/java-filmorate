@@ -4,6 +4,7 @@ Repository for Filmorate project.
 ## ER-diagram
 ![ER-diagram for the project](https://github.com/noir74y/java-filmorate/blob/main/filmorate-ER.JPG)
 
+
 ### Query examples
 ```
 -- список пользователей, лайкнувших фильм <film_id>
