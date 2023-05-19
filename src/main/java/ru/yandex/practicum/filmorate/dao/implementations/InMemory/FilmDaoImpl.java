@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 
 import java.util.*;
 
-@Component("InMemoryFilmStorage")
+@Component("InMemoryFilmDaoImpl")
 @Slf4j
 @RequiredArgsConstructor
 public class FilmDaoImpl implements FilmDao {
