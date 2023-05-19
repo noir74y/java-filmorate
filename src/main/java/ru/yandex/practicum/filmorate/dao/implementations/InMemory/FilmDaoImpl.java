@@ -1,24 +1,24 @@
-package ru.yandex.practicum.filmorate.storage.inmemory;
+package ru.yandex.practicum.filmorate.dao.implementations.InMemory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Like;
-import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
+import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 
 import java.util.*;
 
 @Component("InMemoryFilmStorage")
 @Slf4j
 @RequiredArgsConstructor
-public class InMemoryFilmStorage implements FilmStorage {
+public class FilmDaoImpl implements FilmDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, Like> likes = new HashMap<>();
 
-    private final UserStorage userStorage;
+    private final UserDao userDao;
 
     @Override
     public Collection<Film> list() {
@@ -32,7 +32,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return films.get(filmId);
 
         log.error("no such filmId {}", filmId);
-        throw new NotFoundException("no such filmId", String.valueOf(filmId.toString()));
+        throw new NotFoundException("no such filmId", filmId.toString());
     }
 
     @Override
@@ -64,14 +64,14 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void addLike(Integer filmId, Integer userId) {
-        if (isFilmExists(filmId) && userStorage.isUserExists(userId)) {
+        if (isFilmExists(filmId) && userDao.isUserExists(userId)) {
             likes.get(filmId).getLikedUsersId().add(userId);
         } else processNotFoundException(filmId, userId);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
-        if (isFilmExists(filmId) && userStorage.isUserExists(userId))
+        if (isFilmExists(filmId) && userDao.isUserExists(userId))
             likes.get(filmId).getLikedUsersId().remove(userId);
         else processNotFoundException(filmId, userId);
     }
@@ -88,14 +88,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void clear() {
         films.clear();
         likes.clear();
-        userStorage.clear();
+        userDao.clear();
     }
 
     private void processNotFoundException(Integer filmId, Integer userId) {
         if (!isFilmExists(filmId)) {
             log.error("no such filmId {}", filmId);
             throw new NotFoundException("no such filmId", String.valueOf(filmId));
-        } else if (!userStorage.isUserExists(userId)) {
+        } else if (!userDao.isUserExists(userId)) {
             log.error("no such userId {}", userId);
             throw new NotFoundException("no such userId", String.valueOf(userId));
         }

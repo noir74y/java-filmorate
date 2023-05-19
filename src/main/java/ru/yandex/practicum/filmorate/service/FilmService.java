@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Like;
-import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,39 +14,39 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class FilmService {
-    private final FilmStorage filmStorage;
+    private final FilmDao filmDao;
 
     public Collection<Film> list() {
-        return filmStorage.list();
+        return filmDao.list();
     }
 
     public Film get(Integer filmId) {
-        return filmStorage.get(filmId);
+        return filmDao.get(filmId);
     }
 
     public Film create(Film film) {
-        return filmStorage.create(film);
+        return filmDao.create(film);
     }
 
     public Film update(Film film) {
-        return filmStorage.update(film);
+        return filmDao.update(film);
     }
 
     public void addLike(Integer filmId, Integer userId) {
-        filmStorage.addLike(filmId, userId);
+        filmDao.addLike(filmId, userId);
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
-        filmStorage.deleteLike(filmId, userId);
+        filmDao.deleteLike(filmId, userId);
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return filmStorage.getLikes()
+        return filmDao.getLikes()
                 .stream()
                 .sorted()
                 .limit(count)
                 .map(Like::getFilmId)
-                .map(filmStorage::get)
+                .map(filmDao::get)
                 .collect(Collectors.toList());
     }
 }

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @AllArgsConstructor
-public class Film extends GenericModel {
+public class Film extends Generic {
     private static Integer filmId = 0;
 
     @NotBlank(message = "название не может быть пустым")

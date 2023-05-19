@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @AllArgsConstructor
-public class User extends GenericModel {
+public class User extends Generic {
     private static Integer userId = 0;
 
     @Email
