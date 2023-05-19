@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.InMemory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Like;
@@ -18,7 +19,8 @@ public class FilmDaoImpl implements FilmDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, Like> likes = new HashMap<>();
 
-    private final UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public Collection<Film> list() {
