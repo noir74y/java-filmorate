@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
     @Autowired
-    @Qualifier("InMemoryFilmDaoImpl")
     private FilmDao filmDao;
 
     public Collection<Film> list() {

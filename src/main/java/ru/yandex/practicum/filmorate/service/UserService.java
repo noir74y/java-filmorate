@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService {
     @Autowired
-    @Qualifier("InMemoryUserDaoImpl")
     private UserDao userDao;
 
     public Collection<User> list() {

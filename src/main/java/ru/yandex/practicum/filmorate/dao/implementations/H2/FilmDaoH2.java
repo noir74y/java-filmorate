@@ -6,5 +6,5 @@ import ru.yandex.practicum.filmorate.dao.implementations.Generic.FilmDaoGeneric;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
-public class FilmDaoH2 extends FilmDaoGeneric  {
+public class FilmDaoH2 extends FilmDaoGeneric {
 }
