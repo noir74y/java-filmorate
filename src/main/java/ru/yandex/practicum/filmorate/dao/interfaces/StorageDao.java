@@ -18,7 +18,6 @@ public interface StorageDao {
 
     void createFilmLikes(Integer filmId, FilmLikes filmLikes);
 
-
     boolean isFilmExists(Integer filmId);
 
     Collection<FilmLikes> listFilmsLikes();

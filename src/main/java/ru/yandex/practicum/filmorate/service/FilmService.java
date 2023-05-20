@@ -3,9 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,39 +17,57 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
     @Autowired
-    private FilmDao genericFilmDao;
+    private FilmDao filmDao;
+    @Autowired
+    private GenreMpaDao genreMpaDao;
 
     public Collection<Film> list() {
-        return genericFilmDao.list();
+        return filmDao.list();
     }
 
     public Film get(Integer filmId) {
-        return genericFilmDao.get(filmId);
+        return filmDao.get(filmId);
     }
 
     public Film create(Film film) {
-        return genericFilmDao.create(film);
+        return filmDao.create(film);
     }
 
     public Film update(Film film) {
-        return genericFilmDao.update(film);
+        return filmDao.update(film);
     }
 
     public void addLike(Integer filmId, Integer userId) {
-        genericFilmDao.addLike(filmId, userId);
+        filmDao.addLike(filmId, userId);
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
-        genericFilmDao.deleteLike(filmId, userId);
+        filmDao.deleteLike(filmId, userId);
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return genericFilmDao.listFilmsLikes()
+        return filmDao.listFilmsLikes()
                 .stream()
                 .sorted()
                 .limit(count)
                 .map(FilmLikes::getFilmId)
-                .map(genericFilmDao::get)
+                .map(filmDao::get)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<Genre> listGenre() {
+        return genreMpaDao.listGenre();
+    }
+
+    public Genre getGenre(Integer genreId) {
+        return genreMpaDao.getGenre(genreId);
+    }
+
+    public Collection<Mpa> listMpa() {
+        return genreMpaDao.listMpa();
+    }
+
+    public Mpa getMpa(Integer mpaId) {
+        return genreMpaDao.getMpa(mpaId);
     }
 }

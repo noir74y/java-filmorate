@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.implementations.UserDaoImpl;
+import ru.yandex.practicum.filmorate.dao.implementations.generic.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.HashSet;

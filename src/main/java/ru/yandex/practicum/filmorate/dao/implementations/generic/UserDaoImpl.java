@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dao.implementations;
+package ru.yandex.practicum.filmorate.dao.implementations.generic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,13 +76,13 @@ public abstract class UserDaoImpl implements UserDao {
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 
-    protected void processNotFoundException(Integer userHostId, Integer userFriendId) {
-        if (!isUserExists(userHostId)) {
-            log.error("no such userHostId {}", userHostId);
-            throw new NotFoundException("no such userHostId", String.valueOf(userHostId));
-        } else if (!isUserExists(userFriendId)) {
-            log.error("no such userFriendId {}", userFriendId);
-            throw new NotFoundException("no such userFriendId", String.valueOf(userFriendId));
+    protected void processNotFoundException(Integer userId, Integer friendId) {
+        if (!isUserExists(userId)) {
+            log.error("no such userId {}", userId);
+            throw new NotFoundException("no such userId", String.valueOf(userId));
+        } else if (!isUserExists(friendId)) {
+            log.error("no such friendId {}", friendId);
+            throw new NotFoundException("no such friendId", String.valueOf(friendId));
         }
     }
 }

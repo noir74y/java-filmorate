@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dao.implementations;
+package ru.yandex.practicum.filmorate.dao.implementations.generic;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
