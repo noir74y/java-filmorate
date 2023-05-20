@@ -33,6 +33,8 @@ public class Film extends Generic {
     @FilmDurationConstraint
     private Duration duration;
 
+    private Integer mpa_id;
+
     public Film() {
     }
 
