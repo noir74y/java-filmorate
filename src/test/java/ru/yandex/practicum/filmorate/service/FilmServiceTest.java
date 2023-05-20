@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FilmServiceTest extends GenericServiceTest {
     @BeforeEach
     void setUp() throws Exception {
-        inMemoryFilmStorage.clear();
+        filmDao.clear();
 
         film1 = getFilmFromMock(Film.builder()
                 .name("Nick Name")

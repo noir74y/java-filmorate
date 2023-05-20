@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.dao.implementations.inMemory.InMemoryFilmDaoImpl;
 import ru.yandex.practicum.filmorate.dao.implementations.inMemory.InMemoryUserDaoImpl;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,7 +27,7 @@ public class GenericServiceTest {
     @Autowired
     protected InMemoryUserDaoImpl inMemoryUserStorage;
     @Autowired
-    protected InMemoryFilmDaoImpl inMemoryFilmStorage;
+    protected FilmDao filmDao;
     protected static ObjectMapper objectMapper;
     protected User user1;
     protected User user2;
