@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.InMemory;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Component("StorageInMemory")
 public class StorageInMemory implements Storage {
     private final Map<Integer, Film> films = new HashMap<>();
-    private final Map<Integer, Like> likes = new HashMap<>();
+    private final Map<Integer, FilmLikes> likes = new HashMap<>();
     protected final Map<Integer, User> users = new HashMap<>();
     protected final HashMap<Integer, Set<Integer>> friends = new HashMap<>();
 
@@ -38,8 +38,8 @@ public class StorageInMemory implements Storage {
     }
 
     @Override
-    public void createLike(Integer filmId, Like like) {
-        likes.put(filmId, like);
+    public void createLike(Integer filmId, FilmLikes filmLikes) {
+        likes.put(filmId, filmLikes);
     }
 
     @Override
@@ -53,12 +53,12 @@ public class StorageInMemory implements Storage {
     }
 
     @Override
-    public Collection<Like> getLikes() {
+    public Collection<FilmLikes> getLikes() {
         return likes.values();
     }
 
     @Override
-    public Like getLike(Integer filmId) {
+    public FilmLikes getFilmLikes(Integer filmId) {
         return likes.get(filmId);
     }
 

@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -42,7 +42,7 @@ public abstract class FilmDaoGeneric implements FilmDao {
         log.info("film create request {}", film);
         film.setId();
         inMemory.createFilm(film.getId(), film);
-        inMemory.createLike(film.getId(), new Like(film.getId(), new HashSet<>()));
+        inMemory.createLike(film.getId(), new FilmLikes(film.getId(), new HashSet<>()));
         log.info("film create response {}", film);
         return film;
     }
@@ -67,23 +67,23 @@ public abstract class FilmDaoGeneric implements FilmDao {
     @Override
     public void addLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userDao.isUserExists(userId)) {
-            inMemory.getLike(filmId).getLikedUsersId().add(userId);
+            inMemory.getFilmLikes(filmId).getLikedUsersId().add(userId);
         } else processNotFoundException(filmId, userId);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
         if (isFilmExists(filmId) && userDao.isUserExists(userId))
-            inMemory.getLike(filmId).getLikedUsersId().remove(userId);
+            inMemory.getFilmLikes(filmId).getLikedUsersId().remove(userId);
         else processNotFoundException(filmId, userId);
     }
 
-    public Collection<Like> getLikes() {
+    public Collection<FilmLikes> getLikes() {
         return inMemory.getLikes();
     }
 
-    public Like getRate(Integer filmId) {
-        return inMemory.getLike(filmId);
+    public FilmLikes getRate(Integer filmId) {
+        return inMemory.getFilmLikes(filmId);
     }
 
     @Override

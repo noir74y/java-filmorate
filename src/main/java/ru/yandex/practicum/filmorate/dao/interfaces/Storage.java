@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -16,15 +16,15 @@ public interface Storage {
 
     void createFilm(Integer filmId, Film film);
 
-    void createLike(Integer filmId, Like like);
+    void createLike(Integer filmId, FilmLikes filmLikes);
 
     void updateFilm(Integer filmId, Film film);
 
     boolean isFilmExists(Integer filmId);
 
-    Collection<Like> getLikes();
+    Collection<FilmLikes> getLikes();
 
-    Like getLike(Integer filmId);
+    FilmLikes getFilmLikes(Integer filmId);
 
     void clearFilms();
 

@@ -2,10 +2,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class FilmService {
                 .stream()
                 .sorted()
                 .limit(count)
-                .map(Like::getFilmId)
+                .map(FilmLikes::getFilmId)
                 .map(filmDao::get)
                 .collect(Collectors.toList());
     }

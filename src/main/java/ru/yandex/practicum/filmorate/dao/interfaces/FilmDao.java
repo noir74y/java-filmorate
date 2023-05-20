@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
 
@@ -20,7 +20,7 @@ public interface FilmDao {
 
     void deleteLike(Integer filmId, Integer userId);
 
-    Collection<Like> getLikes();
+    Collection<FilmLikes> getLikes();
 
     void clear();
 }
