@@ -14,7 +14,7 @@ public interface Storage {
 
     void createFilm(Integer filmId, Film film);
 
-    void createLike(Integer filmId, FilmLikes filmLikes);
+    void createFilmLikes(Integer filmId, FilmLikes filmLikes);
 
     void updateFilm(Integer filmId, Film film);
 

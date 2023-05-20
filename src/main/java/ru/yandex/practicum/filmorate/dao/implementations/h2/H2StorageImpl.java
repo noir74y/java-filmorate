@@ -23,7 +23,7 @@ public class H2StorageImpl implements H2Storage {
     }
 
     @Override
-    public void createLike(Integer filmId, FilmLikes filmLikes) {
+    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
     }
 
     @Override

@@ -19,7 +19,7 @@ public class InMemoryFilmDaoImpl extends FilmDaoImpl {
         log.info("film create request {}", film);
         film.setId();
         storage.createFilm(film.getId(), film);
-        storage.createLike(film.getId(), new FilmLikes(film.getId(), new HashSet<>()));
+        storage.createFilmLikes(film.getId(), new FilmLikes(film.getId(), new HashSet<>()));
         log.info("film create response {}", film);
         return film;
     }

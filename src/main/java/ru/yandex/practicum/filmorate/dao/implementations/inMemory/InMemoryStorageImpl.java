@@ -34,7 +34,7 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public void createLike(Integer filmId, FilmLikes filmLikes) {
+    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
         likes.put(filmId, filmLikes);
     }
 
