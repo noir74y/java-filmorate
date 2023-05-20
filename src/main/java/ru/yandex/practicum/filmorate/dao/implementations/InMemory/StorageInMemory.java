@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Component("StorageInMemory")
 public class StorageInMemory implements Storage {
-
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, Like> likes = new HashMap<>();
 
@@ -21,7 +20,7 @@ public class StorageInMemory implements Storage {
     }
 
     @Override
-    public Film get(Integer filmId) {
+    public Film getFilm(Integer filmId) {
         return films.get(filmId);
     }
 
