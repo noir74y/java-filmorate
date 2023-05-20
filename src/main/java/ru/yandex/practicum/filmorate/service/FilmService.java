@@ -3,7 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmUserDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
@@ -18,15 +20,25 @@ import java.util.stream.Collectors;
 public class FilmService {
     @Autowired
     private FilmDao filmDao;
+
+    @Autowired
+    private FilmUserDao filmUserDao;
+
     @Autowired
     private GenreMpaDao genreMpaDao;
 
     public Collection<Film> list() {
-        return filmDao.list();
+        Collection<Film> films = filmUserDao.listFilms();
+        log.info("get films response {}", films);
+        return films;
     }
 
     public Film get(Integer filmId) {
-        return filmDao.get(filmId);
+        if (filmUserDao.isFilmExists(filmId))
+            return filmUserDao.getFilm(filmId);
+
+        log.error("no such filmId {}", filmId);
+        throw new NotFoundException("no such filmId", filmId.toString());
     }
 
     public Film create(Film film) {
