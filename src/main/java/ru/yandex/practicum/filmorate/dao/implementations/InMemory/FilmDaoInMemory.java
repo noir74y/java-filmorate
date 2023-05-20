@@ -15,7 +15,7 @@ import java.util.*;
 @Component("InMemoryFilmDaoImpl")
 @Slf4j
 @RequiredArgsConstructor
-public class FilmDaoImpl implements FilmDao {
+public class FilmDaoInMemory implements FilmDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, Like> likes = new HashMap<>();
 

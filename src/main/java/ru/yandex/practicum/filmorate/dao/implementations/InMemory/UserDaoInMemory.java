@@ -10,7 +10,7 @@ import java.util.*;
 
 @Component("InMemoryUserDaoImpl")
 @Slf4j
-public class UserDaoImpl implements UserDao {
+public class UserDaoInMemory implements UserDao {
     private final Map<Integer, User> users = new HashMap<>();
     private final HashMap<Integer, Set<Integer>> friends = new HashMap<>();
 

@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.H2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component("H2FilmDaoImpl")
+@Component("H2UserDaoImpl")
 @Slf4j
-public class FilmDaoImpl {
+public class UserDaoH2 {
 }
