@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
@@ -32,14 +31,12 @@ public class UserService {
         return userDao.update(user);
     }
 
-    public void addFriendship(Integer userId1, Integer userId2) {
-        userDao.addFriend(userId1, userId2);
-        userDao.addFriend(userId2, userId1);
+    public void addFriend(Integer userId, Integer friendId) {
+        userDao.addFriendship(userId, friendId);
     }
 
-    public void deleteFriendship(Integer userId1, Integer userId2) {
-        userDao.deleteFriend(userId1, userId2);
-        userDao.deleteFriend(userId2, userId1);
+    public void deleteFriend(Integer userId, Integer friendId) {
+        userDao.deleteFriendship(userId, friendId);
     }
 
     public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {

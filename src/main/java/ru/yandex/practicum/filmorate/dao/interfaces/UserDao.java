@@ -16,9 +16,13 @@ public interface UserDao {
 
     boolean isUserExists(Integer userId);
 
-    void addFriend(Integer userHost, Integer userGuest);
+    void addFriend(Integer userId, Integer friendId);
 
-    void deleteFriend(Integer userHost, Integer userGuest);
+    void deleteFriend(Integer userId, Integer friendId);
+
+    void addFriendship(Integer userId1, Integer userId2);
+
+    void deleteFriendship(Integer userId1, Integer userId2);
 
     Set<Integer> getFriends(Integer userId);
 

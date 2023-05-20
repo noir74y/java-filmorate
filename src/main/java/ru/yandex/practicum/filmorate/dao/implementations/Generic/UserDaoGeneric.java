@@ -58,18 +58,24 @@ public abstract class UserDaoGeneric implements UserDao {
     }
 
     @Override
-    public void addFriend(Integer userHostId, Integer userFriendId) {
-        if (isUserExists(userHostId) && isUserExists(userFriendId)) {
-            friends.get(userHostId).add(userFriendId);
-        } else processNotFoundException(userHostId, userFriendId);
+    public void addFriend(Integer userId, Integer friendId) {
+        if (isUserExists(userId) && isUserExists(friendId)) {
+            friends.get(userId).add(friendId);
+        } else processNotFoundException(userId, friendId);
     }
 
     @Override
-    public void deleteFriend(Integer userHostId, Integer userFriendId) {
-        if (isUserExists(userHostId) && isUserExists(userFriendId))
-            friends.get(userHostId).remove(userFriendId);
-        else processNotFoundException(userHostId, userFriendId);
+    public void deleteFriend(Integer userId, Integer friendId) {
+        if (isUserExists(userId) && isUserExists(friendId))
+            friends.get(userId).remove(friendId);
+        else processNotFoundException(userId, friendId);
     }
+
+    @Override
+    public abstract void addFriendship(Integer userId1, Integer userId2);
+
+    @Override
+    public abstract void deleteFriendship(Integer userId1, Integer userId2);
 
     @Override
     public Set<Integer> getFriends(Integer userId) {

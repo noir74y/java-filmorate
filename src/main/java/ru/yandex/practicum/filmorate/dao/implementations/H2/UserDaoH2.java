@@ -7,4 +7,11 @@ import ru.yandex.practicum.filmorate.dao.implementations.Generic.UserDaoGeneric;
 @Component("H2UserDaoImpl")
 @Slf4j
 public class UserDaoH2 extends UserDaoGeneric {
+    @Override
+    public void addFriendship(Integer userId1, Integer userId2) {
+    }
+
+    @Override
+    public void deleteFriendship(Integer userId1, Integer userId2) {
+    }
 }
