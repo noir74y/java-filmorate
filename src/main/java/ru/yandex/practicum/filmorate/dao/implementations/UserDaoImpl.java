@@ -42,7 +42,7 @@ public abstract class UserDaoImpl implements UserDao {
         log.info("user update request {}", user);
         if (isUserExists(user.getId())) {
             setUserName(user);
-            storage.updateUser(user.getId(), user);
+            storage.updateUser(user);
             log.info("user update response {}", user);
             return user;
         }

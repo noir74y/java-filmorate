@@ -30,18 +30,19 @@ public class InMemoryStorageImpl implements Storage {
 
     @Override
     public Film createFilm(Film film) {
-        return films.put(film.getId(), film);
-    }
-
-    @Override
-    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
-        likes.put(filmId, filmLikes);
+        films.put(film.getId(), film);
+        return film;
     }
 
     @Override
     public Film updateFilm(Film film) {
         films.replace(film.getId(), film);
         return film;
+    }
+
+    @Override
+    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
+        likes.put(filmId, filmLikes);
     }
 
     @Override
@@ -80,18 +81,20 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public void createUser(Integer userId, User user) {
-        users.put(userId, user);
+    public User createUser(User user) {
+        users.put(user.getId(), user);
+        return user;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        users.replace(user.getId(), user);
+        return user;
     }
 
     @Override
     public void createFriends(Integer userId, Set<Integer> friends) {
         this.friends.put(userId, friends);
-    }
-
-    @Override
-    public void updateUser(Integer userId, User user) {
-        users.replace(userId, user);
     }
 
     @Override

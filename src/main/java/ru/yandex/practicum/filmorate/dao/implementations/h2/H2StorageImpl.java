@@ -18,12 +18,17 @@ public class H2StorageImpl implements H2Storage {
     }
 
     @Override
-    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
+    public Film createFilm(Film film) {
+        return null;
     }
 
     @Override
     public Film updateFilm(Film film) {
         return null;
+    }
+
+    @Override
+    public void createFilmLikes(Integer filmId, FilmLikes filmLikes) {
     }
 
     @Override
@@ -62,17 +67,17 @@ public class H2StorageImpl implements H2Storage {
     }
 
     @Override
-    public void createUser(Integer userId, User user) {
+    public User createUser(User user) {
+        return null;
+    }
 
+    @Override
+    public User updateUser(User user) {
+        return null;
     }
 
     @Override
     public void createFriends(Integer userId, Set<Integer> friends) {
-
-    }
-
-    @Override
-    public void updateUser(Integer userId, User user) {
 
     }
 
@@ -94,15 +99,6 @@ public class H2StorageImpl implements H2Storage {
     @Override
     public void clearFriends() {
 
-    }
-
-    @Override
-    public Film createFilm(Film film) {
-        return null;
-    }
-
-    @Override
-    public void createUser(User user) {
     }
 
     @Override

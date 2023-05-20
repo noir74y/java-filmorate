@@ -14,9 +14,10 @@ public interface Storage {
 
     Film createFilm(Film film);
 
+    Film updateFilm(Film film);
+
     void createFilmLikes(Integer filmId, FilmLikes filmLikes);
 
-    Film updateFilm(Film film);
 
     boolean isFilmExists(Integer filmId);
 
@@ -32,11 +33,11 @@ public interface Storage {
 
     User getUser(Integer userId);
 
-    void createUser(Integer userId, User user);
+    User createUser(User user);
 
     void createFriends(Integer userId, Set<Integer> friends);
 
-    void updateUser(Integer userId, User user);
+    User updateUser(User user);
 
     boolean isUserExists(Integer userId);
 

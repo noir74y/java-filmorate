@@ -17,7 +17,7 @@ public class InMemoryUserDaoImpl extends UserDaoImpl {
         log.info("user create request {}", user);
         user.setId();
         setUserName(user);
-        storage.createUser(user.getId(), user);
+        storage.createUser(user);
         storage.createFriends(user.getId(), new HashSet<>());
         log.info("user create response {}", user);
         return user;
