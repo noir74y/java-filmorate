@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.interfaces.FilmUserDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
@@ -22,39 +22,52 @@ public class FilmService {
     private FilmDao filmDao;
 
     @Autowired
-    private FilmUserDao filmUserDao;
+    private UserDao userDao;
 
     @Autowired
     private GenreMpaDao genreMpaDao;
 
     public Collection<Film> list() {
-        Collection<Film> films = filmUserDao.listFilms();
+        Collection<Film> films = filmDao.list();
         log.info("get films response {}", films);
         return films;
     }
 
     public Film get(Integer filmId) {
-        if (filmUserDao.isFilmExists(filmId))
-            return filmUserDao.getFilm(filmId);
-
+        if (filmDao.isFilmExists(filmId))
+            return filmDao.get(filmId);
         log.error("no such filmId {}", filmId);
         throw new NotFoundException("no such filmId", filmId.toString());
     }
 
     public Film create(Film film) {
-        return filmDao.create(film);
+        log.info("film create request {}", film);
+        film = filmDao.create(film);
+        log.info("film create response {}", film);
+        return film;
     }
 
     public Film update(Film film) {
-        return filmDao.update(film);
+        log.info("film update request {}", film);
+        if (filmDao.isFilmExists(film.getId())) {
+            film = filmDao.update(film);
+            log.info("film update response {}", film);
+            return film;
+        }
+        log.error("no such film {}", film);
+        throw new NotFoundException("no such filmId", String.valueOf(film.getId()));
     }
 
     public void addLike(Integer filmId, Integer userId) {
-        filmDao.addLike(filmId, userId);
+        if (filmDao.isFilmExists(filmId) && userDao.isUserExists(userId)) {
+            filmDao.addLike(filmId, userId);
+        } else processNotFoundException(filmId, userId);
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
-        filmDao.deleteLike(filmId, userId);
+        if (filmDao.isFilmExists(filmId) && userDao.isUserExists(userId))
+            filmDao.deleteLike(filmId, userId);
+        else processNotFoundException(filmId, userId);
     }
 
     public Collection<Film> getPopular(Integer count) {
@@ -81,5 +94,15 @@ public class FilmService {
 
     public Mpa getMpa(Integer mpaId) {
         return genreMpaDao.getMpa(mpaId);
+    }
+
+    private void processNotFoundException(Integer filmId, Integer userId) {
+        if (!filmDao.isFilmExists(filmId)) {
+            log.error("no such filmId {}", filmId);
+            throw new NotFoundException("no such filmId", String.valueOf(filmId));
+        } else if (!userDao.isUserExists(userId)) {
+            log.error("no such userId {}", userId);
+            throw new NotFoundException("no such userId", String.valueOf(userId));
+        }
     }
 }
