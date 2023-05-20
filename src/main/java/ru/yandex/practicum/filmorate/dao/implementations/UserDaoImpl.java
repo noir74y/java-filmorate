@@ -1,9 +1,9 @@
-package ru.yandex.practicum.filmorate.dao.implementations.generic;
+package ru.yandex.practicum.filmorate.dao.implementations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericStorage;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericUserDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -11,9 +11,9 @@ import java.util.*;
 
 
 @Slf4j
-public abstract class GenericUserDaoImpl implements GenericUserDao {
+public abstract class UserDaoImpl implements UserDao {
     @Autowired
-    protected GenericStorage genericStorage;
+    protected Storage storage;
 
     @Override
     public abstract User create(User user);
@@ -24,14 +24,14 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
 
     @Override
     public Collection<User> list() {
-        log.info("get users response {}", genericStorage.getUsers());
-        return genericStorage.getUsers();
+        log.info("get users response {}", storage.getUsers());
+        return storage.getUsers();
     }
 
     @Override
     public User get(Integer userId) {
         if (isUserExists(userId))
-            return genericStorage.getUser(userId);
+            return storage.getUser(userId);
 
         log.error("no such userId {}", userId);
         throw new NotFoundException("no such userId", String.valueOf(userId));
@@ -42,7 +42,7 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
         log.info("user update request {}", user);
         if (isUserExists(user.getId())) {
             setUserName(user);
-            genericStorage.updateUser(user.getId(), user);
+            storage.updateUser(user.getId(), user);
             log.info("user update response {}", user);
             return user;
         }
@@ -52,7 +52,7 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
 
     @Override
     public boolean isUserExists(Integer userId) {
-        return genericStorage.isUserExists(userId);
+        return storage.isUserExists(userId);
     }
 
     @Override
@@ -63,13 +63,13 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
 
     @Override
     public Set<Integer> getFriends(Integer userId) {
-        return Optional.ofNullable(genericStorage.getFriends(userId)).orElse(new HashSet<>());
+        return Optional.ofNullable(storage.getFriends(userId)).orElse(new HashSet<>());
     }
 
     @Override
     public void clear() {
-        genericStorage.clearUsers();
-        genericStorage.clearFriends();
+        storage.clearUsers();
+        storage.clearFriends();
     }
 
     protected void setUserName(User user) {

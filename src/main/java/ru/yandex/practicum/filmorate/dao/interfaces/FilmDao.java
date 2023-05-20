@@ -1,11 +1,11 @@
-package ru.yandex.practicum.filmorate.dao.interfaces.generic;
+package ru.yandex.practicum.filmorate.dao.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
 
-public interface GenericFilmDao {
+public interface FilmDao {
     Collection<Film> list();
 
     Film get(Integer filmId);

@@ -1,11 +1,11 @@
-package ru.yandex.practicum.filmorate.dao.implementations.generic;
+package ru.yandex.practicum.filmorate.dao.implementations;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericFilmDao;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericStorage;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericUserDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
@@ -14,11 +14,11 @@ import java.util.Collection;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class GenericFilmDaoImpl implements GenericFilmDao {
+public abstract class FilmDaoImpl implements FilmDao {
     @Autowired
-    protected GenericStorage genericStorage;
+    protected Storage storage;
     @Autowired
-    protected GenericUserDao genericUserDao;
+    protected UserDao userDao;
 
     @Override
     public abstract Film create(Film film);
@@ -29,14 +29,14 @@ public abstract class GenericFilmDaoImpl implements GenericFilmDao {
 
     @Override
     public Collection<Film> list() {
-        log.info("get films response {}", genericStorage.getFilms());
-        return genericStorage.getFilms();
+        log.info("get films response {}", storage.getFilms());
+        return storage.getFilms();
     }
 
     @Override
     public Film get(Integer filmId) {
         if (isFilmExists(filmId))
-            return genericStorage.getFilm(filmId);
+            return storage.getFilm(filmId);
 
         log.error("no such filmId {}", filmId);
         throw new NotFoundException("no such filmId", filmId.toString());
@@ -46,7 +46,7 @@ public abstract class GenericFilmDaoImpl implements GenericFilmDao {
     public Film update(Film film) {
         log.info("film update request {}", film);
         if (isFilmExists(film.getId())) {
-            genericStorage.updateFilm(film.getId(), film);
+            storage.updateFilm(film.getId(), film);
             log.info("film update response {}", film);
             return film;
         }
@@ -56,29 +56,29 @@ public abstract class GenericFilmDaoImpl implements GenericFilmDao {
 
     @Override
     public boolean isFilmExists(Integer filmId) {
-        return genericStorage.isFilmExists(filmId);
+        return storage.isFilmExists(filmId);
     }
 
     public Collection<FilmLikes> getLikes() {
-        return genericStorage.getLikes();
+        return storage.getLikes();
     }
 
     public FilmLikes getRate(Integer filmId) {
-        return genericStorage.getFilmLikes(filmId);
+        return storage.getFilmLikes(filmId);
     }
 
     @Override
     public void clear() {
-        genericStorage.clearFilms();
-        genericStorage.clearLikes();
-        genericUserDao.clear();
+        storage.clearFilms();
+        storage.clearLikes();
+        userDao.clear();
     }
 
     protected void processNotFoundException(Integer filmId, Integer userId) {
         if (!isFilmExists(filmId)) {
             log.error("no such filmId {}", filmId);
             throw new NotFoundException("no such filmId", String.valueOf(filmId));
-        } else if (!genericUserDao.isUserExists(userId)) {
+        } else if (!userDao.isUserExists(userId)) {
             log.error("no such userId {}", userId);
             throw new NotFoundException("no such userId", String.valueOf(userId));
         }

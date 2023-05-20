@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.implementations.generic.GenericUserDaoImpl;
+import ru.yandex.practicum.filmorate.dao.implementations.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.HashSet;
@@ -11,14 +11,14 @@ import java.util.HashSet;
 @Component("InMemoryUserDaoImpl")
 @Primary
 @Slf4j
-public class InMemoryUserDaoImpl extends GenericUserDaoImpl {
+public class InMemoryUserDaoImpl extends UserDaoImpl {
     @Override
     public User create(User user) {
         log.info("user create request {}", user);
         user.setId();
         setUserName(user);
-        genericStorage.createUser(user.getId(), user);
-        genericStorage.createFriends(user.getId(), new HashSet<>());
+        storage.createUser(user.getId(), user);
+        storage.createFriends(user.getId(), new HashSet<>());
         log.info("user create response {}", user);
         return user;
     }
@@ -38,14 +38,14 @@ public class InMemoryUserDaoImpl extends GenericUserDaoImpl {
     @Override
     public void addFriend(Integer userId, Integer friendId) {
         if (isUserExists(userId) && isUserExists(friendId)) {
-            genericStorage.getFriends(userId).add(friendId);
+            storage.getFriends(userId).add(friendId);
         } else processNotFoundException(userId, friendId);
     }
 
     @Override
     public void deleteFriend(Integer userId, Integer friendId) {
         if (isUserExists(userId) && isUserExists(friendId))
-            genericStorage.getFriends(userId).remove(friendId);
+            storage.getFriends(userId).remove(friendId);
         else processNotFoundException(userId, friendId);
     }
 }

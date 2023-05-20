@@ -2,12 +2,12 @@ package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.implementations.generic.GenericUserDaoImpl;
+import ru.yandex.practicum.filmorate.dao.implementations.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.User;
 
 @Component("H2UserDaoImpl")
 @Slf4j
-public class H2UserDaoImpl extends GenericUserDaoImpl {
+public class H2UserDaoImpl extends UserDaoImpl {
     @Override
     public User create(User user) {
         return null;

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
-import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericFilmDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
     @Autowired
-    private GenericFilmDao genericFilmDao;
+    private FilmDao genericFilmDao;
 
     public Collection<Film> list() {
         return genericFilmDao.list();

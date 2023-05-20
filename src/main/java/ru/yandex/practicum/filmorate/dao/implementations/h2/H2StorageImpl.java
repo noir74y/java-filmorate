@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
-import ru.yandex.practicum.filmorate.dao.interfaces.h2.H2Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.H2Storage;
 import ru.yandex.practicum.filmorate.model.*;
 
 import java.util.Collection;
