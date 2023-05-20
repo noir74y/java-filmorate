@@ -18,4 +18,18 @@ public class UserDaoInMemory extends UserDaoGeneric {
         deleteFriend(userId1, userId2);
         deleteFriend(userId2, userId1);
     }
+
+    @Override
+    public void addFriend(Integer userId, Integer friendId) {
+        if (isUserExists(userId) && isUserExists(friendId)) {
+            inMemory.getFriends(userId).add(friendId);
+        } else processNotFoundException(userId, friendId);
+    }
+
+    @Override
+    public void deleteFriend(Integer userId, Integer friendId) {
+        if (isUserExists(userId) && isUserExists(friendId))
+            inMemory.getFriends(userId).remove(friendId);
+        else processNotFoundException(userId, friendId);
+    }
 }

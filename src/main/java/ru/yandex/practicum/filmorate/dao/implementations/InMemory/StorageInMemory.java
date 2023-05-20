@@ -29,10 +29,6 @@ public class StorageInMemory implements Storage {
     }
 
     @Override
-    public void createFilm(Film film) {
-    }
-
-    @Override
     public void createFilm(Integer filmId, Film film) {
         films.put(filmId, film);
     }
@@ -80,10 +76,6 @@ public class StorageInMemory implements Storage {
     @Override
     public User getUser(Integer userId) {
         return users.get(userId);
-    }
-
-    @Override
-    public void createUser(User user) {
     }
 
     @Override

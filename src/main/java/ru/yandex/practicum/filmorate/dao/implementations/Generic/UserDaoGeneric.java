@@ -16,6 +16,12 @@ public abstract class UserDaoGeneric implements UserDao {
     protected StorageInMemory inMemory;
 
     @Override
+    public abstract void addFriendship(Integer userId1, Integer userId2);
+
+    @Override
+    public abstract void deleteFriendship(Integer userId1, Integer userId2);
+
+    @Override
     public Collection<User> list() {
         log.info("get users response {}", inMemory.getUsers());
         return inMemory.getUsers();
@@ -60,24 +66,10 @@ public abstract class UserDaoGeneric implements UserDao {
     }
 
     @Override
-    public void addFriend(Integer userId, Integer friendId) {
-        if (isUserExists(userId) && isUserExists(friendId)) {
-            inMemory.getFriends(userId).add(friendId);
-        } else processNotFoundException(userId, friendId);
-    }
+    public abstract void addFriend(Integer userId, Integer friendId);
 
     @Override
-    public void deleteFriend(Integer userId, Integer friendId) {
-        if (isUserExists(userId) && isUserExists(friendId))
-            inMemory.getFriends(userId).remove(friendId);
-        else processNotFoundException(userId, friendId);
-    }
-
-    @Override
-    public abstract void addFriendship(Integer userId1, Integer userId2);
-
-    @Override
-    public abstract void deleteFriendship(Integer userId1, Integer userId2);
+    public abstract void deleteFriend(Integer userId, Integer friendId);
 
     @Override
     public Set<Integer> getFriends(Integer userId) {
@@ -94,7 +86,7 @@ public abstract class UserDaoGeneric implements UserDao {
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 
-    private void processNotFoundException(Integer userHostId, Integer userFriendId) {
+    protected void processNotFoundException(Integer userHostId, Integer userFriendId) {
         if (!isUserExists(userHostId)) {
             log.error("no such userHostId {}", userHostId);
             throw new NotFoundException("no such userHostId", String.valueOf(userHostId));

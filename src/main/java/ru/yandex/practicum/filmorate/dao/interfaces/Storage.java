@@ -12,8 +12,6 @@ public interface Storage {
 
     Film getFilm(Integer filmId);
 
-    void createFilm(Film film);
-
     void createFilm(Integer filmId, Film film);
 
     void createLike(Integer filmId, FilmLikes filmLikes);
@@ -33,8 +31,6 @@ public interface Storage {
     Collection<User> getUsers();
 
     User getUser(Integer userId);
-
-    void createUser(User user);
 
     void createUser(Integer userId, User user);
 

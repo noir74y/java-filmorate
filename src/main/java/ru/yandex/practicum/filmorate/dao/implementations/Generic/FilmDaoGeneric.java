@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +20,12 @@ public abstract class FilmDaoGeneric implements FilmDao {
 
     @Autowired
     protected UserDao userDao;
+
+    @Override
+    public abstract void addLike(Integer filmId, Integer userId);
+
+    @Override
+    public abstract void deleteLike(Integer filmId, Integer userId);
 
     @Override
     public Collection<Film> list() {
@@ -38,14 +43,7 @@ public abstract class FilmDaoGeneric implements FilmDao {
     }
 
     @Override
-    public Film create(Film film) {
-        log.info("film create request {}", film);
-        film.setId();
-        inMemory.createFilm(film.getId(), film);
-        inMemory.createLike(film.getId(), new FilmLikes(film.getId(), new HashSet<>()));
-        log.info("film create response {}", film);
-        return film;
-    }
+    public abstract Film create(Film film);
 
     @Override
     public Film update(Film film) {
@@ -64,20 +62,6 @@ public abstract class FilmDaoGeneric implements FilmDao {
         return inMemory.isFilmExists(filmId);
     }
 
-    @Override
-    public void addLike(Integer filmId, Integer userId) {
-        if (isFilmExists(filmId) && userDao.isUserExists(userId)) {
-            inMemory.getFilmLikes(filmId).getLikedUsersId().add(userId);
-        } else processNotFoundException(filmId, userId);
-    }
-
-    @Override
-    public void deleteLike(Integer filmId, Integer userId) {
-        if (isFilmExists(filmId) && userDao.isUserExists(userId))
-            inMemory.getFilmLikes(filmId).getLikedUsersId().remove(userId);
-        else processNotFoundException(filmId, userId);
-    }
-
     public Collection<FilmLikes> getLikes() {
         return inMemory.getLikes();
     }
@@ -93,7 +77,7 @@ public abstract class FilmDaoGeneric implements FilmDao {
         userDao.clear();
     }
 
-    private void processNotFoundException(Integer filmId, Integer userId) {
+    protected void processNotFoundException(Integer filmId, Integer userId) {
         if (!isFilmExists(filmId)) {
             log.error("no such filmId {}", filmId);
             throw new NotFoundException("no such filmId", String.valueOf(filmId));

@@ -14,4 +14,13 @@ public class UserDaoH2 extends UserDaoGeneric {
     @Override
     public void deleteFriendship(Integer userId1, Integer userId2) {
     }
+
+    @Override
+    public void addFriend(Integer userId, Integer friendId) {
+    }
+
+    @Override
+    public void deleteFriend(Integer userId, Integer friendId) {
+
+    }
 }
