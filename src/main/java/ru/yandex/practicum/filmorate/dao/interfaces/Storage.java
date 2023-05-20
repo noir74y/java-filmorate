@@ -16,7 +16,7 @@ public interface Storage {
 
     void createFilmLikes(Integer filmId, FilmLikes filmLikes);
 
-    void updateFilm(Integer filmId, Film film);
+    Film updateFilm(Film film);
 
     boolean isFilmExists(Integer filmId);
 
@@ -45,6 +45,5 @@ public interface Storage {
     void clearUsers();
 
     void clearFriends();
-
 }
 

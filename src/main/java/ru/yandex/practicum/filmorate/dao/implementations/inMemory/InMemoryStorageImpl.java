@@ -39,8 +39,9 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public void updateFilm(Integer filmId, Film film) {
-        films.replace(filmId, film);
+    public Film updateFilm(Film film) {
+        films.replace(film.getId(), film);
+        return film;
     }
 
     @Override

@@ -46,7 +46,7 @@ public abstract class FilmDaoImpl implements FilmDao {
     public Film update(Film film) {
         log.info("film update request {}", film);
         if (isFilmExists(film.getId())) {
-            storage.updateFilm(film.getId(), film);
+            film = storage.updateFilm(film);
             log.info("film update response {}", film);
             return film;
         }
