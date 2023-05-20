@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
-import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericFilmDao;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,39 +14,39 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
     @Autowired
-    private FilmDao filmDao;
+    private GenericFilmDao genericFilmDao;
 
     public Collection<Film> list() {
-        return filmDao.list();
+        return genericFilmDao.list();
     }
 
     public Film get(Integer filmId) {
-        return filmDao.get(filmId);
+        return genericFilmDao.get(filmId);
     }
 
     public Film create(Film film) {
-        return filmDao.create(film);
+        return genericFilmDao.create(film);
     }
 
     public Film update(Film film) {
-        return filmDao.update(film);
+        return genericFilmDao.update(film);
     }
 
     public void addLike(Integer filmId, Integer userId) {
-        filmDao.addLike(filmId, userId);
+        genericFilmDao.addLike(filmId, userId);
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
-        filmDao.deleteLike(filmId, userId);
+        genericFilmDao.deleteLike(filmId, userId);
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return filmDao.getLikes()
+        return genericFilmDao.getLikes()
                 .stream()
                 .sorted()
                 .limit(count)
                 .map(FilmLikes::getFilmId)
-                .map(filmDao::get)
+                .map(genericFilmDao::get)
                 .collect(Collectors.toList());
     }
 }

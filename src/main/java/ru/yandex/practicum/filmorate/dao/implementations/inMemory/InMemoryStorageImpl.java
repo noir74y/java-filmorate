@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.dao.implementations.InMemory;
+package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component("StorageInMemory")
-public class StorageInMemory implements Storage {
+public class InMemoryStorageImpl implements GenericStorage {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, FilmLikes> likes = new HashMap<>();
     protected final Map<Integer, User> users = new HashMap<>();

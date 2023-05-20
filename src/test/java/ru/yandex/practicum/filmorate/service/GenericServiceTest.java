@@ -12,8 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.dao.implementations.InMemory.FilmDaoInMemory;
-import ru.yandex.practicum.filmorate.dao.implementations.InMemory.UserDaoInMemory;
+import ru.yandex.practicum.filmorate.dao.implementations.inMemory.InMemoryFilmDaoImpl;
+import ru.yandex.practicum.filmorate.dao.implementations.inMemory.InMemoryUserDaoImpl;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,9 +25,9 @@ public class GenericServiceTest {
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
-    protected UserDaoInMemory inMemoryUserStorage;
+    protected InMemoryUserDaoImpl inMemoryUserStorage;
     @Autowired
-    protected FilmDaoInMemory inMemoryFilmStorage;
+    protected InMemoryFilmDaoImpl inMemoryFilmStorage;
     protected static ObjectMapper objectMapper;
     protected User user1;
     protected User user2;

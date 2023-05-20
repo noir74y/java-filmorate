@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dao.interfaces;
+package ru.yandex.practicum.filmorate.dao.interfaces.generic;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.Set;
 
-public interface Storage {
+public interface GenericStorage {
     Collection<Film> getFilms();
 
     Film getFilm(Integer filmId);

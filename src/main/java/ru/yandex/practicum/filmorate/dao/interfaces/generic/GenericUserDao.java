@@ -1,11 +1,11 @@
-package ru.yandex.practicum.filmorate.dao.interfaces;
+package ru.yandex.practicum.filmorate.dao.interfaces.generic;
 
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface UserDao {
+public interface GenericUserDao {
     Collection<User> list();
 
     User get(Integer userId);

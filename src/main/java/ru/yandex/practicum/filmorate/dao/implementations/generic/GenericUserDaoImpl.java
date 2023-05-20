@@ -1,9 +1,9 @@
-package ru.yandex.practicum.filmorate.dao.implementations.Generic;
+package ru.yandex.practicum.filmorate.dao.implementations.generic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.dao.implementations.InMemory.StorageInMemory;
-import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericStorage;
+import ru.yandex.practicum.filmorate.dao.interfaces.generic.GenericUserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -11,9 +11,9 @@ import java.util.*;
 
 
 @Slf4j
-public abstract class UserDaoGeneric implements UserDao {
+public abstract class GenericUserDaoImpl implements GenericUserDao {
     @Autowired
-    protected StorageInMemory inMemory;
+    protected GenericStorage genericStorage;
 
     @Override
     public abstract void addFriendship(Integer userId1, Integer userId2);
@@ -23,14 +23,14 @@ public abstract class UserDaoGeneric implements UserDao {
 
     @Override
     public Collection<User> list() {
-        log.info("get users response {}", inMemory.getUsers());
-        return inMemory.getUsers();
+        log.info("get users response {}", genericStorage.getUsers());
+        return genericStorage.getUsers();
     }
 
     @Override
     public User get(Integer userId) {
         if (isUserExists(userId))
-            return inMemory.getUser(userId);
+            return genericStorage.getUser(userId);
 
         log.error("no such userId {}", userId);
         throw new NotFoundException("no such userId", String.valueOf(userId));
@@ -41,8 +41,8 @@ public abstract class UserDaoGeneric implements UserDao {
         log.info("user create request {}", user);
         user.setId();
         setUserName(user);
-        inMemory.createUser(user.getId(), user);
-        inMemory.createFriends(user.getId(), new HashSet<>());
+        genericStorage.createUser(user.getId(), user);
+        genericStorage.createFriends(user.getId(), new HashSet<>());
         log.info("user create response {}", user);
         return user;
     }
@@ -52,7 +52,7 @@ public abstract class UserDaoGeneric implements UserDao {
         log.info("user update request {}", user);
         if (isUserExists(user.getId())) {
             setUserName(user);
-            inMemory.updateUser(user.getId(), user);
+            genericStorage.updateUser(user.getId(), user);
             log.info("user update response {}", user);
             return user;
         }
@@ -62,7 +62,7 @@ public abstract class UserDaoGeneric implements UserDao {
 
     @Override
     public boolean isUserExists(Integer userId) {
-        return inMemory.isUserExists(userId);
+        return genericStorage.isUserExists(userId);
     }
 
     @Override
@@ -73,13 +73,13 @@ public abstract class UserDaoGeneric implements UserDao {
 
     @Override
     public Set<Integer> getFriends(Integer userId) {
-        return Optional.ofNullable(inMemory.getFriends(userId)).orElse(new HashSet<>());
+        return Optional.ofNullable(genericStorage.getFriends(userId)).orElse(new HashSet<>());
     }
 
     @Override
     public void clear() {
-        inMemory.clearUsers();
-        inMemory.clearFriends();
+        genericStorage.clearUsers();
+        genericStorage.clearFriends();
     }
 
     private void setUserName(User user) {
