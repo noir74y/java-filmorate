@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.StorageDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.Set;
 
 @Component("StorageInMemory")
-public class InMemoryStorageImpl implements Storage {
+public class InMemoryStorageDaoImpl implements StorageDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, FilmLikes> likes = new HashMap<>();
     protected final Map<Integer, User> users = new HashMap<>();
     protected final HashMap<Integer, Set<Integer>> friends = new HashMap<>();
 
     @Override
-    public Collection<Film> getFilms() {
+    public Collection<Film> listFilms() {
         return films.values();
     }
 
@@ -51,12 +51,12 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public Collection<FilmLikes> getLikes() {
+    public Collection<FilmLikes> listFilmsLikes() {
         return likes.values();
     }
 
     @Override
-    public FilmLikes getFilmLikes(Integer filmId) {
+    public FilmLikes listFilmLikes(Integer filmId) {
         return likes.get(filmId);
     }
 
@@ -71,7 +71,7 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public Collection<User> getUsers() {
+    public Collection<User> listUsers() {
         return users.values();
     }
 
@@ -103,7 +103,7 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public Set<Integer> getFriends(Integer userId) {
+    public Set<Integer> listUserFriends(Integer userId) {
         return friends.get(userId);
     }
 

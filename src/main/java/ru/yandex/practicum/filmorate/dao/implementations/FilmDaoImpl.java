@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
-import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.StorageDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -16,7 +16,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public abstract class FilmDaoImpl implements FilmDao {
     @Autowired
-    protected Storage storage;
+    protected StorageDao storageDao;
     @Autowired
     protected UserDao userDao;
 
@@ -29,14 +29,14 @@ public abstract class FilmDaoImpl implements FilmDao {
 
     @Override
     public Collection<Film> list() {
-        log.info("get films response {}", storage.getFilms());
-        return storage.getFilms();
+        log.info("get films response {}", storageDao.listFilms());
+        return storageDao.listFilms();
     }
 
     @Override
     public Film get(Integer filmId) {
         if (isFilmExists(filmId))
-            return storage.getFilm(filmId);
+            return storageDao.getFilm(filmId);
 
         log.error("no such filmId {}", filmId);
         throw new NotFoundException("no such filmId", filmId.toString());
@@ -46,7 +46,7 @@ public abstract class FilmDaoImpl implements FilmDao {
     public Film update(Film film) {
         log.info("film update request {}", film);
         if (isFilmExists(film.getId())) {
-            film = storage.updateFilm(film);
+            film = storageDao.updateFilm(film);
             log.info("film update response {}", film);
             return film;
         }
@@ -56,21 +56,21 @@ public abstract class FilmDaoImpl implements FilmDao {
 
     @Override
     public boolean isFilmExists(Integer filmId) {
-        return storage.isFilmExists(filmId);
+        return storageDao.isFilmExists(filmId);
     }
 
-    public Collection<FilmLikes> getLikes() {
-        return storage.getLikes();
+    public Collection<FilmLikes> listFilmsLikes() {
+        return storageDao.listFilmsLikes();
     }
 
     public FilmLikes getRate(Integer filmId) {
-        return storage.getFilmLikes(filmId);
+        return storageDao.listFilmLikes(filmId);
     }
 
     @Override
     public void clear() {
-        storage.clearFilms();
-        storage.clearLikes();
+        storageDao.clearFilms();
+        storageDao.clearLikes();
         userDao.clear();
     }
 

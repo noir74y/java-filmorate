@@ -20,7 +20,7 @@ public interface FilmDao {
 
     void deleteLike(Integer filmId, Integer userId);
 
-    Collection<FilmLikes> getLikes();
+    Collection<FilmLikes> listFilmsLikes();
 
     void clear();
 }

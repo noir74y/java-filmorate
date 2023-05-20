@@ -5,9 +5,9 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
 
-public interface H2Storage extends Storage {
-    Collection<Mpa> getMpa();
+public interface GenreMpaDao {
+    Collection<Genre> listGenre();
+    Genre getGenre(Integer genreId);
+    Collection<Mpa> listMpa();
     Mpa getMpa(Integer mpaId);
-    Collection<Genre> getGenre();
-    Mpa getGenre(Integer genreId);
 }

@@ -40,12 +40,12 @@ public class UserService {
     }
 
     public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {
-        Set<Integer> commonFriends = new HashSet<>(userDao.getFriends(userId1));
-        commonFriends.retainAll(userDao.getFriends(userId2));
+        Set<Integer> commonFriends = new HashSet<>(userDao.listUserFriends(userId1));
+        commonFriends.retainAll(userDao.listUserFriends(userId2));
         return commonFriends.stream().map(userDao::get).collect(Collectors.toList());
     }
 
     public Collection<User> getFriends(Integer userId) {
-        return userDao.getFriends(userId).stream().map(userDao::get).collect(Collectors.toList());
+        return userDao.listUserFriends(userId).stream().map(userDao::get).collect(Collectors.toList());
     }
 }

@@ -7,8 +7,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.Set;
 
-public interface Storage {
-    Collection<Film> getFilms();
+public interface StorageDao {
+    Collection<Film> listFilms();
 
     Film getFilm(Integer filmId);
 
@@ -21,15 +21,15 @@ public interface Storage {
 
     boolean isFilmExists(Integer filmId);
 
-    Collection<FilmLikes> getLikes();
+    Collection<FilmLikes> listFilmsLikes();
 
-    FilmLikes getFilmLikes(Integer filmId);
+    FilmLikes listFilmLikes(Integer filmId);
 
     void clearFilms();
 
     void clearLikes();
 
-    Collection<User> getUsers();
+    Collection<User> listUsers();
 
     User getUser(Integer userId);
 
@@ -41,7 +41,7 @@ public interface Storage {
 
     boolean isUserExists(Integer userId);
 
-    Set<Integer> getFriends(Integer userId);
+    Set<Integer> listUserFriends(Integer userId);
 
     void clearUsers();
 

@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.dao.implementations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.dao.interfaces.Storage;
+import ru.yandex.practicum.filmorate.dao.interfaces.StorageDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -13,7 +13,7 @@ import java.util.*;
 @Slf4j
 public abstract class UserDaoImpl implements UserDao {
     @Autowired
-    protected Storage storage;
+    protected StorageDao storageDao;
 
     @Override
     public abstract User create(User user);
@@ -24,14 +24,14 @@ public abstract class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> list() {
-        log.info("get users response {}", storage.getUsers());
-        return storage.getUsers();
+        log.info("get users response {}", storageDao.listUsers());
+        return storageDao.listUsers();
     }
 
     @Override
     public User get(Integer userId) {
         if (isUserExists(userId))
-            return storage.getUser(userId);
+            return storageDao.getUser(userId);
 
         log.error("no such userId {}", userId);
         throw new NotFoundException("no such userId", String.valueOf(userId));
@@ -42,7 +42,7 @@ public abstract class UserDaoImpl implements UserDao {
         log.info("user update request {}", user);
         if (isUserExists(user.getId())) {
             setUserName(user);
-            storage.updateUser(user);
+            storageDao.updateUser(user);
             log.info("user update response {}", user);
             return user;
         }
@@ -52,7 +52,7 @@ public abstract class UserDaoImpl implements UserDao {
 
     @Override
     public boolean isUserExists(Integer userId) {
-        return storage.isUserExists(userId);
+        return storageDao.isUserExists(userId);
     }
 
     @Override
@@ -62,14 +62,14 @@ public abstract class UserDaoImpl implements UserDao {
     public abstract void deleteFriend(Integer userId, Integer friendId);
 
     @Override
-    public Set<Integer> getFriends(Integer userId) {
-        return Optional.ofNullable(storage.getFriends(userId)).orElse(new HashSet<>());
+    public Set<Integer> listUserFriends(Integer userId) {
+        return Optional.ofNullable(storageDao.listUserFriends(userId)).orElse(new HashSet<>());
     }
 
     @Override
     public void clear() {
-        storage.clearUsers();
-        storage.clearFriends();
+        storageDao.clearUsers();
+        storageDao.clearFriends();
     }
 
     protected void setUserName(User user) {

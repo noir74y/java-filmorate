@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+@Service("FilmService")
 @Slf4j
 public class FilmService {
     @Autowired
@@ -41,7 +41,7 @@ public class FilmService {
     }
 
     public Collection<Film> getPopular(Integer count) {
-        return genericFilmDao.getLikes()
+        return genericFilmDao.listFilmsLikes()
                 .stream()
                 .sorted()
                 .limit(count)

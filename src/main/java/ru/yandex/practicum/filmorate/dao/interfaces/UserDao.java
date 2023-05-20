@@ -24,7 +24,7 @@ public interface UserDao {
 
     void deleteFriendship(Integer userId1, Integer userId2);
 
-    Set<Integer> getFriends(Integer userId);
+    Set<Integer> listUserFriends(Integer userId);
 
     void clear();
 }

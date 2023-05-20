@@ -17,8 +17,8 @@ public class InMemoryUserDaoImpl extends UserDaoImpl {
         log.info("user create request {}", user);
         user.setId();
         setUserName(user);
-        storage.createUser(user);
-        storage.createFriends(user.getId(), new HashSet<>());
+        storageDao.createUser(user);
+        storageDao.createFriends(user.getId(), new HashSet<>());
         log.info("user create response {}", user);
         return user;
     }
@@ -38,14 +38,14 @@ public class InMemoryUserDaoImpl extends UserDaoImpl {
     @Override
     public void addFriend(Integer userId, Integer friendId) {
         if (isUserExists(userId) && isUserExists(friendId)) {
-            storage.getFriends(userId).add(friendId);
+            storageDao.listUserFriends(userId).add(friendId);
         } else processNotFoundException(userId, friendId);
     }
 
     @Override
     public void deleteFriend(Integer userId, Integer friendId) {
         if (isUserExists(userId) && isUserExists(friendId))
-            storage.getFriends(userId).remove(friendId);
+            storageDao.listUserFriends(userId).remove(friendId);
         else processNotFoundException(userId, friendId);
     }
 }
