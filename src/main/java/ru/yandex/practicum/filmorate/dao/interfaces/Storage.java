@@ -12,7 +12,7 @@ public interface Storage {
 
     Film getFilm(Integer filmId);
 
-    void createFilm(Integer filmId, Film film);
+    Film createFilm(Film film);
 
     void createFilmLikes(Integer filmId, FilmLikes filmLikes);
 

@@ -29,8 +29,8 @@ public class InMemoryStorageImpl implements Storage {
     }
 
     @Override
-    public void createFilm(Integer filmId, Film film) {
-        films.put(filmId, film);
+    public Film createFilm(Film film) {
+        return films.put(film.getId(), film);
     }
 
     @Override
