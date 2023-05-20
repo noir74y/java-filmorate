@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.dao.implementations.Generic.UserDaoGeneric;
 @Component("InMemoryUserDaoImpl")
 @Primary
 public class UserDaoInMemory extends UserDaoGeneric {
+
+
     @Override
     public void addFriendship(Integer userId1, Integer userId2) {
         addFriend(userId1, userId2);

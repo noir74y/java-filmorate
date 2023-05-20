@@ -31,11 +31,11 @@ public class UserService {
         return userDao.update(user);
     }
 
-    public void addFriend(Integer userId, Integer friendId) {
+    public void addFriendship(Integer userId, Integer friendId) {
         userDao.addFriendship(userId, friendId);
     }
 
-    public void deleteFriend(Integer userId, Integer friendId) {
+    public void deleteFriendship(Integer userId, Integer friendId) {
         userDao.deleteFriendship(userId, friendId);
     }
 
