@@ -24,7 +24,7 @@ public abstract class FilmDaoGeneric implements FilmDao {
 
     @Override
     public Collection<Film> list() {
-        log.info("get films response {}", inMemory);
+        log.info("get films response {}", inMemory.getFilms());
         return inMemory.getFilms();
     }
 
