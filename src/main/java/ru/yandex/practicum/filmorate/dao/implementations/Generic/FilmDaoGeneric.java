@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.Generic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.yandex.practicum.filmorate.dao.implementations.InMemory.StorageInMemory;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -19,6 +20,10 @@ import java.util.Map;
 public abstract class FilmDaoGeneric implements FilmDao {
     protected final Map<Integer, Film> films = new HashMap<>();
     protected final Map<Integer, Like> likes = new HashMap<>();
+
+    @Autowired
+    protected StorageInMemory storageInMemory;
+
     @Autowired
     protected UserDao userDao;
 
