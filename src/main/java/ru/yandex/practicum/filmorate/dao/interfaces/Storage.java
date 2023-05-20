@@ -2,8 +2,10 @@ package ru.yandex.practicum.filmorate.dao.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface Storage {
     Collection<Film> getFilms();
@@ -27,5 +29,26 @@ public interface Storage {
     void clearFilms();
 
     void clearLikes();
+
+    Collection<User> getUsers();
+
+    User getUser(Integer userId);
+
+    void createUser(User user);
+
+    void createUser(Integer userId, User user);
+
+    void createFriends(Integer userId, Set<Integer> friends);
+
+    void updateUser(Integer userId, User user);
+
+    boolean isUserExists(Integer userId);
+
+    Set<Integer> getFriends(Integer userId);
+
+    void clearUsers();
+
+    void clearFriends();
+
 }
 
