@@ -16,8 +16,9 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
     protected GenericStorage genericStorage;
 
     @Override
+    public abstract User create(User user);
+    @Override
     public abstract void addFriendship(Integer userId1, Integer userId2);
-
     @Override
     public abstract void deleteFriendship(Integer userId1, Integer userId2);
 
@@ -34,17 +35,6 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
 
         log.error("no such userId {}", userId);
         throw new NotFoundException("no such userId", String.valueOf(userId));
-    }
-
-    @Override
-    public User create(User user) {
-        log.info("user create request {}", user);
-        user.setId();
-        setUserName(user);
-        genericStorage.createUser(user.getId(), user);
-        genericStorage.createFriends(user.getId(), new HashSet<>());
-        log.info("user create response {}", user);
-        return user;
     }
 
     @Override
@@ -82,7 +72,7 @@ public abstract class GenericUserDaoImpl implements GenericUserDao {
         genericStorage.clearFriends();
     }
 
-    private void setUserName(User user) {
+    protected void setUserName(User user) {
         user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 

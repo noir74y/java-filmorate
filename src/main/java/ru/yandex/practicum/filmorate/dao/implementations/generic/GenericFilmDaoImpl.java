@@ -17,13 +17,13 @@ import java.util.Collection;
 public abstract class GenericFilmDaoImpl implements GenericFilmDao {
     @Autowired
     protected GenericStorage genericStorage;
-
     @Autowired
     protected GenericUserDao genericUserDao;
 
     @Override
+    public abstract Film create(Film film);
+    @Override
     public abstract void addLike(Integer filmId, Integer userId);
-
     @Override
     public abstract void deleteLike(Integer filmId, Integer userId);
 
@@ -41,9 +41,6 @@ public abstract class GenericFilmDaoImpl implements GenericFilmDao {
         log.error("no such filmId {}", filmId);
         throw new NotFoundException("no such filmId", filmId.toString());
     }
-
-    @Override
-    public abstract Film create(Film film);
 
     @Override
     public Film update(Film film) {

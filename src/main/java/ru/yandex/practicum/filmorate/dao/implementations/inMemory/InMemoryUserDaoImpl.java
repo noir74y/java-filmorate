@@ -1,12 +1,28 @@
 package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.implementations.generic.GenericUserDaoImpl;
+import ru.yandex.practicum.filmorate.model.User;
+
+import java.util.HashSet;
 
 @Component("InMemoryUserDaoImpl")
 @Primary
+@Slf4j
 public class InMemoryUserDaoImpl extends GenericUserDaoImpl {
+    @Override
+    public User create(User user) {
+        log.info("user create request {}", user);
+        user.setId();
+        setUserName(user);
+        genericStorage.createUser(user.getId(), user);
+        genericStorage.createFriends(user.getId(), new HashSet<>());
+        log.info("user create response {}", user);
+        return user;
+    }
+
     @Override
     public void addFriendship(Integer userId1, Integer userId2) {
         addFriend(userId1, userId2);

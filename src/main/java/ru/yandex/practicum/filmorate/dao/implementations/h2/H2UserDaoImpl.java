@@ -3,10 +3,16 @@ package ru.yandex.practicum.filmorate.dao.implementations.h2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.implementations.generic.GenericUserDaoImpl;
+import ru.yandex.practicum.filmorate.model.User;
 
 @Component("H2UserDaoImpl")
 @Slf4j
 public class H2UserDaoImpl extends GenericUserDaoImpl {
+    @Override
+    public User create(User user) {
+        return null;
+    }
+
     @Override
     public void addFriendship(Integer userId1, Integer userId2) {
     }
