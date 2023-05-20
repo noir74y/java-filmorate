@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.interfaces.StorageDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmUserDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component("StorageInMemory")
-public class InMemoryStorageDaoImpl implements StorageDao {
+public class InMemoryFilmUserDaoImpl implements FilmUserDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, FilmLikes> likes = new HashMap<>();
     protected final Map<Integer, User> users = new HashMap<>();

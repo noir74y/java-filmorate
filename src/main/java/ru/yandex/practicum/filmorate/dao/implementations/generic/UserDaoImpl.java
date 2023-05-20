@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.generic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.yandex.practicum.filmorate.dao.interfaces.StorageDao;
+import ru.yandex.practicum.filmorate.dao.interfaces.FilmUserDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -13,7 +13,7 @@ import java.util.*;
 @Slf4j
 public abstract class UserDaoImpl implements UserDao {
     @Autowired
-    protected StorageDao storageDao;
+    protected FilmUserDao filmUserDao;
 
     @Override
     public abstract User create(User user);
@@ -24,14 +24,14 @@ public abstract class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> list() {
-        log.info("get users response {}", storageDao.listUsers());
-        return storageDao.listUsers();
+        log.info("get users response {}", filmUserDao.listUsers());
+        return filmUserDao.listUsers();
     }
 
     @Override
     public User get(Integer userId) {
         if (isUserExists(userId))
-            return storageDao.getUser(userId);
+            return filmUserDao.getUser(userId);
 
         log.error("no such userId {}", userId);
         throw new NotFoundException("no such userId", String.valueOf(userId));
@@ -42,7 +42,7 @@ public abstract class UserDaoImpl implements UserDao {
         log.info("user update request {}", user);
         if (isUserExists(user.getId())) {
             setUserName(user);
-            storageDao.updateUser(user);
+            filmUserDao.updateUser(user);
             log.info("user update response {}", user);
             return user;
         }
@@ -52,7 +52,7 @@ public abstract class UserDaoImpl implements UserDao {
 
     @Override
     public boolean isUserExists(Integer userId) {
-        return storageDao.isUserExists(userId);
+        return filmUserDao.isUserExists(userId);
     }
 
     @Override
@@ -63,13 +63,13 @@ public abstract class UserDaoImpl implements UserDao {
 
     @Override
     public Set<Integer> listUserFriends(Integer userId) {
-        return Optional.ofNullable(storageDao.listUserFriends(userId)).orElse(new HashSet<>());
+        return Optional.ofNullable(filmUserDao.listUserFriends(userId)).orElse(new HashSet<>());
     }
 
     @Override
     public void clear() {
-        storageDao.clearUsers();
-        storageDao.clearFriends();
+        filmUserDao.clearUsers();
+        filmUserDao.clearFriends();
     }
 
     protected void setUserName(User user) {

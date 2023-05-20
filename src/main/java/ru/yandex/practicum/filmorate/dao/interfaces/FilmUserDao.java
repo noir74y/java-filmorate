@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.Set;
 
-public interface StorageDao {
+public interface FilmUserDao {
     Collection<Film> listFilms();
 
     Film getFilm(Integer filmId);
