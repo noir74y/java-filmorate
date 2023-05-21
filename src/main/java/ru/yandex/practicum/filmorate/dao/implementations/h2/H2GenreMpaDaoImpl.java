@@ -9,8 +9,6 @@ import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 
 @Component("H2GenreMpaDaoImpl")
@@ -25,48 +23,37 @@ public class H2GenreMpaDaoImpl implements GenreMpaDao {
     }
 
     @Override
-    public Genre getGenre(Integer genreId) {
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet("SELECT * FROM genre WHERE id = ?", genreId);
-        if (userRows.next())
-           return new Genre(userRows.getInt("id"),userRows.getString("name"));
-        return null;
-    }
-
-    @Override
-    public boolean isGenreExists(Integer genreId) {
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet("SELECT * FROM genre WHERE id = ?", genreId);
-        if (userRows.next())
-            return true;
-        return false;
-    }
-
-    @Override
     public Collection<Mpa> listMpa() {
         return jdbcTemplate.query("SELECT * FROM mpa ORDER BY id", (rs, rowNum) -> new Mpa(rs.getInt("id"), rs.getString("name")));
     }
 
     @Override
+    public Genre getGenre(Integer genreId) {
+        SqlRowSet row = getRow("genre", genreId);
+        row.next();
+        return new Genre(row.getInt("id"), row.getString("name"));
+    }
+
+    @Override
     public Mpa getMpa(Integer mpaId) {
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet("SELECT * FROM mpa WHERE id = ?", mpaId);
-        if (userRows.next())
-            return new Mpa(userRows.getInt("id"),userRows.getString("name"));
-        return null;
+        SqlRowSet row = getRow("mpa", mpaId);
+        row.next();
+        return new Mpa(row.getInt("id"), row.getString("name"));
+    }
+
+    @Override
+    public boolean isGenreExists(Integer genreId) {
+        SqlRowSet row = getRow("genre", genreId);
+        return row.next();
     }
 
     @Override
     public boolean isMpaExists(Integer mpaId) {
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet("SELECT * FROM mpa WHERE id = ?", mpaId);
-        if (userRows.next())
-            return true;
-        return false;
+        SqlRowSet row = getRow("mpa", mpaId);
+        return row.next();
     }
 
-    private Genre makeGenre(ResultSet rs) throws SQLException {
-        return new Genre(rs.getInt("id"), rs.getString("name"));
+    private SqlRowSet getRow(String table, Integer id) {
+        return jdbcTemplate.queryForRowSet("SELECT * FROM " + table + " WHERE id = ?", id);
     }
-
-    private Mpa makeMpa(ResultSet rs) throws SQLException {
-        return new Mpa(rs.getInt("id"), rs.getString("name"));
-    }
-
 }
