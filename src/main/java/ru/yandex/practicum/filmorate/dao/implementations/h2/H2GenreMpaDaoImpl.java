@@ -22,6 +22,11 @@ public class H2GenreMpaDaoImpl implements GenreMpaDao {
     }
 
     @Override
+    public boolean isGenreExists(Integer genreId) {
+        return false;
+    }
+
+    @Override
     public Collection<Mpa> listMpa() {
         return null;
     }
@@ -29,5 +34,10 @@ public class H2GenreMpaDaoImpl implements GenreMpaDao {
     @Override
     public Mpa getMpa(Integer mpaId) {
         return null;
+    }
+
+    @Override
+    public boolean isMpaExists(Integer mpaId) {
+        return false;
     }
 }

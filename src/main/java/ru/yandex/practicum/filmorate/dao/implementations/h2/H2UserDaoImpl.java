@@ -11,6 +11,7 @@ import java.util.Set;
 @Component("H2UserDaoImpl")
 @Slf4j
 public class H2UserDaoImpl implements UserDao {
+
     @Override
     public Collection<User> list() {
         return null;
@@ -43,16 +44,6 @@ public class H2UserDaoImpl implements UserDao {
 
     @Override
     public void deleteFriend(Integer userId, Integer friendId) {
-
-    }
-
-    @Override
-    public void addFriendship(Integer userId1, Integer userId2) {
-
-    }
-
-    @Override
-    public void deleteFriendship(Integer userId1, Integer userId2) {
 
     }
 

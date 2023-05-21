@@ -3,49 +3,73 @@ package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.implementations.generic.UserDaoImpl;
+import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.HashSet;
+import java.util.*;
 
 @Component("InMemoryUserDaoImpl")
 @Primary
 @Slf4j
-public class InMemoryUserDaoImpl extends UserDaoImpl {
+public class InMemoryUserDaoImpl implements UserDao {
+    protected final Map<Integer, User> users = new HashMap<>();
+    protected final HashMap<Integer, Set<Integer>> friends = new HashMap<>();
+
+    @Override
+    public Collection<User> list() {
+        return users.values();
+    }
+
+    @Override
+    public User get(Integer userId) {
+        return users.get(userId);
+    }
+
     @Override
     public User create(User user) {
-        log.info("user create request {}", user);
         user.setId();
         setUserName(user);
-        filmUserDao.createUser(user);
-        filmUserDao.createFriends(user.getId(), new HashSet<>());
-        log.info("user create response {}", user);
+        users.put(user.getId(), user);
+        friends.put(user.getId(), new HashSet<>());
         return user;
     }
 
     @Override
-    public void addFriendship(Integer userId1, Integer userId2) {
-        addFriend(userId1, userId2);
-        addFriend(userId2, userId1);
+    public User update(User user) {
+        setUserName(user);
+        users.replace(user.getId(), user);
+        return user;
     }
 
     @Override
-    public void deleteFriendship(Integer userId1, Integer userId2) {
-        deleteFriend(userId1, userId2);
-        deleteFriend(userId2, userId1);
+    public boolean isUserExists(Integer userId) {
+        return users.containsKey(userId);
     }
 
     @Override
     public void addFriend(Integer userId, Integer friendId) {
-        if (isUserExists(userId) && isUserExists(friendId)) {
-            filmUserDao.listUserFriends(userId).add(friendId);
-        } else processNotFoundException(userId, friendId);
+        friends.get(userId).add(friendId);
+        friends.get(friendId).add(userId);
     }
 
     @Override
     public void deleteFriend(Integer userId, Integer friendId) {
-        if (isUserExists(userId) && isUserExists(friendId))
-            filmUserDao.listUserFriends(userId).remove(friendId);
-        else processNotFoundException(userId, friendId);
+        friends.get(userId).remove(friendId);
+        friends.get(friendId).remove(userId);
+    }
+
+    @Override
+    public Set<Integer> listUserFriends(Integer userId) {
+        return Optional.ofNullable(friends.get(userId)).orElse(new HashSet<>());
+    }
+
+    @Override
+    public void clear() {
+        users.clear();
+        friends.clear();
+    }
+
+    private void setUserName(User user) {
+        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 }

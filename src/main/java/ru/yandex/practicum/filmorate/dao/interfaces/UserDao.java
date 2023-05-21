@@ -20,10 +20,6 @@ public interface UserDao {
 
     void deleteFriend(Integer userId, Integer friendId);
 
-    void addFriendship(Integer userId1, Integer userId2);
-
-    void deleteFriendship(Integer userId1, Integer userId2);
-
     Set<Integer> listUserFriends(Integer userId);
 
     void clear();

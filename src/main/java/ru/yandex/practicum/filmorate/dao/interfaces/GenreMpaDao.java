@@ -7,7 +7,14 @@ import java.util.Collection;
 
 public interface GenreMpaDao {
     Collection<Genre> listGenre();
+
     Genre getGenre(Integer genreId);
+
+    boolean isGenreExists(Integer genreId);
+
     Collection<Mpa> listMpa();
+
     Mpa getMpa(Integer mpaId);
+
+    boolean isMpaExists(Integer mpaId);
 }
