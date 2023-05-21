@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class Mpa extends Generic{
+public class Mpa {
+    private Integer id;
     private String name;
 }

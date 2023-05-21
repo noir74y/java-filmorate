@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class Genre extends Generic{
+public class Genre {
+    private Integer id;
     private String name;
 }
