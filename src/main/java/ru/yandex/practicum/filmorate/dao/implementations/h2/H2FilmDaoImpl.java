@@ -2,48 +2,62 @@ package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.implementations.generic.FilmDaoImpl;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
-import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
-public class H2FilmDaoImpl extends FilmDaoImpl implements FilmDao, GenreMpaDao {
+public class H2FilmDaoImpl implements FilmDao {
+    @Override
+    public Collection<Film> list() {
+        return null;
+    }
+
+    @Override
+    public Film get(Integer filmId) {
+        return null;
+    }
+
     @Override
     public Film create(Film film) {
         return null;
     }
 
     @Override
+    public Film update(Film film) {
+        return null;
+    }
+
+    @Override
+    public boolean isFilmExists(Integer filmId) {
+        return false;
+    }
+
+    @Override
     public void addLike(Integer filmId, Integer userId) {
+
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
+
     }
 
     @Override
-    public Collection<Genre> listGenre() {
+    public Collection<FilmLikes> listFilmsLikes() {
         return null;
     }
 
     @Override
-    public Genre getGenre(Integer genreId) {
+    public FilmLikes getRate(Integer filmId) {
         return null;
     }
 
     @Override
-    public Collection<Mpa> listMpa() {
-        return null;
-    }
+    public void clear() {
 
-    @Override
-    public Mpa getMpa(Integer mpaId) {
-        return null;
     }
 }
