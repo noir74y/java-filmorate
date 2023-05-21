@@ -22,5 +22,7 @@ public interface FilmDao {
 
     Collection<FilmLikes> listFilmsLikes();
 
+    FilmLikes getRate(Integer filmId);
+
     void clear();
 }

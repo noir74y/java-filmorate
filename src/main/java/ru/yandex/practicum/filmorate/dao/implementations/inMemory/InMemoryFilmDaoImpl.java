@@ -64,6 +64,11 @@ public class InMemoryFilmDaoImpl implements FilmDao {
     }
 
     @Override
+    public FilmLikes getRate(Integer filmId) {
+        return likes.get(filmId);
+    }
+
+    @Override
     public void clear() {
         films.clear();
         likes.clear();

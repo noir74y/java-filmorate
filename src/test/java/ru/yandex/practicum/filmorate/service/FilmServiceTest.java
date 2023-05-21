@@ -80,24 +80,24 @@ class FilmServiceTest extends GenericServiceTest {
         assertEquals(errorMessage.getMessage(), "9999");
     }
 
-//    @Test
-//    void addLike() throws Exception {
-//        mockMvc.perform(put("/films/" + film1.getId() + "/like/" + user1.getId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(HttpStatus.OK.value()));
-//
-//        assertEquals(user1.getId(), inMemoryFilmStorage.getRate(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
-//    }
+    @Test
+    void addLike() throws Exception {
+        mockMvc.perform(put("/films/" + film1.getId() + "/like/" + user1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()));
 
-//    @Test
-//    void deleteLike() throws Exception {
-//        addLike();
-//        mockMvc.perform(delete("/films/" + film1.getId() + "/like/" + user1.getId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(HttpStatus.OK.value()));
-//
-//        assertEquals(0, inMemoryFilmStorage.getRate(film1.getId()).getLikedUsersId().size());
-//    }
+        assertEquals(user1.getId(), filmDao.getRate(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
+    }
+
+    @Test
+    void deleteLike() throws Exception {
+        addLike();
+        mockMvc.perform(delete("/films/" + film1.getId() + "/like/" + user1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()));
+
+        assertEquals(0, filmDao.getRate(film1.getId()).getLikedUsersId().size());
+    }
 
     @Test
     void getPopular() throws Exception {
