@@ -3,14 +3,11 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,9 +20,6 @@ public class FilmService {
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private GenreMpaDao genreMpaDao;
 
     public Collection<Film> list() {
         Collection<Film> films = filmDao.list();
@@ -78,22 +72,6 @@ public class FilmService {
                 .map(FilmLikes::getFilmId)
                 .map(filmDao::get)
                 .collect(Collectors.toList());
-    }
-
-    public Collection<Genre> listGenre() {
-        return genreMpaDao.listGenre();
-    }
-
-    public Genre getGenre(Integer genreId) {
-        return genreMpaDao.getGenre(genreId);
-    }
-
-    public Collection<Mpa> listMpa() {
-        return genreMpaDao.listMpa();
-    }
-
-    public Mpa getMpa(Integer mpaId) {
-        return genreMpaDao.getMpa(mpaId);
     }
 
     private void processNotFoundException(Integer filmId, Integer userId) {
