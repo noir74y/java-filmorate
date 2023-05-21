@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -33,7 +34,9 @@ public class Film extends Generic {
     @FilmDurationConstraint
     private Duration duration;
 
-    private Integer mpa_id;
+    private Mpa mpa;
+
+    private Set<Genre> genres;
 
     public Film() {
     }

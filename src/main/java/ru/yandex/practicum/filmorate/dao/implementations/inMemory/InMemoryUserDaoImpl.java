@@ -9,8 +9,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.*;
 
 @Component("InMemoryUserDaoImpl")
-@Primary
 @Slf4j
+@Primary
 public class InMemoryUserDaoImpl implements UserDao {
     protected final Map<Integer, User> users = new HashMap<>();
     protected final HashMap<Integer, Set<Integer>> friends = new HashMap<>();

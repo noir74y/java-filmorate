@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserServiceTest extends GenericServiceTest {
     @BeforeEach
     void setUp() throws Exception {
-        inMemoryUserStorage.clear();
+        userDao.clear();
 
         user1 = getUserFromMock(User.builder()
                 .login("dolore")
