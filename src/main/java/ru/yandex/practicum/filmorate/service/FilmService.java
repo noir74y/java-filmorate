@@ -64,7 +64,7 @@ public class FilmService {
         else processNotFoundException(filmId, userId);
     }
 
-    public Collection<Film> getPopular(Integer count) {
+    public Collection<Film> listPopular(Integer count) {
         return filmDao.listFilmsLikes()
                 .stream()
                 .sorted()
