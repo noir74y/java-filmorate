@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Service("GenreMpsService")
 @Slf4j
-public class GenreMpsService {
+public class GenreMpaService {
     @Autowired
     private GenreMpaDao genreMpaDao;
 
