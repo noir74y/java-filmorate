@@ -7,10 +7,7 @@ import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @Component("InMemoryFilmDaoImpl")
 @Slf4j
@@ -25,8 +22,9 @@ public class InMemoryFilmDaoImpl implements FilmDao {
     }
 
     @Override
-    public Film get(Integer filmId) {
-        return films.get(filmId);
+    public Optional<Film> get(Integer filmId) {
+        Film film = films.get(filmId);
+        return film != null ? Optional.of(film) : Optional.empty();
     }
 
     @Override

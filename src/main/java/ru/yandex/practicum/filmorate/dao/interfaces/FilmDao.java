@@ -4,11 +4,12 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface FilmDao {
     Collection<Film> list();
 
-    Film get(Integer filmId);
+    Optional<Film> get(Integer filmId);
 
     Film create(Film film);
 

@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
@@ -17,8 +18,8 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     }
 
     @Override
-    public Film get(Integer filmId) {
-        return null;
+    public Optional<Film> get(Integer filmId) {
+        return Optional.empty();
     }
 
     @Override

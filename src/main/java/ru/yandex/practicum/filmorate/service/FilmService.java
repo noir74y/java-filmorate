@@ -28,10 +28,10 @@ public class FilmService {
     }
 
     public Film get(Integer filmId) {
-        if (filmDao.isFilmExists(filmId))
-            return filmDao.get(filmId);
-        log.error("no such filmId {}", filmId);
-        throw new NotFoundException("no such filmId", filmId.toString());
+        return filmDao.get(filmId).orElseThrow(() -> {
+            log.error("no such filmId {}", filmId);
+            return new NotFoundException("no such filmId", filmId.toString());
+        });
     }
 
     public Film create(Film film) {
@@ -70,7 +70,7 @@ public class FilmService {
                 .sorted()
                 .limit(count)
                 .map(FilmLikes::getFilmId)
-                .map(filmDao::get)
+                .map(filmId -> filmDao.get(filmId).orElse(null))
                 .collect(Collectors.toList());
     }
 
