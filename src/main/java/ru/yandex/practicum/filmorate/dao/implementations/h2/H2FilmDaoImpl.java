@@ -52,7 +52,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     }
 
     @Override
-    public FilmLikes getRate(Integer filmId) {
+    public FilmLikes getFilmLikes(Integer filmId) {
         return null;
     }
 

@@ -64,7 +64,7 @@ public class InMemoryFilmDaoImpl implements FilmDao {
     }
 
     @Override
-    public FilmLikes getRate(Integer filmId) {
+    public FilmLikes getFilmLikes(Integer filmId) {
         return likes.get(filmId);
     }
 

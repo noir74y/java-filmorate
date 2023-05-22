@@ -86,7 +86,7 @@ class FilmServiceTest extends GenericServiceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()));
 
-        assertEquals(user1.getId(), filmDao.getRate(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
+        assertEquals(user1.getId(), filmDao.getFilmLikes(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
     }
 
     @Test
@@ -96,7 +96,7 @@ class FilmServiceTest extends GenericServiceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()));
 
-        assertEquals(0, filmDao.getRate(film1.getId()).getLikedUsersId().size());
+        assertEquals(0, filmDao.getFilmLikes(film1.getId()).getLikedUsersId().size());
     }
 
     @Test
