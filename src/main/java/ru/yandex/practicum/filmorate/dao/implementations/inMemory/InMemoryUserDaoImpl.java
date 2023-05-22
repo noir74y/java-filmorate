@@ -21,8 +21,9 @@ public class InMemoryUserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(Integer userId) {
-        return users.get(userId);
+    public Optional<User> get(Integer userId) {
+        User user = users.get(userId);
+        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     @Override

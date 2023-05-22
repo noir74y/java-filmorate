@@ -23,10 +23,10 @@ public class UserService {
     }
 
     public User get(Integer userId) {
-        if (userDao.isUserExists(userId))
-            return userDao.get(userId);
-        log.error("no such userId {}", userId);
-        throw new NotFoundException("no such userId", String.valueOf(userId));
+        return userDao.get(userId).orElseThrow(() -> {
+            log.error("no such userId {}", userId);
+            return new NotFoundException("no such userId", userId.toString());
+        });
     }
 
     public User create(User user) {
@@ -60,11 +60,11 @@ public class UserService {
     public Collection<User> getCommonFriends(Integer userId1, Integer userId2) {
         Set<Integer> commonFriends = new HashSet<>(userDao.listUserFriends(userId1));
         commonFriends.retainAll(userDao.listUserFriends(userId2));
-        return commonFriends.stream().map(userDao::get).collect(Collectors.toList());
+        return commonFriends.stream().map(id -> userDao.get(id).orElse(null)).collect(Collectors.toList());
     }
 
     public Collection<User> getFriends(Integer userId) {
-        return userDao.listUserFriends(userId).stream().map(userDao::get).collect(Collectors.toList());
+        return userDao.listUserFriends(userId).stream().map(id -> userDao.get(id).orElse(null)).collect(Collectors.toList());
     }
 
     private void processNotFoundException(Integer userId, Integer friendId) {

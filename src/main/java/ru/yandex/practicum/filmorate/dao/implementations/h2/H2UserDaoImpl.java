@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Component("H2UserDaoImpl")
@@ -27,7 +28,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
     }
 
     @Override
-    public User get(Integer userId) {
+    public Optional<User> get(Integer userId) {
 //        SqlRowSet row = getRowById("users", userId);
 //        return new User(
 //                row.getInt("id"),
@@ -36,7 +37,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 //                row.getString("mail"),
 //                Objects.requireNonNull(row.getDate("birthday")).toLocalDate()
 //        );
-        return null;
+        return Optional.empty();
     }
 
     @Override
