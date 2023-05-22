@@ -34,7 +34,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public boolean isFilmExists(Integer filmId) {
-        return true;
+        return getRowById("films", filmId).isPresent();
     }
 
     @Override
