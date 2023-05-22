@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
-public class H2FilmDaoImpl implements FilmDao {
+public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     @Override
     public Collection<Film> list() {
         return null;
@@ -33,7 +33,7 @@ public class H2FilmDaoImpl implements FilmDao {
 
     @Override
     public boolean isFilmExists(Integer filmId) {
-        return false;
+        return isRowExists("films", filmId);
     }
 
     @Override

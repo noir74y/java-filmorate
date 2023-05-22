@@ -1,10 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import ru.yandex.practicum.filmorate.constraints.FilmDurationConstraint;
 import ru.yandex.practicum.filmorate.constraints.FilmReleaseDateConstraint;
 
@@ -17,6 +14,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Film extends Generic {
     private static Integer filmId = 0;
@@ -37,9 +35,6 @@ public class Film extends Generic {
     private Mpa mpa;
 
     private Set<Genre> genres;
-
-    public Film() {
-    }
 
     public void setId() {
         this.id = ++filmId;

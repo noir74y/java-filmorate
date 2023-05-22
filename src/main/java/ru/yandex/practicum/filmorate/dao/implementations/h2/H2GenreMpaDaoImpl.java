@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
@@ -13,10 +11,7 @@ import java.util.Collection;
 
 @Component("H2GenreMpaDaoImpl")
 @Slf4j
-public class H2GenreMpaDaoImpl implements GenreMpaDao {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
+public class H2GenreMpaDaoImpl extends H2GenericImpl implements GenreMpaDao {
     @Override
     public Collection<Genre> listGenre() {
         return jdbcTemplate.query("SELECT * FROM genre ORDER BY id", (rs, rowNum) -> new Genre(rs.getInt("id"), rs.getString("name")));
@@ -29,31 +24,23 @@ public class H2GenreMpaDaoImpl implements GenreMpaDao {
 
     @Override
     public Genre getGenre(Integer genreId) {
-        SqlRowSet row = getRow("genre", genreId);
-        row.next();
+        SqlRowSet row = getRowById("genre", genreId);
         return new Genre(row.getInt("id"), row.getString("name"));
     }
 
     @Override
     public Mpa getMpa(Integer mpaId) {
-        SqlRowSet row = getRow("mpa", mpaId);
-        row.next();
+        SqlRowSet row = getRowById("mpa", mpaId);
         return new Mpa(row.getInt("id"), row.getString("name"));
     }
 
     @Override
     public boolean isGenreExists(Integer genreId) {
-        SqlRowSet row = getRow("genre", genreId);
-        return row.next();
+        return isRowExists("genre", genreId);
     }
 
     @Override
     public boolean isMpaExists(Integer mpaId) {
-        SqlRowSet row = getRow("mpa", mpaId);
-        return row.next();
-    }
-
-    private SqlRowSet getRow(String table, Integer id) {
-        return jdbcTemplate.queryForRowSet("SELECT * FROM " + table + " WHERE id = ?", id);
+        return isRowExists("mpa", mpaId);
     }
 }
