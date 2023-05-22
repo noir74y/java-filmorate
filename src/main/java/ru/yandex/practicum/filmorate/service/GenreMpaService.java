@@ -22,23 +22,23 @@ public class GenreMpaService {
         return listGenre;
     }
 
-    public Genre getGenre(Integer genreId) {
-        if (genreMpaDao.isGenreExists(genreId))
-            return genreMpaDao.getGenre(genreId);
-        log.error("no such genreId {}", genreId);
-        throw new NotFoundException("no such genreId", String.valueOf(genreId));
-    }
-
     public Collection<Mpa> listMpa() {
         Collection<Mpa> listMpa = genreMpaDao.listMpa();
         log.info("get listMpa response {}", listMpa);
         return listMpa;
     }
 
+    public Genre getGenre(Integer genreId) {
+        return genreMpaDao.getGenre(genreId).orElseThrow(() -> {
+            log.error("no such genreId {}", genreId);
+            return new NotFoundException("no such genreId", String.valueOf(genreId));
+        });
+    }
+
     public Mpa getMpa(Integer mpaId) {
-        if (genreMpaDao.isMpaExists(mpaId))
-            return genreMpaDao.getMpa(mpaId);
-        log.error("no such mpaId {}", mpaId);
-        throw new NotFoundException("no such mpaId", String.valueOf(mpaId));
+        return genreMpaDao.getMpa(mpaId).orElseThrow(() -> {
+            log.error("no such genreId {}", mpaId);
+            return new NotFoundException("no such mpaId", String.valueOf(mpaId));
+        });
     }
 }

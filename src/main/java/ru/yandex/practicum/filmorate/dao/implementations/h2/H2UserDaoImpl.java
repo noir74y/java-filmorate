@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.model.User;
@@ -29,14 +28,15 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public User get(Integer userId) {
-        SqlRowSet row = getRowById("users", userId);
-        return new User(
-                row.getInt("id"),
-                row.getString("email"),
-                row.getString("login"),
-                row.getString("mail"),
-                Objects.requireNonNull(row.getDate("birthday")).toLocalDate()
-        );
+//        SqlRowSet row = getRowById("users", userId);
+//        return new User(
+//                row.getInt("id"),
+//                row.getString("email"),
+//                row.getString("login"),
+//                row.getString("mail"),
+//                Objects.requireNonNull(row.getDate("birthday")).toLocalDate()
+//        );
+        return null;
     }
 
     @Override
@@ -51,12 +51,11 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public boolean isUserExists(Integer userId) {
-        return isRowExists("users", userId);
+        return true;
     }
 
     @Override
     public void addFriend(Integer userId, Integer friendId) {
-
     }
 
     @Override

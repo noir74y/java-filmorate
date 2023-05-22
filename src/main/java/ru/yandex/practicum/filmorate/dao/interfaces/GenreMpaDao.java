@@ -4,17 +4,14 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface GenreMpaDao {
     Collection<Genre> listGenre();
 
-    Genre getGenre(Integer genreId);
-
-    boolean isGenreExists(Integer genreId);
-
     Collection<Mpa> listMpa();
 
-    Mpa getMpa(Integer mpaId);
+    Optional<Genre> getGenre(Integer genreId);
 
-    boolean isMpaExists(Integer mpaId);
+    Optional<Mpa> getMpa(Integer mpaId);
 }

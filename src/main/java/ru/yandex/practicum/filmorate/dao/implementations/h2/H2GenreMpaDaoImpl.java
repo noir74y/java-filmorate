@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Component("H2GenreMpaDaoImpl")
 @Slf4j
@@ -23,24 +24,14 @@ public class H2GenreMpaDaoImpl extends H2GenericImpl implements GenreMpaDao {
     }
 
     @Override
-    public Genre getGenre(Integer genreId) {
-        SqlRowSet row = getRowById("genre", genreId);
-        return new Genre(row.getInt("id"), row.getString("name"));
+    public Optional<Genre> getGenre(Integer id) {
+        SqlRowSet row = getRowById("genre", id).orElse(null);
+        return row != null ? Optional.of(new Genre(row.getInt("id"), row.getString("name"))) : Optional.empty();
     }
 
     @Override
-    public Mpa getMpa(Integer mpaId) {
-        SqlRowSet row = getRowById("mpa", mpaId);
-        return new Mpa(row.getInt("id"), row.getString("name"));
-    }
-
-    @Override
-    public boolean isGenreExists(Integer genreId) {
-        return isRowExists("genre", genreId);
-    }
-
-    @Override
-    public boolean isMpaExists(Integer mpaId) {
-        return isRowExists("mpa", mpaId);
+    public Optional<Mpa> getMpa(Integer id) {
+        SqlRowSet row = getRowById("mpa", id).orElse(null);
+        return row != null ? Optional.of(new Mpa(row.getInt("id"), row.getString("name"))) : Optional.empty();
     }
 }
