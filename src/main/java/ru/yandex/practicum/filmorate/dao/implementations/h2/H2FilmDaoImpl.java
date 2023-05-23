@@ -52,7 +52,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public Film create(Film film) {
-        String sql = "INSERT INTO films (name, description, release_date, duration, map_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO films (name, description, release_date, duration, mpa_id) VALUES (?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
