@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.implementations.inMemory;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -11,7 +10,6 @@ import java.util.*;
 
 @Component("InMemoryFilmDaoImpl")
 @Slf4j
-@Primary
 public class InMemoryFilmDaoImpl implements FilmDao {
     private final Map<Integer, Film> films = new HashMap<>();
     private final Map<Integer, FilmLikes> likes = new HashMap<>();

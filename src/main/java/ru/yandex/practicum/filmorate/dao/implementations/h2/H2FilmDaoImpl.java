@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
+@Primary
 public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     @Autowired
     H2GenreMpaDaoImpl h2GenreMpaDao;
@@ -72,7 +74,9 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public Film update(Film film) {
-        return null;
+        jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, map_id = ? WHERE id = ?",
+                film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toMinutes(), film.getMpa().getId(), film.getId());
+        return get(film.getId()).orElse(null);
     }
 
     @Override
