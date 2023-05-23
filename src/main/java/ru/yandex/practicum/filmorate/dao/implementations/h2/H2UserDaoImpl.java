@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Component("H2UserDaoImpl")
 @Slf4j
+@Primary
 public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
@@ -63,7 +65,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public User update(User user) {
-        jdbcTemplate.update("UPDATE users SET email = ?, login = ?, name = ?, birthdau = ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?",
                 user.getEmail(), user.getLogin(), user.getName(), Date.valueOf(user.getBirthday()), user.getId());
         return get(user.getId()).orElse(null);
     }
