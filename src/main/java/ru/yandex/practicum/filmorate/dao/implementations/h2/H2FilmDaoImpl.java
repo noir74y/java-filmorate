@@ -13,9 +13,8 @@ import ru.yandex.practicum.filmorate.model.*;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.Duration;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component("H2FilmDaoImpl")
 @Slf4j
@@ -68,14 +67,16 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
         }, keyHolder);
 
         film.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+        attachGenresToFilm(film);
 
-        return film;
+        return get(film.getId()).orElse(null);
     }
 
     @Override
     public Film update(Film film) {
         jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, map_id = ? WHERE id = ?",
                 film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toMinutes(), film.getMpa().getId(), film.getId());
+        attachGenresToFilm(film);
         return get(film.getId()).orElse(null);
     }
 
@@ -86,22 +87,25 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public void addLike(Integer filmId, Integer userId) {
-
+        jdbcTemplate.update("INSERT INTO likes (film_id, user_id) VALUES (?, ?)", filmId, userId);
     }
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
-
+        jdbcTemplate.update("DELETE FROM likes WHERE film_id = ? AND user_id = ?", filmId, userId);
     }
 
     @Override
     public Collection<FilmLikes> listFilmsLikes() {
-        return null;
+        return new HashSet<>(jdbcTemplate.queryForList("SELECT id FROM films", Integer.class))
+                .stream()
+                .map(this::getFilmLikes).collect(Collectors.toList());
     }
 
     @Override
     public FilmLikes getFilmLikes(Integer filmId) {
-        return null;
+        return new FilmLikes(filmId,
+                new HashSet<>(jdbcTemplate.queryForList("SELECT user_id FROM likes WHERE film_id = ?", Integer.class, filmId)));
     }
 
     @Override
@@ -110,5 +114,10 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
         jdbcTemplate.update("DELETE FROM genres");
         jdbcTemplate.update("DELETE FROM films");
         jdbcTemplate.update("ALTER TABLE films ALTER COLUMN id RESTART WITH 1");
+    }
+
+    private void attachGenresToFilm(Film film) {
+        jdbcTemplate.update("DELETE FROM genres WHERE film_id = ?", film.getId());
+        film.getGenres().forEach(genre -> jdbcTemplate.update("INSERT INTO genres (film_id, genre_id) VALUES (?, ?)", film.getId(), genre.getId()));
     }
 }

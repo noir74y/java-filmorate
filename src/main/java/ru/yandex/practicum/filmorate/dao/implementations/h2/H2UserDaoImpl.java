@@ -59,7 +59,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
         user.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
 
-        return user;
+        return get(user.getId()).orElse(null);
     }
 
     @Override

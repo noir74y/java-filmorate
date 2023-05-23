@@ -56,8 +56,8 @@ CREATE TABLE friends (
 ALTER TABLE friends ADD CONSTRAINT friends_unique UNIQUE(user_id, friend_id);
 
 CREATE TABLE likes (
-    user_id INTEGER REFERENCES users (id),
-    film_id INTEGER REFERENCES films (id)
+    film_id INTEGER REFERENCES films (id),
+    user_id INTEGER REFERENCES users (id)
 );
 
 ALTER TABLE likes ADD CONSTRAINT likes_unique UNIQUE(user_id, film_id);
