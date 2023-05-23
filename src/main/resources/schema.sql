@@ -50,7 +50,7 @@ ALTER TABLE users ADD CONSTRAINT users_login_unique UNIQUE(login);
 
 CREATE TABLE friends (
     user_id INTEGER REFERENCES users (id),
-    friend_id INTEGER REFERENCES films (id)
+    friend_id INTEGER REFERENCES users (id)
 );
 
 ALTER TABLE friends ADD CONSTRAINT friends_unique UNIQUE(user_id, friend_id);

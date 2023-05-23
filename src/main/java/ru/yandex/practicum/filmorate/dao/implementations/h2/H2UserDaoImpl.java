@@ -92,7 +92,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public void clear() {
-        jdbcTemplate.update("TRUNCATE TABLE users");
-        jdbcTemplate.update("TRUNCATE TABLE friends");
+        jdbcTemplate.update("DELETE FROM friends");
+        jdbcTemplate.update("DELETE FROM users");
     }
 }

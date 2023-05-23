@@ -21,21 +21,21 @@ class UserServiceTest extends GenericServiceTest {
     void setUp() throws Exception {
         userDao.clear();
 
-        user1 = getUserFromMock(User.builder()
+        user1 = createUserInStorage(User.builder()
                 .login("dolore")
                 .name("Nick Name")
                 .email("mail@mail.ru")
                 .birthday(LocalDate.of(1946, 8, 20))
                 .build());
 
-        user2 = getUserFromMock(User.builder()
+        user2 = createUserInStorage(User.builder()
                 .login("friend")
                 .name("friend adipisicing")
                 .email("friend@mail.ru")
                 .birthday(LocalDate.of(1976, 8, 20))
                 .build());
 
-        user3 = getUserFromMock(User.builder()
+        user3 = createUserInStorage(User.builder()
                 .login("common")
                 .name("")
                 .email("friend@common.ru")
@@ -87,7 +87,7 @@ class UserServiceTest extends GenericServiceTest {
     }
 
     @Test
-    void addFriendship() throws Exception {
+    void addFriend() throws Exception {
         mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
 
         responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
@@ -100,22 +100,11 @@ class UserServiceTest extends GenericServiceTest {
 
         assertEquals(1, list.size());
         assertEquals(user2, list.get(0));
-
-        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
-
-        list = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
-
-        assertEquals(1, list.size());
-        assertEquals(user1, list.get(0));
     }
 
     @Test
-    void deleteFriendship() throws Exception {
-        addFriendship();
+    void deleteFriend() throws Exception {
+        addFriend();
         mockMvc.perform(delete("/users/" + user1.getId() + " /friends/" + user2.getId()));
 
         responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
@@ -131,10 +120,10 @@ class UserServiceTest extends GenericServiceTest {
 
     @Test
     void getCommonFriends() throws Exception {
-        mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user2.getId()));
         mockMvc.perform(put("/users/" + user1.getId() + " /friends/" + user3.getId()));
+        mockMvc.perform(put("/users/" + user2.getId() + " /friends/" + user3.getId()));
 
-        responseBody = mockMvc.perform(get("/users/" + user2.getId() + "/friends/common/" + user3.getId())
+        responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends/common/" + user2.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString();
@@ -143,6 +132,6 @@ class UserServiceTest extends GenericServiceTest {
         });
 
         assertEquals(1, list.size());
-        assertEquals(list.get(0), user1);
+        assertEquals(list.get(0), user3);
     }
 }

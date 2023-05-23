@@ -23,21 +23,21 @@ class FilmServiceTest extends GenericServiceTest {
     void setUp() throws Exception {
         filmDao.clear();
 
-        film1 = getFilmFromMock(Film.builder()
+        film1 = createFilmInStorage(Film.builder()
                 .name("Nick Name")
                 .description("adipisicing")
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(Duration.ofMinutes(100))
                 .build());
 
-        film2 = getFilmFromMock(Film.builder()
+        film2 = createFilmInStorage(Film.builder()
                 .name("New film")
                 .description("New film about friends")
                 .releaseDate(LocalDate.of(1999, 4, 30))
                 .duration(Duration.ofMinutes(120))
                 .build());
 
-        user1 = getUserFromMock(User.builder()
+        user1 = createUserInStorage(User.builder()
                 .login("dolore")
                 .name("Nick Name")
                 .email("mail@mail.ru")
