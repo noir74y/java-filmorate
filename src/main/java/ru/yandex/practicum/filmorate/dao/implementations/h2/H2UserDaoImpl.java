@@ -94,5 +94,6 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
     public void clear() {
         jdbcTemplate.update("DELETE FROM friends");
         jdbcTemplate.update("DELETE FROM users");
+        jdbcTemplate.update("ALTER TABLE users ALTER COLUMN id RESTART WITH 1");
     }
 }
