@@ -45,6 +45,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public User create(User user) {
+        setUserName(user);
         String sql = "INSERT INTO users(email, login, name, birthday) VALUES (?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -65,6 +66,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
 
     @Override
     public User update(User user) {
+        setUserName(user);
         jdbcTemplate.update("UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?",
                 user.getEmail(), user.getLogin(), user.getName(), Date.valueOf(user.getBirthday()), user.getId());
         return get(user.getId()).orElse(null);
@@ -95,5 +97,9 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
         jdbcTemplate.update("DELETE FROM friends");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("ALTER TABLE users ALTER COLUMN id RESTART WITH 1");
+    }
+
+    private void setUserName(User user) {
+        user.setName(user.getName() == null || user.getName().isBlank() ? user.getLogin() : user.getName());
     }
 }
