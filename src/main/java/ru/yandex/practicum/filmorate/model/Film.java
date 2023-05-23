@@ -36,6 +36,16 @@ public class Film extends Generic {
 
     private Set<Genre> genres;
 
+    public Film(Integer id, String name, String description, LocalDate releaseDate, Duration duration, Mpa mpa, Set<Genre> genres) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.mpa = mpa;
+        this.genres = genres;
+    }
+
     public void setId() {
         this.id = ++filmId;
     }

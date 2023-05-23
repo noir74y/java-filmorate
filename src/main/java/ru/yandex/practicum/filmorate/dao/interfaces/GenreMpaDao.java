@@ -5,6 +5,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 public interface GenreMpaDao {
     Collection<Genre> listGenre();
@@ -14,4 +15,6 @@ public interface GenreMpaDao {
     Optional<Genre> getGenre(Integer genreId);
 
     Optional<Mpa> getMpa(Integer mpaId);
+
+    Set<Genre> listFilmGenres(Integer filmId);
 }

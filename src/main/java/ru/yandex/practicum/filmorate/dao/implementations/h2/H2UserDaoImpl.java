@@ -21,25 +21,23 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
     @Override
     public Collection<User> list() {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY id",
-                (row, rowNum) ->
-                        new User(
-                                row.getInt("id"),
-                                row.getString("email"),
-                                row.getString("login"),
-                                row.getString("name"),
-                                Objects.requireNonNull(row.getDate("birthday")).toLocalDate()
-                        ));
+                (resultSet, rowNum) -> new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("login"),
+                        resultSet.getString("name"),
+                        Objects.requireNonNull(resultSet.getDate("birthday")).toLocalDate()));
     }
 
     @Override
     public Optional<User> get(Integer userId) {
-        SqlRowSet row = getRowById("users", userId).orElse(null);
-        return row != null ? Optional.of(new User(
-                row.getInt("id"),
-                row.getString("email"),
-                row.getString("login"),
-                row.getString("name"),
-                Objects.requireNonNull(row.getDate("birthday")).toLocalDate())
+        SqlRowSet sqlRowSet = getRowById("users", userId).orElse(null);
+        return sqlRowSet != null ? Optional.of(new User(
+                sqlRowSet.getInt("id"),
+                sqlRowSet.getString("email"),
+                sqlRowSet.getString("login"),
+                sqlRowSet.getString("name"),
+                Objects.requireNonNull(sqlRowSet.getDate("birthday")).toLocalDate())
         ) : Optional.empty();
     }
 
