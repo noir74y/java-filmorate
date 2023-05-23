@@ -6,12 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import ru.yandex.practicum.filmorate.model.ErrorMessage;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +27,8 @@ class FilmServiceTest extends GenericServiceTest {
                 .description("adipisicing")
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(Duration.ofMinutes(100))
+                .mpa(new Mpa(5, "NC-17"))
+                .genres(new HashSet<>(List.of(new Genre(4,"Триллер"))))
                 .build());
 
         film2 = createFilmInStorage(Film.builder()
@@ -35,6 +36,8 @@ class FilmServiceTest extends GenericServiceTest {
                 .description("New film about friends")
                 .releaseDate(LocalDate.of(1999, 4, 30))
                 .duration(Duration.ofMinutes(120))
+                .mpa(new Mpa(2, "PG"))
+                .genres(new HashSet<>(List.of(new Genre(2,"Драма"))))
                 .build());
 
         user1 = createUserInStorage(User.builder()

@@ -43,7 +43,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                 sqlRowSet.getInt("id"),
                 sqlRowSet.getString("name"),
                 sqlRowSet.getString("description"),
-                Objects.requireNonNull(sqlRowSet.getDate("releaseDate")).toLocalDate(),
+                Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate(),
                 Duration.ofMinutes(sqlRowSet.getInt("duration")),
                 h2GenreMpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null),
                 h2GenreMpaDao.listFilmGenres(sqlRowSet.getInt("id")))
