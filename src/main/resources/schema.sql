@@ -19,7 +19,7 @@ CREATE TABLE films (
     name VARCHAR(256),
     description text,
     release_date DATE,
-    duration INTEGER,
+    duration BIGINT,
     mpa_id INTEGER REFERENCES mpa (id)
 );
 

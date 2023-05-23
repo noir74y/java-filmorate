@@ -44,7 +44,7 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
     @Override
     public User create(User user) {
         setUserName(user);
-        String sql = "INSERT INTO users(email, login, name, birthday) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (email, login, name, birthday) VALUES (?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
