@@ -66,7 +66,11 @@ public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
     public User update(User user) {
         setUserName(user);
         jdbcTemplate.update("UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?",
-                user.getEmail(), user.getLogin(), user.getName(), Date.valueOf(user.getBirthday()), user.getId());
+                user.getEmail(),
+                user.getLogin(),
+                user.getName(),
+                Date.valueOf(user.getBirthday()),
+                user.getId());
         return get(user.getId()).orElse(null);
     }
 

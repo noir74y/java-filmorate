@@ -75,7 +75,12 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     @Override
     public Film update(Film film) {
         jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, mpa_id = ? WHERE id = ?",
-                film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toSeconds(), film.getMpa().getId(), film.getId());
+                film.getName(),
+                film.getDescription(),
+                Date.valueOf(film.getReleaseDate()),
+                film.getDuration().toSeconds(),
+                film.getMpa().getId(),
+                film.getId());
         attachGenresToFilm(film);
         return get(film.getId()).orElse(null);
     }
