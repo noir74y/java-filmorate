@@ -134,4 +134,18 @@ class UserServiceTest extends GenericServiceTest {
         assertEquals(1, list.size());
         assertEquals(list.get(0), user3);
     }
+
+    @Test
+    void updateUser() throws Exception {
+        user1.setName("new name");
+        user1.setLogin("new_login");
+
+        responseBody = mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user1)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        User user = objectMapper.readValue(responseBody, User.class);
+        assertEquals(user, user1);
+    }
 }
