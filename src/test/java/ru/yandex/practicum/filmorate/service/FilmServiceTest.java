@@ -21,8 +21,9 @@ class FilmServiceTest extends GenericServiceTest {
     @BeforeEach
     void setUp() throws Exception {
         filmDao.clear();
+        userDao.clear();
 
-        film1 = createFilmInStorage(Film.builder()
+        film1 = createFilm(Film.builder()
                 .name("Nick Name")
                 .description("adipisicing")
                 .releaseDate(LocalDate.of(1967, 3, 25))
@@ -31,7 +32,7 @@ class FilmServiceTest extends GenericServiceTest {
                 .genres(new HashSet<>(List.of(new Genre(4,"Триллер"),new Genre(2,"Драма"))))
                 .build());
 
-        film2 = createFilmInStorage(Film.builder()
+        film2 = createFilm(Film.builder()
                 .name("New film")
                 .description("New film about friends")
                 .releaseDate(LocalDate.of(1999, 4, 30))
@@ -40,7 +41,7 @@ class FilmServiceTest extends GenericServiceTest {
                 .genres(new HashSet<>(List.of(new Genre(2,"Драма"))))
                 .build());
 
-        user1 = createUserInStorage(User.builder()
+        user1 = createUser(User.builder()
                 .login("dolore")
                 .name("Nick Name")
                 .email("mail@mail.ru")

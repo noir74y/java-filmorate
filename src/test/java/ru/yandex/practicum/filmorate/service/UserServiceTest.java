@@ -21,21 +21,21 @@ class UserServiceTest extends GenericServiceTest {
     void setUp() throws Exception {
         userDao.clear();
 
-        user1 = createUserInStorage(User.builder()
+        user1 = createUser(User.builder()
                 .login("dolore")
                 .name("Nick Name")
                 .email("mail@mail.ru")
                 .birthday(LocalDate.of(1946, 8, 20))
                 .build());
 
-        user2 = createUserInStorage(User.builder()
+        user2 = createUser(User.builder()
                 .login("friend")
                 .name("friend adipisicing")
                 .email("friend@mail.ru")
                 .birthday(LocalDate.of(1976, 8, 20))
                 .build());
 
-        user3 = createUserInStorage(User.builder()
+        user3 = createUser(User.builder()
                 .login("common")
                 .name("")
                 .email("friend@common.ru")
