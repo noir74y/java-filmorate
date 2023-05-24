@@ -119,4 +119,19 @@ class FilmServiceTest extends GenericServiceTest {
 
         assertEquals(film2, list.get(0));
     }
+
+    @Test
+    void updateFilm() throws Exception {
+        film1.setName("new name");
+        film1.setDuration(Duration.ofMinutes(500));
+
+        responseBody = mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(film1)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Film film = objectMapper.readValue(responseBody, Film.class);
+        assertEquals(film, film1);
+    }
+
 }
