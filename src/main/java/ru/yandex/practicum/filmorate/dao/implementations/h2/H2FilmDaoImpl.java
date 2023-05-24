@@ -30,7 +30,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("description"),
-                        Objects.requireNonNull(resultSet.getDate("releaseDate")).toLocalDate(),
+                        Objects.requireNonNull(resultSet.getDate("release_date")).toLocalDate(),
                         Duration.ofMinutes(resultSet.getInt("duration")),
                         h2GenreMpaDao.getMpa(resultSet.getInt("mpa_id")).orElse(null),
                         h2GenreMpaDao.listFilmGenres(resultSet.getInt("id"))));
@@ -74,7 +74,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public Film update(Film film) {
-        jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, map_id = ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, mpa_id = ? WHERE id = ?",
                 film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toMinutes(), film.getMpa().getId(), film.getId());
         attachGenresToFilm(film);
         return get(film.getId()).orElse(null);
@@ -118,6 +118,12 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     private void attachGenresToFilm(Film film) {
         jdbcTemplate.update("DELETE FROM genres WHERE film_id = ?", film.getId());
-        film.getGenres().forEach(genre -> jdbcTemplate.update("INSERT INTO genres (film_id, genre_id) VALUES (?, ?)", film.getId(), genre.getId()));
+        Optional.ofNullable(film.getGenres()).
+                ifPresent(genres -> genres.
+                        forEach(genre ->
+                                jdbcTemplate.update(
+                                        "INSERT INTO genres (film_id, genre_id) VALUES (?, ?)",
+                                        film.getId(),
+                                        genre.getId())));
     }
 }
