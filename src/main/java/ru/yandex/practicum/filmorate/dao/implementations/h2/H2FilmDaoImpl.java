@@ -31,7 +31,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         Objects.requireNonNull(resultSet.getDate("release_date")).toLocalDate(),
-                        Duration.ofMinutes(resultSet.getInt("duration")),
+                        Duration.ofSeconds(resultSet.getLong("duration")),
                         h2GenreMpaDao.getMpa(resultSet.getInt("mpa_id")).orElse(null),
                         h2GenreMpaDao.listFilmGenres(resultSet.getInt("id"))));
     }
@@ -44,7 +44,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                 sqlRowSet.getString("name"),
                 sqlRowSet.getString("description"),
                 Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate(),
-                Duration.ofMinutes(sqlRowSet.getInt("duration")),
+                Duration.ofSeconds(sqlRowSet.getLong("duration")),
                 h2GenreMpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null),
                 h2GenreMpaDao.listFilmGenres(sqlRowSet.getInt("id")))
         ) : Optional.empty();
@@ -61,7 +61,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
             stmt.setString(1, film.getName());
             stmt.setString(2, film.getDescription());
             stmt.setDate(3, Date.valueOf(film.getReleaseDate()));
-            stmt.setLong(4, film.getDuration().toMinutes());
+            stmt.setLong(4, film.getDuration().toSeconds());
             stmt.setInt(5, film.getMpa().getId());
             return stmt;
         }, keyHolder);
@@ -75,7 +75,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     @Override
     public Film update(Film film) {
         jdbcTemplate.update("UPDATE films SET name = ?, description = ?, release_date = ?, duration = ?, mpa_id = ? WHERE id = ?",
-                film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toMinutes(), film.getMpa().getId(), film.getId());
+                film.getName(), film.getDescription(), Date.valueOf(film.getReleaseDate()), film.getDuration().toSeconds(), film.getMpa().getId(), film.getId());
         attachGenresToFilm(film);
         return get(film.getId()).orElse(null);
     }
