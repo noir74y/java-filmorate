@@ -39,7 +39,7 @@ public class H2GenreMpaDaoImpl extends H2GenericImpl implements GenreMpaDao {
 
     @Override
     public Set<Genre> listFilmGenres(Integer filmId) {
-        return new HashSet<>(jdbcTemplate.query("SELECT * FROM genre WHERE id in (SELECT id FROM genres WHERE film_id = ?)",
+        return new HashSet<>(jdbcTemplate.query("SELECT * FROM genre WHERE id in (SELECT genre_id FROM genres WHERE film_id = ?)",
                 (rs, rowNum) -> new Genre(rs.getInt("id"), rs.getString("name")), filmId));
     }
 }

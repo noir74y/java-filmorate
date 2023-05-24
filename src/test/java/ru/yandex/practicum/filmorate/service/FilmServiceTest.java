@@ -28,7 +28,7 @@ class FilmServiceTest extends GenericServiceTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(Duration.ofMinutes(100))
                 .mpa(new Mpa(5, "NC-17"))
-                .genres(new HashSet<>(List.of(new Genre(4,"Триллер"))))
+                .genres(new HashSet<>(List.of(new Genre(4,"Триллер"),new Genre(2,"Драма"))))
                 .build());
 
         film2 = createFilmInStorage(Film.builder()
