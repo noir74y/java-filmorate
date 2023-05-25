@@ -125,7 +125,7 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
         jdbcTemplate.update("DELETE FROM genres WHERE film_id = ?", film.getId());
         Optional.ofNullable(film.getGenres())
                 .ifPresent(genres -> genres.stream()
-                        .map(Generic::getId)
+                        .map(Genre::getId)
                         .distinct()
                         .forEach(genreId ->
                                 jdbcTemplate.update(

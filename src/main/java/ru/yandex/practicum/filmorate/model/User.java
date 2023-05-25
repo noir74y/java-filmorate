@@ -7,13 +7,16 @@ import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@Setter@Getter
+@Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends Generic {
     private static Integer userId = 0;
+
+    private Integer id;
 
     @Email
     @NotBlank(message = "электронная почта не может быть пустой")
@@ -28,14 +31,6 @@ public class User extends Generic {
     @PastOrPresent(message = "дата рождения не может быть в будущем")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
-
-    public User(Integer id, String email, String login, String name, LocalDate birthday) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-    }
 
     public void setId() {
         this.id = ++userId;
