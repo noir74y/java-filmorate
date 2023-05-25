@@ -46,41 +46,44 @@ class UserServiceTest extends GenericServiceTest {
 
     @Test
     void getList() throws Exception {
-        responseBody = mockMvc.perform(get("/users")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//        responseBody = mockMvc.perform(get("/users")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(HttpStatus.OK.value()))
+//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//
+//        responseBody = mockMvc.perform(get("/users")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(HttpStatus.OK.value()))
+//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+//        });
 
-        responseBody = mockMvc.perform(get("/users")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
-
+        List<User> list = userGenericMock.listEntity("/users");
         assertEquals(3, list.size());
     }
 
     @Test
     void getUser() throws Exception {
-
-        responseBody = mockMvc.perform(get("/users/" + user1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        User user = objectMapper.readValue(responseBody, User.class);
+//        responseBody = mockMvc.perform(get("/users/" + user1.getId())
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(HttpStatus.OK.value()))
+//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//
+//        User user = objectMapper.readValue(responseBody, User.class);
+        User user = userGenericMock.getEntity("/users/" + user1.getId(), User.class);
         assertEquals(user, user1);
     }
 
     @Test
     void getUnknownUser() throws Exception {
-        responseBody = mockMvc.perform(get("/users/9999")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//        responseBody = mockMvc.perform(get("/users/9999")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+//
+//        ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
 
-        ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
+        ErrorMessage errorMessage = errorMessageMockGenericMock.getEntity("/users/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such userId");
         assertEquals(errorMessage.getMessage(), "9999");
     }
