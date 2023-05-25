@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Generic;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,36 +23,44 @@ public class GenericMock<T extends Generic> {
     private static ObjectMapper objectMapper;
     private String responseBody;
 
-    protected T getEntity(String url) throws Exception {
-        T entity = null;
-        responseBody = mockMvc.perform(get(url)
+    public T getEntity(String url, Class<T> classType) throws Exception {
+        responseBody = mockMvc.perform(get("/films")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, entity.getClass());
+        return (T) objectMapper.readValue(responseBody, classType);
     }
 
-    protected T postEntity(T entity, String url) throws Exception {
+    public List<T> listEntity(String url) throws Exception {
+        responseBody = mockMvc.perform(get("/films")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+    }
+
+    public T postEntity(T entity, String url, Class<T> classType) throws Exception {
         responseBody = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(entity)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, entity.getClass());
+        return (T) objectMapper.readValue(responseBody, classType);
     }
 
-    protected T putEntity(T entity, String url) throws Exception {
+    public void putEntity(String url) throws Exception {
+        mockMvc.perform(put(url));
+    }
+
+    public T putEntity(T entity, String url, Class<T> classType) throws Exception {
         responseBody = mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(entity)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, entity.getClass());
+        return (T) objectMapper.readValue(responseBody, classType);
     }
 
-    protected T deleteEntity(T entity, String url) throws Exception {
-        responseBody = mockMvc.perform(delete(url).contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(entity)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, entity.getClass());
+    public void deleteEntity(String url) throws Exception {
+        mockMvc.perform(delete(url));
     }
 }

@@ -50,14 +50,12 @@ class UserServiceTest extends GenericServiceTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
 
         responseBody = mockMvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
         assertEquals(3, list.size());
