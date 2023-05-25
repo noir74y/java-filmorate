@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Generic;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +37,7 @@ public class GenericMock<T extends Generic> {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, classType);
+        return objectMapper.readValue(responseBody, classType);
     }
 
     public T getEntity(String url, int httpResponseCode, Class<T> classType) throws Exception {
@@ -47,16 +45,14 @@ public class GenericMock<T extends Generic> {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(httpResponseCode))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, classType);
+        return objectMapper.readValue(responseBody, classType);
     }
 
-    public List<T> listEntity(String url) throws Exception {
-        responseBody = mockMvc.perform(get(url)
+    public String listEntityJson(String url) throws Exception {
+        return mockMvc.perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
     }
 
     public T postEntity(String url, T entity, Class<T> classType) throws Exception {
@@ -64,7 +60,7 @@ public class GenericMock<T extends Generic> {
                         .content(objectMapper.writeValueAsString(entity)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, classType);
+        return objectMapper.readValue(responseBody, classType);
     }
 
     public void putEntity(String url) throws Exception {
@@ -76,7 +72,7 @@ public class GenericMock<T extends Generic> {
                         .content(objectMapper.writeValueAsString(entity)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        return (T) objectMapper.readValue(responseBody, classType);
+        return objectMapper.readValue(responseBody, classType);
     }
 
     public void deleteEntity(String url) throws Exception {

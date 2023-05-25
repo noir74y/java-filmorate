@@ -48,22 +48,10 @@ public class GenericServiceTest {
     }
 
     protected User createUser(User user) throws Exception {
-//        responseBody = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(user)))
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-//        return objectMapper.readValue(responseBody, User.class);
-
         return userGenericMock.postEntity("/users", user, User.class);
     }
 
     protected Film createFilm(Film film) throws Exception {
-//        responseBody = mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(film)))
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-//        return objectMapper.readValue(responseBody, Film.class);
-
         return filmGenericMock.postEntity("/films", film, Film.class);
     }
 }
