@@ -11,11 +11,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Film extends Generic {
     private static Integer filmId = 0;
 

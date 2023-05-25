@@ -124,11 +124,13 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     private void attachGenresToFilm(Film film) {
         jdbcTemplate.update("DELETE FROM genres WHERE film_id = ?", film.getId());
         Optional.ofNullable(film.getGenres())
-                .ifPresent(genres -> genres
-                        .forEach(genre ->
+                .ifPresent(genres -> genres.stream()
+                        .map(Generic::getId)
+                        .distinct()
+                        .forEach(genreId ->
                                 jdbcTemplate.update(
                                         "INSERT INTO genres (film_id, genre_id) VALUES (?, ?)",
                                         film.getId(),
-                                        genre.getId())));
+                                        genreId)));
     }
 }

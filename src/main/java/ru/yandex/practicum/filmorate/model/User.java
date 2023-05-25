@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@Data
+@Setter@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

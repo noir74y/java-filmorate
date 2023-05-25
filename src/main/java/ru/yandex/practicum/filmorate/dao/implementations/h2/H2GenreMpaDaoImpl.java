@@ -7,10 +7,7 @@ import ru.yandex.practicum.filmorate.dao.interfaces.GenreMpaDao;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Component("H2GenreMpaDaoImpl")
 @Slf4j
@@ -39,7 +36,7 @@ public class H2GenreMpaDaoImpl extends H2GenericImpl implements GenreMpaDao {
 
     @Override
     public Set<Genre> listFilmGenres(Integer filmId) {
-        return new HashSet<>(jdbcTemplate.query("SELECT * FROM genre WHERE id in (SELECT genre_id FROM genres WHERE film_id = ?)",
+        return new LinkedHashSet<>(jdbcTemplate.query("SELECT * FROM genre WHERE id in (SELECT genre_id FROM genres WHERE film_id = ?) ORDER BY id ASC",
                 (rs, rowNum) -> new Genre(rs.getInt("id"), rs.getString("name")), filmId));
     }
 }
