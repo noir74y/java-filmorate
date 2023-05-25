@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,14 +49,14 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
         responseBody = mockMvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
@@ -68,7 +69,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users/" + user1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         User user = objectMapper.readValue(responseBody, User.class);
         assertEquals(user, user1);
@@ -79,7 +80,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such userId");
@@ -93,7 +94,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -110,7 +111,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -126,7 +127,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/users/" + user1.getId() + "/friends/common/" + user2.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         List<User> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -143,7 +144,7 @@ class UserServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user1)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         User user = objectMapper.readValue(responseBody, User.class);
         assertEquals(user, user1);

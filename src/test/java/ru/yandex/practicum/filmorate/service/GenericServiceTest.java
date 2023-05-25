@@ -15,6 +15,8 @@ import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,7 +49,7 @@ public class GenericServiceTest {
         responseBody = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         return objectMapper.readValue(responseBody, User.class);
     }
 
@@ -55,7 +57,7 @@ public class GenericServiceTest {
         responseBody = mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(film)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         return objectMapper.readValue(responseBody, Film.class);
     }
 }

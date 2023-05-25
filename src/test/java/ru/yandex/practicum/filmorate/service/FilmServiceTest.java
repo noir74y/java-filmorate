@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -54,7 +55,7 @@ class FilmServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/films")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         List<Film> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
@@ -66,7 +67,7 @@ class FilmServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/films/" + film1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         Film film = objectMapper.readValue(responseBody, Film.class);
         assertEquals(film, film1);
@@ -77,7 +78,7 @@ class FilmServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/films/9999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such filmId");
@@ -112,7 +113,7 @@ class FilmServiceTest extends GenericServiceTest {
         responseBody = mockMvc.perform(get("/films/popular?count=1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         List<Film> list = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
@@ -123,12 +124,12 @@ class FilmServiceTest extends GenericServiceTest {
     @Test
     void updateFilm() throws Exception {
         film1.setName("new name");
-        film1.setDuration(Duration.ofMinutes(500));
+        film1.setDuration(Duration.ofSeconds(500));
 
         responseBody = mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(film1)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         Film film = objectMapper.readValue(responseBody, Film.class);
         assertEquals(film, film1);
