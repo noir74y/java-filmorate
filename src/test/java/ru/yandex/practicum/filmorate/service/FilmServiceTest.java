@@ -5,18 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import ru.yandex.practicum.filmorate.model.*;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FilmServiceTest extends GenericServiceTest {
     @BeforeEach
@@ -52,72 +48,42 @@ class FilmServiceTest extends GenericServiceTest {
 
     @Test
     void getList() throws Exception {
-        responseBody = mockMvc.perform(get("/films")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        List<Film> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        List<Film> list = objectMapper.readValue(filmGenericMock.listEntityJson("/films"), new TypeReference<>() {
         });
-
         assertEquals(2, list.size());
     }
 
     @Test
     void getFilm() throws Exception {
-        responseBody = mockMvc.perform(get("/films/" + film1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        Film film = objectMapper.readValue(responseBody, Film.class);
+        Film film = filmGenericMock.getEntity("/films/" + film1.getId(), Film.class);
         assertEquals(film, film1);
     }
 
     @Test
     void getUnknownFilm() throws Exception {
-        responseBody = mockMvc.perform(get("/films/9999")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        ErrorMessage errorMessage = objectMapper.readValue(responseBody, ErrorMessage.class);
+        ErrorMessage errorMessage = errorMessageMockGenericMock.getEntity("/films/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such filmId");
         assertEquals(errorMessage.getMessage(), "9999");
     }
 
     @Test
     void addLike() throws Exception {
-        mockMvc.perform(put("/films/" + film1.getId() + "/like/" + user1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()));
-
+        filmGenericMock.putEntity("/films/" + film1.getId() + "/like/" + user1.getId());
         assertEquals(user1.getId(), filmDao.getFilmLikes(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
     }
 
     @Test
     void deleteLike() throws Exception {
         addLike();
-        mockMvc.perform(delete("/films/" + film1.getId() + "/like/" + user1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()));
-
+        filmGenericMock.deleteEntity("/films/" + film1.getId() + "/like/" + user1.getId());
         assertEquals(0, filmDao.getFilmLikes(film1.getId()).getLikedUsersId().size());
     }
 
     @Test
     void getPopular() throws Exception {
-        mockMvc.perform(put("/films/" + film2.getId() + "/like/" + user1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()));
-
-        responseBody = mockMvc.perform(get("/films/popular?count=1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        List<Film> list = objectMapper.readValue(responseBody, new TypeReference<>() {
+        filmGenericMock.putEntity("/films/" + film2.getId() + "/like/" + user1.getId());
+        List<Film> list = objectMapper.readValue(filmGenericMock.listEntityJson("/films/popular?count=1"), new TypeReference<>() {
         });
-
         assertEquals(film2, list.get(0));
     }
 
@@ -125,14 +91,7 @@ class FilmServiceTest extends GenericServiceTest {
     void updateFilm() throws Exception {
         film1.setName("new name");
         film1.setDuration(Duration.ofSeconds(500));
-
-        responseBody = mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(film1)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        Film film = objectMapper.readValue(responseBody, Film.class);
+        Film film = filmGenericMock.putEntity("/films", film1, Film.class);
         assertEquals(film, film1);
     }
-
 }
