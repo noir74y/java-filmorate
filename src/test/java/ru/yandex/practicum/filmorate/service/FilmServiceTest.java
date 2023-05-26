@@ -48,41 +48,41 @@ class FilmServiceTest extends GenericServiceTest {
 
     @Test
     void getList() throws Exception {
-        List<Film> list = objectMapper.readValue(filmGenericMock.listEntityJson("/films"), new TypeReference<>() {
+        List<Film> list = objectMapper.readValue(filmMock.listEntityJson("/films"), new TypeReference<>() {
         });
         assertEquals(2, list.size());
     }
 
     @Test
     void getFilm() throws Exception {
-        Film film = filmGenericMock.getEntity("/films/" + film1.getId(), Film.class);
+        Film film = filmMock.getEntity("/films/" + film1.getId(), Film.class);
         assertEquals(film, film1);
     }
 
     @Test
     void getUnknownFilm() throws Exception {
-        ErrorMessage errorMessage = errorMessageMockGenericMock.getEntity("/films/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
+        ErrorMessage errorMessage = errorMessageMock.getEntity("/films/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such filmId");
         assertEquals(errorMessage.getMessage(), "9999");
     }
 
     @Test
     void addLike() throws Exception {
-        filmGenericMock.putEntity("/films/" + film1.getId() + "/like/" + user1.getId());
+        filmMock.putEntity("/films/" + film1.getId() + "/like/" + user1.getId());
         assertEquals(user1.getId(), filmDao.getFilmLikes(film1.getId()).getLikedUsersId().stream().findFirst().orElse(-1));
     }
 
     @Test
     void deleteLike() throws Exception {
         addLike();
-        filmGenericMock.deleteEntity("/films/" + film1.getId() + "/like/" + user1.getId());
+        filmMock.deleteEntity("/films/" + film1.getId() + "/like/" + user1.getId());
         assertEquals(0, filmDao.getFilmLikes(film1.getId()).getLikedUsersId().size());
     }
 
     @Test
     void getPopular() throws Exception {
-        filmGenericMock.putEntity("/films/" + film2.getId() + "/like/" + user1.getId());
-        List<Film> list = objectMapper.readValue(filmGenericMock.listEntityJson("/films/popular?count=1"), new TypeReference<>() {
+        filmMock.putEntity("/films/" + film2.getId() + "/like/" + user1.getId());
+        List<Film> list = objectMapper.readValue(filmMock.listEntityJson("/films/popular?count=1"), new TypeReference<>() {
         });
         assertEquals(film2, list.get(0));
     }
@@ -91,7 +91,7 @@ class FilmServiceTest extends GenericServiceTest {
     void updateFilm() throws Exception {
         film1.setName("new name");
         film1.setDuration(Duration.ofSeconds(500));
-        Film film = filmGenericMock.putEntity("/films", film1, Film.class);
+        Film film = filmMock.putEntity("/films", film1, Film.class);
         assertEquals(film, film1);
     }
 }

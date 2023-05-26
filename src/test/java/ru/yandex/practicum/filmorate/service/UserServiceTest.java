@@ -42,28 +42,28 @@ class UserServiceTest extends GenericServiceTest {
 
     @Test
     void getList() throws Exception {
-        List<User> list = objectMapper.readValue(userGenericMock.listEntityJson("/users"), new TypeReference<>() {
+        List<User> list = objectMapper.readValue(userMock.listEntityJson("/users"), new TypeReference<>() {
         });
         assertEquals(3, list.size());
     }
 
     @Test
     void getUser() throws Exception {
-        User user = userGenericMock.getEntity("/users/" + user1.getId(), User.class);
+        User user = userMock.getEntity("/users/" + user1.getId(), User.class);
         assertEquals(user, user1);
     }
 
     @Test
     void getUnknownUser() throws Exception {
-        ErrorMessage errorMessage = errorMessageMockGenericMock.getEntity("/users/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
+        ErrorMessage errorMessage = errorMessageMock.getEntity("/users/9999", HttpStatus.NOT_FOUND.value(), ErrorMessage.class);
         assertEquals(errorMessage.getCause(), "no such userId");
         assertEquals(errorMessage.getMessage(), "9999");
     }
 
     @Test
     void addFriend() throws Exception {
-        userGenericMock.putEntity("/users/" + user1.getId() + " /friends/" + user2.getId());
-        List<User> list = objectMapper.readValue(userGenericMock.listEntityJson("/users/" + user1.getId() + "/friends"), new TypeReference<>() {
+        userMock.putEntity("/users/" + user1.getId() + " /friends/" + user2.getId());
+        List<User> list = objectMapper.readValue(userMock.listEntityJson("/users/" + user1.getId() + "/friends"), new TypeReference<>() {
         });
         assertEquals(1, list.size());
         assertEquals(user2, list.get(0));
@@ -72,17 +72,17 @@ class UserServiceTest extends GenericServiceTest {
     @Test
     void deleteFriend() throws Exception {
         addFriend();
-        userGenericMock.deleteEntity("/users/" + user1.getId() + " /friends/" + user2.getId());
-        List<User> list = objectMapper.readValue(userGenericMock.listEntityJson("/users/" + user1.getId() + "/friends"), new TypeReference<>() {
+        userMock.deleteEntity("/users/" + user1.getId() + " /friends/" + user2.getId());
+        List<User> list = objectMapper.readValue(userMock.listEntityJson("/users/" + user1.getId() + "/friends"), new TypeReference<>() {
         });
         assertEquals(0, list.size());
     }
 
     @Test
     void getCommonFriends() throws Exception {
-        userGenericMock.putEntity("/users/" + user1.getId() + " /friends/" + user3.getId());
-        userGenericMock.putEntity("/users/" + user2.getId() + " /friends/" + user3.getId());
-        List<User> list = objectMapper.readValue(userGenericMock.listEntityJson("/users/" + user1.getId() + "/friends/common/" + user2.getId()), new TypeReference<>() {
+        userMock.putEntity("/users/" + user1.getId() + " /friends/" + user3.getId());
+        userMock.putEntity("/users/" + user2.getId() + " /friends/" + user3.getId());
+        List<User> list = objectMapper.readValue(userMock.listEntityJson("/users/" + user1.getId() + "/friends/common/" + user2.getId()), new TypeReference<>() {
         });
         assertEquals(1, list.size());
         assertEquals(list.get(0), user3);
@@ -92,7 +92,7 @@ class UserServiceTest extends GenericServiceTest {
     void updateUser() throws Exception {
         user1.setName("new name");
         user1.setLogin("new_login");
-        User user = userGenericMock.putEntity("/users",user1, User.class);
+        User user = userMock.putEntity("/users",user1, User.class);
         assertEquals(user, user1);
     }
 }
