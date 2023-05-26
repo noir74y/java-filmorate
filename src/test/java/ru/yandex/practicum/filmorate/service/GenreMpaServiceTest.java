@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GenreMpaServiceTest extends GenericServiceTest{
+public class GenreMpaServiceTest extends GenericServiceTest {
     @Test
     void getListMpa() throws Exception {
         List<Mpa> list = objectMapper.readValue(mpaMock.listEntityJson("/mpa"), new TypeReference<>() {
