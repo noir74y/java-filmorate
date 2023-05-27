@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.FilmDao;
 import ru.yandex.practicum.filmorate.model.*;
 
@@ -15,6 +16,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 @Slf4j
 @Primary
 public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
