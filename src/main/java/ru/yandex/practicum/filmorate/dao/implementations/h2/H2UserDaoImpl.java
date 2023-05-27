@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -13,7 +12,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.*;
 
-@Component("H2UserDaoImpl")
 @Slf4j
 @Primary
 public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
