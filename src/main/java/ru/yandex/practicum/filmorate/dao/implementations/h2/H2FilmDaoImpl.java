@@ -21,7 +21,9 @@ import java.util.stream.Collectors;
 @Primary
 public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
     @Autowired
-    H2GenreMpaDaoImpl h2GenreMpaDao;
+    H2GenreDaoImpl h2GenreDao;
+    @Autowired
+    H2MpaDaoImpl h2MpaDao;
 
     @Override
     public Collection<Film> list() {
@@ -32,8 +34,8 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                         resultSet.getString("description"),
                         Objects.requireNonNull(resultSet.getDate("release_date")).toLocalDate(),
                         Duration.ofSeconds(resultSet.getLong("duration")),
-                        h2GenreMpaDao.getMpa(resultSet.getInt("mpa_id")).orElse(null),
-                        h2GenreMpaDao.listFilmGenres(resultSet.getInt("id"))));
+                        h2MpaDao.getMpa(resultSet.getInt("mpa_id")).orElse(null),
+                        h2GenreDao.listFilmGenres(resultSet.getInt("id"))));
     }
 
     @Override
@@ -45,8 +47,8 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                 sqlRowSet.getString("description"),
                 Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate(),
                 Duration.ofSeconds(sqlRowSet.getLong("duration")),
-                h2GenreMpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null),
-                h2GenreMpaDao.listFilmGenres(sqlRowSet.getInt("id")))
+                h2MpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null),
+                h2GenreDao.listFilmGenres(sqlRowSet.getInt("id")))
         ) : Optional.empty();
     }
 
