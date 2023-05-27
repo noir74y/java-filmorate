@@ -26,7 +26,7 @@ class FilmServiceTest extends GenericServiceTest {
                 .releaseDate(LocalDate.of(1967, 3, 25))
                 .duration(Duration.ofMinutes(100))
                 .mpa(new Mpa(5, "NC-17"))
-                .genres(new HashSet<>(List.of(new Genre(4,"Триллер"),new Genre(2,"Драма"))))
+                .genres(new HashSet<>(List.of(new Genre(1, "Комедия"), new Genre(6, "Боевик"))))
                 .build());
 
         film2 = createFilm(Film.builder()
@@ -35,7 +35,7 @@ class FilmServiceTest extends GenericServiceTest {
                 .releaseDate(LocalDate.of(1999, 4, 30))
                 .duration(Duration.ofMinutes(120))
                 .mpa(new Mpa(2, "PG"))
-                .genres(new HashSet<>(List.of(new Genre(2,"Драма"))))
+                .genres(new HashSet<>(List.of(new Genre(2, "Драма"), new Genre(3, "Мультфильм"))))
                 .build());
 
         user1 = createUser(User.builder()

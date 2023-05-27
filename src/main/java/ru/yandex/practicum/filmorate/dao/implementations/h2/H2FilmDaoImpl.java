@@ -26,29 +26,71 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
 
     @Override
     public Collection<Film> list() {
-        return jdbcTemplate.query("SELECT films.*, mpa.id AS mpa_id, mpa.name AS mpa_name FROM films JOIN mpa ON mpa.id = films.mpa_id ORDER BY id",
-                (resultSet, rowNum) -> Film.builder()
-                        .id(resultSet.getInt("id"))
-                        .name(resultSet.getString("name"))
-                        .description(resultSet.getString("description"))
-                        .releaseDate(Objects.requireNonNull(resultSet.getDate("release_date")).toLocalDate())
-                        .duration(Duration.ofSeconds(resultSet.getLong("duration")))
-                        .mpa(Mpa.builder().id(resultSet.getInt("mpa_id")).name(resultSet.getString("mpa_name")).build())
-                        .genres(h2GenreDao.listFilmGenres(resultSet.getInt("id"))).build());
+        Collection<Genre> allGenres = h2GenreDao.listGenre();
+
+        String sql =
+                "WITH film_genres AS ( " +
+                        "SELECT " +
+                        "film_id, LISTAGG(genre_id,',') WITHIN GROUP (ORDER BY film_id) AS genres_id_csv " +
+                        "FROM GENRES GROUP BY film_id " +
+                        ") " +
+                        "SELECT " +
+                        "films.id, films.name, films.description, films.release_date, films.duration, " +
+                        "mpa.id AS mpa_id, mpa.name AS mpa_name, " +
+                        "film_genres.genres_id_csv " +
+                        "FROM films " +
+                        "LEFT OUTER JOIN film_genres ON film_genres.film_id = films.id " +
+                        "LEFT OUTER JOIN mpa ON mpa.id = films.mpa_id " +
+                        "ORDER BY films.id";
+
+        return jdbcTemplate.query(sql,
+                (resultSet, rowNum) ->
+                        Film.builder()
+                                .id(resultSet.getInt("id"))
+                                .name(resultSet.getString("name"))
+                                .description(resultSet.getString("description"))
+                                .releaseDate(Objects.requireNonNull(resultSet.getDate("release_date")).toLocalDate())
+                                .duration(Duration.ofSeconds(resultSet.getLong("duration")))
+                                .mpa(Mpa.builder()
+                                        .id(resultSet.getInt("mpa_id"))
+                                        .name(resultSet.getString("mpa_name"))
+                                        .build())
+                                .genres(getFilmGenresSet(resultSet.getString("genres_id_csv"), allGenres))
+                                .build());
+    }
+
+    private Set<Genre> getFilmGenresSet(String filmGenresIdCsv, Collection<Genre> allGenres) {
+
+        if (filmGenresIdCsv == null) return new HashSet<>();
+
+        Set<Integer> filmGenresId =
+                Arrays.stream(filmGenresIdCsv.split(","))
+                        .map(Integer::parseInt).sorted()
+                        .collect(Collectors.toSet());
+
+        Set<Genre> filmGenresSet = allGenres.stream()
+                .filter(genre -> {
+                    return filmGenresId.stream().anyMatch(filmGenreId -> genre.getId().equals(filmGenreId));
+                })
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return filmGenresSet;
     }
 
     @Override
     public Optional<Film> get(Integer filmId) {
         SqlRowSet sqlRowSet = getRowById("films", filmId).orElse(null);
 
-        return sqlRowSet != null ? Optional.of(Film.builder()
-                .id(sqlRowSet.getInt("id"))
-                .name(sqlRowSet.getString("name"))
-                .description(sqlRowSet.getString("description"))
-                .releaseDate(Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate())
-                .duration(Duration.ofSeconds(sqlRowSet.getLong("duration")))
-                .mpa(h2MpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null))
-                .genres(h2GenreDao.listFilmGenres(sqlRowSet.getInt("id"))).build()
+        return sqlRowSet != null ? Optional.of(
+                Film.builder()
+                        .id(sqlRowSet.getInt("id"))
+                        .name(sqlRowSet.getString("name"))
+                        .description(sqlRowSet.getString("description"))
+                        .releaseDate(Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate())
+                        .duration(Duration.ofSeconds(sqlRowSet.getLong("duration")))
+                        .mpa(h2MpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null))
+                        .genres(h2GenreDao.listFilmGenres(sqlRowSet.getInt("id"))).
+                        build()
         ) : Optional.empty();
     }
 
