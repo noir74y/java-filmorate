@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.interfaces.UserDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -14,12 +14,10 @@ import java.util.stream.Collectors;
 
 @Service("FilmService")
 @Slf4j
+@RequiredArgsConstructor
 public class FilmService {
-    @Autowired
-    private FilmDao filmDao;
-
-    @Autowired
-    private UserDao userDao;
+    private final FilmDao filmDao;
+    private final UserDao userDao;
 
     public Collection<Film> list() {
         Collection<Film> films = filmDao.list();

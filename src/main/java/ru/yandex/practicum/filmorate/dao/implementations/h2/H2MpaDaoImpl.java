@@ -12,7 +12,6 @@ import java.util.Optional;
 @Component("H2MpaDaoImpl")
 @Slf4j
 public class H2MpaDaoImpl extends H2GenericImpl implements MpaDao {
-
     @Override
     public Collection<Mpa> listMpa() {
         return jdbcTemplate.query("SELECT * FROM mpa ORDER BY id", (rs, rowNum) -> new Mpa(rs.getInt("id"), rs.getString("name")));

@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.interfaces.GenreDao;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -11,9 +11,9 @@ import java.util.Collection;
 
 @Service("GenreService")
 @Slf4j
+@RequiredArgsConstructor
 public class GenreService {
-    @Autowired
-    private GenreDao genreDao;
+    private final GenreDao genreDao;
 
     public Collection<Genre> listGenre() {
         Collection<Genre> listGenre = genreDao.listGenre();

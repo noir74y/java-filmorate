@@ -17,7 +17,6 @@ import java.util.*;
 @Slf4j
 @Primary
 public class H2UserDaoImpl extends H2GenericImpl implements UserDao {
-
     @Override
     public Collection<User> list() {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY id",

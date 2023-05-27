@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.implementations.h2;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,11 +19,10 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @Primary
+@RequiredArgsConstructor
 public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
-    @Autowired
-    H2GenreDaoImpl h2GenreDao;
-    @Autowired
-    H2MpaDaoImpl h2MpaDao;
+    private final H2GenreDaoImpl h2GenreDao;
+    private final H2MpaDaoImpl h2MpaDao;
 
     @Override
     public Collection<Film> list() {
