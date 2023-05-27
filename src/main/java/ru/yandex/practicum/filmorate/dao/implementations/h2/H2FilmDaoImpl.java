@@ -59,24 +59,6 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                                 .build());
     }
 
-    private Set<Genre> getFilmGenresSet(String filmGenresIdCsv, Collection<Genre> allGenres) {
-
-        if (filmGenresIdCsv == null) return new HashSet<>();
-
-        Set<Integer> filmGenresId =
-                Arrays.stream(filmGenresIdCsv.split(","))
-                        .map(Integer::parseInt).sorted()
-                        .collect(Collectors.toSet());
-
-        Set<Genre> filmGenresSet = allGenres.stream()
-                .filter(genre -> {
-                    return filmGenresId.stream().anyMatch(filmGenreId -> genre.getId().equals(filmGenreId));
-                })
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-
-        return filmGenresSet;
-    }
-
     @Override
     public Optional<Film> get(Integer filmId) {
         SqlRowSet sqlRowSet = getRowById("films", filmId).orElse(null);
@@ -89,8 +71,8 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                         .releaseDate(Objects.requireNonNull(sqlRowSet.getDate("release_date")).toLocalDate())
                         .duration(Duration.ofSeconds(sqlRowSet.getLong("duration")))
                         .mpa(h2MpaDao.getMpa(sqlRowSet.getInt("mpa_id")).orElse(null))
-                        .genres(h2GenreDao.listFilmGenres(sqlRowSet.getInt("id"))).
-                        build()
+                        .genres(h2GenreDao.listFilmGenres(sqlRowSet.getInt("id")))
+                        .build()
         ) : Optional.empty();
     }
 
@@ -176,5 +158,19 @@ public class H2FilmDaoImpl extends H2GenericImpl implements FilmDao {
                                         "INSERT INTO genres (film_id, genre_id) VALUES (?, ?)",
                                         film.getId(),
                                         genreId)));
+    }
+
+    private Set<Genre> getFilmGenresSet(String filmGenresIdCsv, Collection<Genre> allGenres) {
+
+        if (filmGenresIdCsv == null) return new HashSet<>();
+
+        Set<Integer> filmGenresId =
+                Arrays.stream(filmGenresIdCsv.split(","))
+                        .map(Integer::parseInt).sorted()
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return allGenres.stream()
+                .filter(genre -> filmGenresId.stream().anyMatch(filmGenreId -> genre.getId().equals(filmGenreId)))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
