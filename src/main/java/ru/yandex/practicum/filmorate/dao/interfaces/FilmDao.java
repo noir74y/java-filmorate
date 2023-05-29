@@ -1,14 +1,15 @@
-package ru.yandex.practicum.filmorate.storage.interfaces;
+package ru.yandex.practicum.filmorate.dao.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 
 import java.util.Collection;
+import java.util.Optional;
 
-public interface FilmStorage {
+public interface FilmDao {
     Collection<Film> list();
 
-    Film get(Integer filmId);
+    Optional<Film> get(Integer filmId);
 
     Film create(Film film);
 
@@ -20,7 +21,9 @@ public interface FilmStorage {
 
     void deleteLike(Integer filmId, Integer userId);
 
-    Collection<Like> getLikes();
+    Collection<FilmLikes> listFilmsLikes();
+
+    FilmLikes getFilmLikes(Integer filmId);
 
     void clear();
 }

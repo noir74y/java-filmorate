@@ -2,20 +2,19 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class Like implements Comparable<Like> {
+public class FilmLikes implements Comparable<FilmLikes> {
     int filmId;
     Set<Integer> likedUsersId;
 
-    public Like() {
-    }
-
     @Override
-    public int compareTo(Like o) {
+    public int compareTo(FilmLikes o) {
         return o.likedUsersId.size() - likedUsersId.size();
     }
 }

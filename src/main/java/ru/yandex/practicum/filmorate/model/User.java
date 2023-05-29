@@ -1,19 +1,22 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import ru.yandex.practicum.filmorate.constraints.NoSpacesInUserLoginConstraint;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@Data
+@Setter
+@Getter
 @Builder
 @AllArgsConstructor
-public class User extends GenericModel {
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class User extends Generic {
     private static Integer userId = 0;
+
+    private Integer id;
 
     @Email
     @NotBlank(message = "электронная почта не может быть пустой")
@@ -28,9 +31,6 @@ public class User extends GenericModel {
     @PastOrPresent(message = "дата рождения не может быть в будущем")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
-
-    public User() {
-    }
 
     public void setId() {
         this.id = ++userId;

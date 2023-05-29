@@ -1,14 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class ErrorMessage {
+public class ErrorMessage extends Generic {
     private String cause;
     private String message;
-
-    public ErrorMessage() {
-    }
 }

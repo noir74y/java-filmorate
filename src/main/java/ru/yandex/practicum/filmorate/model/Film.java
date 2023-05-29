@@ -1,10 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import ru.yandex.practicum.filmorate.constraints.FilmDurationConstraint;
 import ru.yandex.practicum.filmorate.constraints.FilmReleaseDateConstraint;
 
@@ -12,13 +9,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
-public class Film extends GenericModel {
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Film extends Generic {
     private static Integer filmId = 0;
+
+    private Integer id;
 
     @NotBlank(message = "название не может быть пустым")
     private String name;
@@ -33,8 +35,9 @@ public class Film extends GenericModel {
     @FilmDurationConstraint
     private Duration duration;
 
-    public Film() {
-    }
+    private Mpa mpa;
+
+    private Set<Genre> genres;
 
     public void setId() {
         this.id = ++filmId;
